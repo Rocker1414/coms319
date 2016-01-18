@@ -6,6 +6,7 @@
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,11 +20,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class HelloWorldSwing {
 
-	// Global variable text display
-	public static JLabel textDisplay = new JLabel("pls turn red");
+	// Global variables
+	public static JLabel textDisplay = new JLabel("Hello World!");
+	public static int fontSize = 12;
 
 	// Create JFrame with exit on close parameters
 	private static JFrame createJFrame(String n, int x, int y) {
@@ -47,24 +51,37 @@ public class HelloWorldSwing {
 
 		// TextField
 		JTextField text = new JTextField("Hello World!");
-		/*
-		 * text.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * textDisplay.setText(text.getText()); } });
-		 */
+
+		// TextField document listener
+		DocumentListener documentListener = new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent documentEvent) {
+				textDisplay.setText(text.getText());
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent documentEvent) {
+				textDisplay.setText(text.getText());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent documentEvent) {
+				textDisplay.setText(text.getText());
+			}
+		};
+
+		text.getDocument().addDocumentListener(documentListener);
 
 		// JComboBox
 		String[] options = { "Tiny", "Small", "Medium", "Large" };
 		JComboBox<String> combo = new JComboBox<String>(options);
+		combo.setSelectedItem("Small");
 		int[] sizes = { 8, 12, 20, 28 };
 		combo.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int fontSize = sizes[combo.getSelectedIndex()];
-				// label1.setFontSize(12);
-
+				fontSize = sizes[combo.getSelectedIndex()];
+				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.PLAIN, fontSize));
 			}
 		});
 
@@ -80,7 +97,7 @@ public class HelloWorldSwing {
 	// Create middle panel for holding JRadioButtons and JLabel
 	private static JPanel createMiddlePanel() {
 
-		JPanel m = new JPanel(new GridLayout(1,2));
+		JPanel m = new JPanel(new GridLayout(1, 2));
 
 		// Radio Button
 		JPanel ml = new JPanel(new GridLayout(4, 1));
@@ -89,11 +106,39 @@ public class HelloWorldSwing {
 		JRadioButton i = new JRadioButton("Italic");
 		JRadioButton bi = new JRadioButton("Bold Italic");
 		ButtonGroup bg = new ButtonGroup();
-		p.setSelected(true);
+		p.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.PLAIN, fontSize));
+			}
+		});
+
+		b.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.BOLD, fontSize));
+			}
+		});
+
+		i.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.ITALIC, fontSize));
+			}
+		});
+
+		bi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.BOLD + Font.ITALIC, fontSize));
+			}
+		});
+
 		bg.add(p);
 		bg.add(b);
 		bg.add(i);
 		bg.add(bi);
+		bi.setSelected(true);
 
 		// Add Components to middle Panel
 		ml.add(p);
@@ -108,28 +153,31 @@ public class HelloWorldSwing {
 
 	// Create bottom panel for holding two JButtons
 	private static JPanel createBottomPanel() {
-		JPanel b = new JPanel();
-
+		JPanel b = new JPanel(new FlowLayout(FlowLayout.CENTER, 110, 10));
 		JButton showButton = new JButton("Show!");
 
 		showButton.addActionListener(new ActionListener() {
+			boolean changeToRed = true;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Get text from input field
-				// change the JLabel
-				// change text to red
-				textDisplay.setForeground(Color.red);
+				if (changeToRed) {
+					textDisplay.setForeground(Color.red);
+					changeToRed = false;
+				} else {
+					textDisplay.setForeground(Color.black);
+					changeToRed = true;
+				}
 			}
 		});
 
 		JButton exitButton = new JButton("Exit");
 
 		exitButton.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// close window
-				// f.dispatchEvent(new WindowEvent(frame,
-				// WindowEvent.WINDOW_CLOSING));
+				System.exit(0);
 			}
 		});
 
