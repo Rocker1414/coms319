@@ -21,62 +21,38 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class HelloWorldSwing {
-	public static void main(String[] args) {
+	
+	// Global variable text display
+	public static JLabel textDisplay = new JLabel("pls turn red");
 
-		JLabel textDisplay = new JLabel("pls turn red");
-
-		// Create JFrame
-		JFrame f = new JFrame("HelloWorldSwing!");
+	// Create JFrame with exit on close parameters
+	private static JFrame createJFrame(String n, int x, int y) {
+		JFrame f = new JFrame(n);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(370, 220);
+		f.setSize(x, y);
+		return f;
+	}
 
-		// Create Main Panel
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new FlowLayout());
-		f.setContentPane(mainPanel);
+	// Create main panel for holding and layout of components
+	private static JPanel createMainPanel() {
+		JPanel m = new JPanel();
+		m.setLayout(new FlowLayout());
+		return m;
+	}
 
-		// ---Create Top Panel---
-		JPanel topPanel = new JPanel();
+	// Create top panel for holding JLabel, JTextField, and JComboBox
+	private static JPanel createTopPanel() {
+		JPanel t = new JPanel();
 
 		// TextField
 		JTextField text = new JTextField("Hello World!");
-		/*text.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				textDisplay.setText(text.getText());
-			}
-		});*/
-		text.getDocument().addDocumentListener(new DocumentListener() {
-			public void actionPerformed(ActionEvent e) {
-				textDisplay.setText(text.getText());
-			}
+		/*
+		 * text.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * textDisplay.setText(text.getText()); } });
+		 */
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				textDisplay.setText(text.getText());
-				
-			}
-		});
-		/*// Remove Text on Mouse Click
-		text.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        text.setText("");
-		    }
-		});*/
-		
 		// JComboBox
 		String[] options = { "Tiny", "Small", "Medium", "Large" };
 		JComboBox<String> combo = new JComboBox<String>(options);
@@ -92,13 +68,17 @@ public class HelloWorldSwing {
 		});
 
 		// Add Components to Top Panel
-		topPanel.add(new JLabel("Text:"));
-		topPanel.add(text);
-		topPanel.add(combo);
-		mainPanel.add(topPanel);
+		t.add(new JLabel("Text:"));
+		t.add(text);
+		t.add(combo);
 
-		// ---Create Middle Panel---
-		JPanel midPanel = new JPanel();
+		return t;
+	}
+
+	// Create middle panel for holding JRadioButtons and JLabel
+	private static JPanel createMiddlePanel() {
+
+		JPanel m = new JPanel();
 
 		// Radio Button
 		JRadioButton p = new JRadioButton("Plain");
@@ -111,45 +91,70 @@ public class HelloWorldSwing {
 		bg.add(b);
 		bg.add(i);
 		bg.add(bi);
-
+		
 		// Add Components to middle Panel
-		midPanel.add(p);
-		midPanel.add(b);
-		midPanel.add(i);
-		midPanel.add(bi);
-		midPanel.add(textDisplay);
-		mainPanel.add(midPanel);
+		m.add(p);
+		m.add(b);
+		m.add(i);
+		m.add(bi);
+		m.add(textDisplay);
+		
+		return m;
+	}
 
-		// ---Create Bottom Panel---
-		JPanel panel4 = new JPanel();
+	// Create bottom panel for holding two JButtons
+	private static JPanel createBottomPanel(){
+		JPanel b = new JPanel();
 
 		JButton showButton = new JButton("Show!");
 
-		showButton.addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						//Get text from input field
-						//change the JLabel
-						// change text to red
-						textDisplay.setForeground(Color.red);					}
+		showButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Get text from input field
+				// change the JLabel
+				// change text to red
+				textDisplay.setForeground(Color.red);
+			}
 		});
 
 		JButton exitButton = new JButton("Exit");
 
-		exitButton.addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						//close window
-						//f.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-					}
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// close window
+				// f.dispatchEvent(new WindowEvent(frame,
+				// WindowEvent.WINDOW_CLOSING));
+			}
 		});
+		
+		b.add(showButton);
+		b.add(exitButton);
 
+		return b;
+		
+	}
+	public static void main(String[] args) {
+		
+		// Create JFrame
+		JFrame f = createJFrame("HelloWorldSwing!", 370, 220);
 
-		panel4.add(showButton);
-		panel4.add(exitButton);
+		// Create Main Panel
+		JPanel mainPanel = createMainPanel();
+		f.setContentPane(mainPanel);
 
-		mainPanel.add(panel4);
+		// ---Create Top Panel---
+		JPanel topPanel = createTopPanel();
+		mainPanel.add(topPanel);
 
+		// ---Create Middle Panel---
+		JPanel midPanel = createMiddlePanel();
+		mainPanel.add(midPanel);
+
+		// ---Create Bottom Panel---
+		JPanel bottomPanel = createBottomPanel();
+		mainPanel.add(bottomPanel);
 
 		// Execute
 		f.setVisible(true);
