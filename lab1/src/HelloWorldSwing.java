@@ -6,9 +6,11 @@
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,11 +19,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public class HelloWorldSwing {
-	
+
 	// Global variable text display
 	public static JLabel textDisplay = new JLabel("pls turn red");
 
@@ -36,13 +36,14 @@ public class HelloWorldSwing {
 	// Create main panel for holding and layout of components
 	private static JPanel createMainPanel() {
 		JPanel m = new JPanel();
-		m.setLayout(new FlowLayout());
+		m.setLayout(new BoxLayout(m, BoxLayout.Y_AXIS));
 		return m;
 	}
 
 	// Create top panel for holding JLabel, JTextField, and JComboBox
 	private static JPanel createTopPanel() {
 		JPanel t = new JPanel();
+		t.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		// TextField
 		JTextField text = new JTextField("Hello World!");
@@ -68,9 +69,10 @@ public class HelloWorldSwing {
 		});
 
 		// Add Components to Top Panel
-		t.add(new JLabel("Text:"));
+		t.add(new JLabel("Text:      "));
 		t.add(text);
 		t.add(combo);
+		t.setVisible(true);
 
 		return t;
 	}
@@ -78,9 +80,10 @@ public class HelloWorldSwing {
 	// Create middle panel for holding JRadioButtons and JLabel
 	private static JPanel createMiddlePanel() {
 
-		JPanel m = new JPanel();
+		JPanel m = new JPanel(new GridLayout(1,2));
 
 		// Radio Button
+		JPanel ml = new JPanel(new GridLayout(4, 1));
 		JRadioButton p = new JRadioButton("Plain");
 		JRadioButton b = new JRadioButton("Bold");
 		JRadioButton i = new JRadioButton("Italic");
@@ -91,19 +94,20 @@ public class HelloWorldSwing {
 		bg.add(b);
 		bg.add(i);
 		bg.add(bi);
-		
+
 		// Add Components to middle Panel
-		m.add(p);
-		m.add(b);
-		m.add(i);
-		m.add(bi);
+		ml.add(p);
+		ml.add(b);
+		ml.add(i);
+		ml.add(bi);
+		m.add(ml);
 		m.add(textDisplay);
-		
+		m.setVisible(true);
 		return m;
 	}
 
 	// Create bottom panel for holding two JButtons
-	private static JPanel createBottomPanel(){
+	private static JPanel createBottomPanel() {
 		JPanel b = new JPanel();
 
 		JButton showButton = new JButton("Show!");
@@ -128,15 +132,15 @@ public class HelloWorldSwing {
 				// WindowEvent.WINDOW_CLOSING));
 			}
 		});
-		
+
 		b.add(showButton);
 		b.add(exitButton);
-
+		b.setVisible(true);
 		return b;
-		
 	}
+
 	public static void main(String[] args) {
-		
+
 		// Create JFrame
 		JFrame f = createJFrame("HelloWorldSwing!", 370, 220);
 
