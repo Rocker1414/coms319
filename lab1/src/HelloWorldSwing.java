@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -26,8 +27,14 @@ import javax.swing.event.DocumentListener;
 public class HelloWorldSwing {
 
 	// Global variables
-	public static JLabel textDisplay = new JLabel("Hello World!");
+	//using text area instead of JLabel so the text can overflow
+	public static JTextArea textDisplay = new JTextArea("Hello World!");
 	public static int fontSize = 12;
+	public static JComboBox<String> combo;
+	public static JTextField text;
+	public final static int[] fontSizes = { 8, 12, 20, 28 };
+	public static int DEFAULT_FONT_SIZE = 12;
+	public static int DEFAULT_FONT = Font.PLAIN;
 
 	// Create JFrame with exit on close parameters
 	private static JFrame createJFrame(String n, int x, int y) {
@@ -47,10 +54,10 @@ public class HelloWorldSwing {
 	// Create top panel for holding JLabel, JTextField, and JComboBox
 	private static JPanel createTopPanel() {
 		JPanel t = new JPanel();
-		t.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+		t.setLayout(new BoxLayout(t, BoxLayout.X_AXIS));
+	    
 		// TextField
-		JTextField text = new JTextField("Hello World!");
+		text = new JTextField("Hello World!");
 
 		// TextField document listener
 		DocumentListener documentListener = new DocumentListener() {
@@ -74,13 +81,12 @@ public class HelloWorldSwing {
 
 		// JComboBox
 		String[] options = { "Tiny", "Small", "Medium", "Large" };
-		JComboBox<String> combo = new JComboBox<String>(options);
-		combo.setSelectedItem("Small");
-		int[] sizes = { 8, 12, 20, 28 };
+		combo = new JComboBox<String>(options);
+		combo.setSelectedItem("Small");		
 		combo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fontSize = sizes[combo.getSelectedIndex()];
+				fontSize = fontSizes[combo.getSelectedIndex()];
 				textDisplay.setFont(new Font(textDisplay.getFont().getName(), Font.PLAIN, fontSize));
 			}
 		});
@@ -138,15 +144,26 @@ public class HelloWorldSwing {
 		bg.add(b);
 		bg.add(i);
 		bg.add(bi);
-		bi.setSelected(true);
+		p.setSelected(true);
 
 		// Add Components to middle Panel
 		ml.add(p);
 		ml.add(b);
 		ml.add(i);
 		ml.add(bi);
+		
 		m.add(ml);
+		
+		//JPanel textDisPanel = new JPanel();
+		//textDisPanel.setLayout(new BoxLayout(textDisPanel, BoxLayout.X_AXIS));
+		textDisplay.setFont(new Font(textDisplay.getFont().getName(), DEFAULT_FONT, DEFAULT_FONT_SIZE));
+		textDisplay.setWrapStyleWord(true);
+		textDisplay.setLineWrap(true);
+		textDisplay.setOpaque(false);
 		m.add(textDisplay);
+		//m.add(textDisPanel);
+		
+		
 		m.setVisible(true);
 		return m;
 	}
