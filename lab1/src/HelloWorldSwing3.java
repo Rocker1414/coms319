@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -29,6 +30,8 @@ public class HelloWorldSwing3 {
 
 	// Global variables
 	//using text area instead of JLabel so the text can overflow
+	private static JFrame f;
+	
 	private static JTextArea textDisplay = new JTextArea("Hello World!");
 	private static int fontSize = 12;
 	private static JComboBox<String> combo;
@@ -40,7 +43,8 @@ public class HelloWorldSwing3 {
 	private static JTextField timerLength;
 	private static JCheckBox clearOption;
 	private static boolean timerOn = false;
-	private static JLabel errorMsg;
+	//private static JLabel errorMsg;
+	private static JTextArea errorMsg;
 	private static int time;
 	// Create JFrame with exit on close parameters
 	private static JFrame createJFrame(String n, int x, int y) {
@@ -141,7 +145,7 @@ public class HelloWorldSwing3 {
 					if(time >= 1 && time <= 10){
 						errorMsg.setVisible(false);
 					}
-					else{
+					else if(timerOn){
 						errorMsg.setVisible(true);	
 					}
 				}
@@ -246,27 +250,61 @@ public class HelloWorldSwing3 {
 
 	// Create bottom panel for holding two JButtons
 	private static JPanel createBottomPanel() {
-		JPanel b = new JPanel(new FlowLayout(FlowLayout.CENTER, 110, 10));
+		//JPanel b = new JPanel(new FlowLayout(FlowLayout.CENTER, 110, 10));
+		JPanel b = new JPanel(new GridLayout(1,3));
 		JButton showButton = new JButton("Show!");
 
 		showButton.addActionListener(new ActionListener() {
 			boolean changeToRed = true;
+			
+			//wait amount of time
+			//should this be in a different thread?
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (changeToRed) {
+				
+				if(timerOn){
+					
 					textDisplay.setForeground(Color.red);
-					changeToRed = false;
-				} else {
-					textDisplay.setForeground(Color.black);
-					changeToRed = true;
+					
+					//make a new anonymous thread so the red color updates
+					//this thread will wait the amount of time and then clear					
+					new Thread() {
+					    @Override public void run () {
+				        	try {
+								Thread.sleep(time*1000);
+								textDisplay.setForeground(Color.black);
+								textDisplay.setText("");
+								text.setText("");
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					    }
+					  }.start();
 				}
+				
+				else{
+					if (changeToRed) {
+						textDisplay.setForeground(Color.red);
+						changeToRed = false;
+					} else {
+						textDisplay.setForeground(Color.black);
+						changeToRed = true;
+					}
+				}
+				
+				
 			}
 		});
 		
-		errorMsg = new JLabel("Time must be int between 1 and 10");
+		//errorMsg = new JLabel("Time must be int between 1 and 10");
+		errorMsg = new JTextArea("Time must be int between 1 and 10");
+		errorMsg.setWrapStyleWord(true);
+		errorMsg.setLineWrap(true);
+		errorMsg.setOpaque(false);
 		errorMsg.setVisible(false);
-		b.add(errorMsg);
+		
 
 		JButton exitButton = new JButton("Exit");
 
@@ -278,7 +316,8 @@ public class HelloWorldSwing3 {
 			}
 		});
 
-		b.add(showButton);
+		b.add(showButton);		
+		b.add(errorMsg);
 		b.add(exitButton);
 		b.setVisible(true);
 		return b;
@@ -287,7 +326,7 @@ public class HelloWorldSwing3 {
 	public static void main(String[] args) {
 
 		// Create JFrame
-		JFrame f = createJFrame("HelloWorldSwing!", 370, 220);
+	    f = createJFrame("HelloWorldSwing!", 370, 220);
 
 		// Create Main Panel
 		JPanel mainPanel = createMainPanel();
