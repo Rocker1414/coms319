@@ -1,34 +1,34 @@
 package cs319;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTabbedPane;
-import java.awt.Color;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.AbstractListModel;
-import javax.swing.ListModel;
-import java.awt.ScrollPane;
-import java.awt.List;
-import java.awt.FlowLayout;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.ComponentOrientation;
 
 public class Lab2Swing extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -111,11 +111,33 @@ public class Lab2Swing extends JFrame {
 		listPanel.add(remButton);
 
 		// Tree
+
 		JPanel treePanel = new JPanel();
 		tabbedPane.addTab("Tree", null, treePanel, null);
 
+		// Table
+
 		JPanel tablePanel = new JPanel();
 		tabbedPane.addTab("Table", null, tablePanel, null);
+		tablePanel.setLayout(null);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(2, 5, 426, 227);
+		scrollPane_1.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		tablePanel.add(scrollPane_1);
+
+		String[] columnNames = { "First Name", "Last Name", "Age", "Gender", "Vegetarian" };
+
+		String[][] dataValues = { { "Kathy", "Smith", "25", "F", "false" }, { "John", "Doe", "43", "M", "false" },
+				{ "Sue", "Black", "61", "F", "true" }, { "Jane", "White", "17", "F", "true" },
+				{ "Joe", "Brown", "32", "M", "false" }, { "Abby", "Dawn", "41", "F", "false" },
+				{ "Mila", "Manson", "26", "F", "true" }, { "Jack", "Schmitt", "32", "M", "true" } };
+
+		DefaultTableModel tableModel = new DefaultTableModel(dataValues, columnNames);
+
+		table = new JTable(tableModel);
+		scrollPane_1.setViewportView(table);
+
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { tabbedPane }));
 	}
 }
