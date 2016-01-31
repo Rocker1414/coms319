@@ -36,14 +36,18 @@ public class DataModel extends javax.swing.AbstractListModel {
 	}
 
 	public void addElement(String s) throws IOException {
-		FileWriter fw = new FileWriter("companies.txt", true);
-		try {
-			fw.write("\n" + s);
-		} catch (IOException ioe) {
-			System.err.println("IOException: " + ioe.getMessage());
+		
+		try{
+			FileWriter fw = new FileWriter("companies.txt", true);
+			PrintWriter pw = new PrintWriter(fw);
+			pw.println(s);
+			companies.add(s);
+			pw.close();
 		}
-		companies.add(s);
-		fw.close();
+		catch(IOException e){
+			System.out.println("Cannot write to file");
+		}
+
 		fireIntervalAdded(this, getSize(), getSize() + 1);
 
 	}

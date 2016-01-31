@@ -18,7 +18,3 @@ Oracle
 Facebook
 Salesforce.com
 Opera
-
-
-
-null
