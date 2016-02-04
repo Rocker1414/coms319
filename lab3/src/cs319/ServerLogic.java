@@ -4,26 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerLogic {
-	
-	public static int PORT = 1234;
-		
-	public static void main(String[] args){
-		Thread connections = new Thread(new ConnectionThread(PORT));
-		connections.start();
-		
-	}
-	
-	
-}
+//this document is for all server related threads
+
 
 //thread to handle connections
-class ConnectionThread implements Runnable{
+class ServerConnectionThread implements Runnable{
 	
 	private ServerSocket serverSocket;
 	private int port;
 	
-	public ConnectionThread(int port){
+	public ServerConnectionThread(int port){
 		try {
 			this.port = port;
 			serverSocket = new ServerSocket(port);	

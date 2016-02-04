@@ -1,7 +1,41 @@
 package cs319;
 
-public class ClientLogic {
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+//this document is for all client related threads
+
+class ClientConnectionThread implements Runnable{
 	
-	public static int PORT = 1234;
+	private ServerSocket serverSocket;
+	private int port;
 	
+	public ClientConnectionThread(int port){
+		try {
+			this.port = port;
+			serverSocket = new ServerSocket(port);	
+			
+		} catch (IOException e) {
+			System.out.println("Could not listen on port " + port);
+			System.exit(-1);
+		}
+	}
+	
+	@Override
+	public void run(){
+		//start listening for connection
+		while(true){
+			Socket clientSocket = null;
+			try {
+				clientSocket = serverSocket.accept();
+
+				Thread handler = new Thread(new ClientHandleThread(clientSocket));
+				handler.start();
+
+			} catch (IOException e) {
+				System.out.println("Accept failed: " + port);
+			}
+		}
+	}
 }
