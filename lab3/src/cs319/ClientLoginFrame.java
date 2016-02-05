@@ -12,20 +12,20 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ClientLoginFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtEnterUsername;
-
-	/**
-	 * Launch the application.
-	 */
+	private JTextField UsernameField;
 
 	/**
 	 * Create the frame.
 	 */
 	public ClientLoginFrame() {
+		setTitle("FastChat Client");
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -33,23 +33,39 @@ public class ClientLoginFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JTextArea txtrFastchat = new JTextArea();
-		txtrFastchat.setBackground(UIManager.getColor("ComboBox.disabledBackground"));
-		txtrFastchat.setForeground(Color.RED);
-		txtrFastchat.setFont(new Font("Kristen ITC", Font.BOLD | Font.ITALIC, 27));
-		txtrFastchat.setText("FastChat");
-		txtrFastchat.setBounds(150, 61, 150, 40);
-		contentPane.add(txtrFastchat);
-		
-		txtEnterUsername = new JTextField();
-		txtEnterUsername.setText("Enter Username");
-		txtEnterUsername.setBounds(63, 112, 150, 28);
-		contentPane.add(txtEnterUsername);
-		txtEnterUsername.setColumns(10);
-		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setBounds(240, 112, 125, 30);
-		contentPane.add(btnNewButton);
+
+		JTextArea FastChat = new JTextArea();
+		FastChat.setEditable(false);
+		FastChat.setBackground(UIManager.getColor("ComboBox.disabledBackground"));
+		FastChat.setForeground(Color.RED);
+		FastChat.setFont(new Font("Kristen ITC", Font.BOLD | Font.ITALIC, 27));
+		FastChat.setText("FastChat");
+		FastChat.setBounds(150, 61, 150, 40);
+		contentPane.add(FastChat);
+
+		UsernameField = new JTextField();
+		UsernameField.setBounds(63, 112, 150, 28);
+		contentPane.add(UsernameField);
+		UsernameField.setColumns(10);
+
+		JButton LoginButton = new JButton("Login");
+		LoginButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Launch chat app
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							ClientChatFrame frame = new ClientChatFrame();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
+		LoginButton.setBounds(240, 112, 125, 30);
+		contentPane.add(LoginButton);
 	}
 }

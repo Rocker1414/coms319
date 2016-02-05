@@ -17,8 +17,8 @@ class ClientConnectionThread implements Runnable {
 		Thread.sleep(1000);
 		PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 		out.print("Client socket Local Address: " + clientSocket.getLocalAddress() + ":" + clientSocket.getLocalPort() + "\n");
-		out.println("  Client socket Remote Address: " + clientSocket.getRemoteSocketAddress() + "\n");
-		out.flush(); // forces data from buffer to be sent to server
+		out.print("  Client socket Remote Address: " + clientSocket.getRemoteSocketAddress() + "\n");
+		out.flush();
 		}
 		catch(IOException e){
 			System.out.println("Could not connect to server on port " + port);
