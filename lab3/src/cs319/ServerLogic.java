@@ -17,7 +17,7 @@ class ServerConnectionThread implements Runnable {
 			this.port = port;
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.out.println("Could not listen on port " + port);
+			System.out.println("Could not listen on port " + port + ". Exiting.");
 			System.exit(-1);
 		}
 	}

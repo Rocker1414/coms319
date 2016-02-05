@@ -16,28 +16,19 @@ class ClientConnectionThread implements Runnable {
 		clientSocket = new Socket("localhost", port);
 		Thread.sleep(1000);
 		PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-		out.print("Client socket Local Address: " + clientSocket.getLocalAddress() + ":" + clientSocket.getLocalPort() + "\n");
-		out.print("  Client socket Remote Address: " + clientSocket.getRemoteSocketAddress() + "\n");
+		out.print("Client socket Local Address: " + clientSocket.getLocalAddress() + ":" + clientSocket.getLocalPort());
+		out.print("Client socket Remote Address: " + clientSocket.getRemoteSocketAddress());
 		out.flush();
 		}
 		catch(IOException e){
-			System.out.println("Could not connect to server on port " + port);
+			System.out.println("Could not find a FastChat server on port " + port + ". Exiting.");
+			System.exit(-1);
 		}
 	}
 
 	@Override
 	public void run() {
 		System.out.println("client running");
-		// start listening for connection
-		/*
-		 * while (true) { Socket clientSocket = null; /*try { //clientSocket =
-		 * clientSocket.accept();
-		 * 
-		 * Thread handler = new Thread(new ClientHandleThread(clientSocket));
-		 * handler.start();
-		 * 
-		 * } catch (IOException e) { System.out.println("Accept failed: " +
-		 * port); }
-		 */
+		/**TODO**/
 	}
 }
