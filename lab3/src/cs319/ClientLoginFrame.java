@@ -52,20 +52,28 @@ public class ClientLoginFrame extends JFrame {
 		LoginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// Launch chat app
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							ClientChatFrame frame = new ClientChatFrame();
-							frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				buttonClicked();
 			}
 		});
 		LoginButton.setBounds(240, 112, 125, 30);
 		contentPane.add(LoginButton);
 	}
+
+	private void buttonClicked() {
+		this.dispose();
+
+		// Launch chat app
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ClientChatFrame frame = new ClientChatFrame();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
 }
+
