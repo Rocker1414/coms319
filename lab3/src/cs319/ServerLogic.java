@@ -5,9 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-//this document is for all server related threads
+//This class handles all of the Server thread work
 
-//thread to handle connections
 class ServerConnectionThread implements Runnable {
 
 	private ServerSocket serverSocket;
@@ -17,7 +16,6 @@ class ServerConnectionThread implements Runnable {
 		try {
 			this.port = port;
 			serverSocket = new ServerSocket(port);
-
 		} catch (IOException e) {
 			System.out.println("Could not listen on port " + port);
 			System.exit(-1);
@@ -47,7 +45,7 @@ class ServerConnectionThread implements Runnable {
 class ClientHandleThread implements Runnable {
 
 	private Socket s; // Serverside socket that connects to client
-	
+
 	public ClientHandleThread(Socket s) {
 		this.s = s;
 	}
@@ -70,8 +68,8 @@ class ClientHandleThread implements Runnable {
 	}
 
 	void printSocketInfo(Socket s) {
-		System.out.print("Socket on Server " + Thread.currentThread() + " ");
-		System.out.print("Server Socket Local Address: " + s.getLocalAddress() + ":" + s.getLocalPort());
-		System.out.println("Server Socket Remote Address: " + s.getRemoteSocketAddress());
+		System.out.print("Socket on Server " + Thread.currentThread() + "\n");
+		System.out.print("Server Socket Local Address: " + s.getLocalAddress() + ":" + s.getLocalPort() + "\n");
+		System.out.println("Server Socket Remote Address: " + s.getRemoteSocketAddress() + "\n");
 	}
 }
