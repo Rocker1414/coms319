@@ -12,11 +12,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ClientChatFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField messageInsert;
+	public static JTextArea chatLog;
 
 
 	/**
@@ -36,10 +39,12 @@ public class ClientChatFrame extends JFrame {
 		scrollPane.setBounds(10, 22, 241, 231);
 		getContentPane().add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		scrollPane.setViewportView(textArea);
+		chatLog = new JTextArea();
+		chatLog.setEditable(false);
+		chatLog.setLineWrap(true);
+		scrollPane.setViewportView(chatLog);
+		
+		Client.chatLog = chatLog;
 		
 		messageInsert = new JTextField();
 		messageInsert.setBounds(100, 279, 151, 29);
@@ -51,6 +56,16 @@ public class ClientChatFrame extends JFrame {
 		getContentPane().add(lblMessage);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//only send if field not blank
+				if(!messageInsert.getText().equals("")){
+					Thread send = new Thread(new SendMessageThread(messageInsert.getText()));
+					send.start();
+				}
+			}
+		});
 		btnSend.setBounds(285, 279, 100, 29);
 		getContentPane().add(btnSend);
 	}

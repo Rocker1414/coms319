@@ -14,6 +14,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class ClientLoginFrame extends JFrame {
 
@@ -57,6 +59,12 @@ public class ClientLoginFrame extends JFrame {
 		});
 		LoginButton.setBounds(240, 112, 125, 30);
 		contentPane.add(LoginButton);
+		
+		JLabel lblNameCannotBe = new JLabel("Name cannot be blank");
+		lblNameCannotBe.setEnabled(false);
+		lblNameCannotBe.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNameCannotBe.setBounds(130, 160, 185, 14);
+		contentPane.add(lblNameCannotBe);
 	}
 
 	private void buttonClicked() {
@@ -68,6 +76,9 @@ public class ClientLoginFrame extends JFrame {
 				try {
 					ClientChatFrame frame = new ClientChatFrame();
 					frame.setVisible(true);
+					
+					Thread connections = new Thread(new ClientConnectionThread(Client.PORT));
+					connections.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -4,31 +4,74 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
+
+import javax.swing.JTextArea;
 
 //this document is for all client related threads
 
 class ClientConnectionThread implements Runnable {
 
 	private Socket clientSocket;
+	private int port;
 
-	public ClientConnectionThread(int port) throws UnknownHostException, IOException, InterruptedException {
-		try{
-		clientSocket = new Socket("localhost", port);
-		Thread.sleep(1000);
-		PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-		out.print("Client socket Local Address: " + clientSocket.getLocalAddress() + ":" + clientSocket.getLocalPort());
-		out.print("Client socket Remote Address: " + clientSocket.getRemoteSocketAddress());
-		out.flush();
-		}
-		catch(IOException e){
-			System.out.println("Could not find a FastChat server on port " + port + ". Exiting.");
-			System.exit(-1);
-		}
+	public ClientConnectionThread(int port){
+		this.port = port;
 	}
 
 	@Override
 	public void run() {
-		System.out.println("client running");
-		/**TODO**/
+		try{
+			clientSocket = new Socket("localhost", port);
+			Client.serverIn = new Scanner(clientSocket.getInputStream());
+			Client.serverOut = new PrintWriter(clientSocket.getOutputStream(), true);
+			
+			Thread listen = new Thread(new ClientListenThread(Client.chatLog));
+			listen.start();
+
+		}
+		catch(Exception e){
+			System.out.println("Could not find a FastChat server on port " + port + ". Exiting.");
+			System.exit(-1);
+		}
+	}
+}
+
+//listens for messages from the server
+class ClientListenThread implements Runnable{
+	
+	JTextArea chatArea;
+	public ClientListenThread(JTextArea chatArea){
+		this.chatArea = chatArea;
+	}
+	
+	public void run(){
+		
+		//always listen
+		while(true){
+			
+			//wait for message
+			while(!Client.serverIn.hasNextLine()){}
+			
+			String msg = Client.serverIn.nextLine();
+			
+			chatArea.setText(chatArea.getText() + msg + "\n");
+			
+		}
+		
+	}
+}
+
+class SendMessageThread implements Runnable{
+	
+	String msg;
+	
+	public SendMessageThread(String msg){
+		this.msg = msg;
+	}
+	
+	public void run(){
+		Client.serverOut.println(msg);
+		
 	}
 }
