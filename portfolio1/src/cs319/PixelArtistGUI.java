@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,6 +40,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -82,6 +84,7 @@ public class PixelArtistGUI extends JFrame {
 						  {"white", "brown", "blue", "pink", "magenta"}
 						 };
 	
+	public JTable table_1;
 	public JTable selectedColor;
 	public JTable colorOptions;
 
@@ -133,7 +136,7 @@ public class PixelArtistGUI extends JFrame {
 		PixelModel model = new PixelModel(numRows, colHeadings.length);
 		model.setColumnIdentifiers(colHeadings);
 		
-		JTable table_1 = new JTable(model);
+		table_1 = new JTable(model);
 		topPanel.add(table_1);
 		
 		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -160,7 +163,7 @@ public class PixelArtistGUI extends JFrame {
 	            	c = rightColor;
 	            }	         
 	            	
-            	paModel.changePixel(row, column, c.getRGB());
+            	paModel.changePixelAt(row, column, c.getRGB());
             	table.setValueAt(c, row, column);
 					
 
@@ -183,17 +186,54 @@ public class PixelArtistGUI extends JFrame {
 		gbl_menuPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		menuPanel.setLayout(gbl_menuPanel);
 		
-		JButton btnLoadImage = new JButton("Load Image");
-		btnLoadImage.addActionListener(new ActionListener() {
+		JButton paSave = new JButton("Save PA file");
+		paSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				paModel.loadPAImage();
+				JFileChooser fc = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					     "PixelArtist file (*.pa)", "pa");
+				fc.setFileFilter(filter);
+				int returnVal = fc.showSaveDialog(PixelArtistGUI.this);
+				
+				if(returnVal == JFileChooser.APPROVE_OPTION){
+					String filename = PADataModel.getFileName(fc.getSelectedFile().getAbsolutePath());
+					
+					paModel.savePAImage(filename);
+				}
 			}
 		});
-		GridBagConstraints gbc_btnLoadImage = new GridBagConstraints();
-		gbc_btnLoadImage.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLoadImage.gridx = 0;
-		gbc_btnLoadImage.gridy = 0;
-		menuPanel.add(btnLoadImage, gbc_btnLoadImage);
+		GridBagConstraints gbc_paSave = new GridBagConstraints();
+		gbc_paSave.insets = new Insets(0, 0, 5, 5);
+		gbc_paSave.gridx = 0;
+		gbc_paSave.gridy = 0;
+		menuPanel.add(paSave, gbc_paSave);
+		
+		JButton paLoad = new JButton("Load PA File");
+		GridBagConstraints gbc_paLoad = new GridBagConstraints();
+		gbc_paLoad.insets = new Insets(0, 0, 5, 5);
+		gbc_paLoad.gridx = 1;
+		gbc_paLoad.gridy = 0;
+		menuPanel.add(paLoad, gbc_paLoad);
+		paLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fc = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					     "PixelArtist files (*.pa)", "pa");
+				fc.setFileFilter(filter);
+				int returnVal = fc.showOpenDialog(PixelArtistGUI.this);
+				
+				
+				if(returnVal == JFileChooser.APPROVE_OPTION){
+					
+					PADataModel newModel = new PADataModel(fc.getSelectedFile().getAbsolutePath());
+					if(newModel.isLoaded()){
+						paModel = newModel;
+					}
+					paintTable();
+				}
+				
+			}
+		});
 
 		// Screenshot button
 
@@ -289,14 +329,22 @@ public class PixelArtistGUI extends JFrame {
 		
 		colorPalette.add(colorOptions);
 		
+		JButton btnClearCanvas = new JButton("Clear Canvas");
+		btnClearCanvas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PADataModel newModel = new PADataModel(DEFAULT_X, DEFAULT_Y);
+				paModel = newModel;
+				paintTable();
+			}
+		});
+		btnClearCanvas.setBounds(287, 11, 97, 46);
+		colorPalette.add(btnClearCanvas);
+		
 		screenshotButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
-				Date today = Calendar.getInstance().getTime();
-				String fileAppend = df.format(today);
 
-				saveComponentAsPNG(fileAppend);
-				screenshotLabel.setText("Screenshot saved to project directory as PixelArt" + fileAppend + ".jpeg");
+				saveImageAsJPEG(topPanel);
+				screenshotLabel.setText("Screenshot saved");
 			}
 		});
 
@@ -304,23 +352,37 @@ public class PixelArtistGUI extends JFrame {
 	}
 
 	// Save screenshot of JPanel
-	public void saveComponentAsPNG(String fileAppend) {
-		int xSize = paModel.getWidth();
-		int ySize = paModel.getHeight();
-		BufferedImage image = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
-		for(int i = 0; i < xSize; i++){
-			for(int j = 0; j < ySize; j++){
-				image.setRGB(i, j, paModel.getPixelAt(i,j));
-			}
-		}
+	public void saveImageAsJPEG(JPanel panel) {
+		Dimension size = panel.getSize();
+		BufferedImage img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = img.createGraphics();
+		panel.paint(g2);
 
 		try {
-			File f = new File("PixelArt" + fileAppend + ".png");
-			ImageIO.write(image, "PNG", f);
-			//OutputStream out = new FileOutputStream("PixelArt" + fileAppend + ".jpeg");
-			//JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			//encoder.encode(myImage);
-			//out.close();
+			JFileChooser fc = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				     "PNG file (*.png)", "png");
+			fc.setFileFilter(filter);
+			int returnVal = fc.showSaveDialog(PixelArtistGUI.this);
+			
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				String filename = PADataModel.getFileName(fc.getSelectedFile().getAbsolutePath());
+				String extension = PADataModel.getFileExtension(fc.getSelectedFile().getAbsolutePath());
+				if(!extension.equals("png")){
+				
+					ImageIO.write(img, "PNG", new File(filename + ".png"));
+				    
+				}
+				else{
+					ImageIO.write(img, "PNG", fc.getSelectedFile());
+				}
+			
+				//OutputStream out = new FileOutputStream(fc.getSelectedFile().getAbsolutePath());
+//				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+//				encoder.encode(myImage);
+				//out.close();
+			}
+		
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -339,6 +401,14 @@ public class PixelArtistGUI extends JFrame {
 				setBackground(null);
 			}
 			return this;
+		}
+	}
+	
+	public void paintTable(){
+		for(int i = 0; i < paModel.getWidth(); i++){
+			for(int j = 0; j < paModel.getWidth(); j++){
+				table_1.setValueAt(new Color(paModel.getPixelAt(i, j)), i, j);
+			}
 		}
 	}
 	
@@ -379,6 +449,7 @@ public class PixelArtistGUI extends JFrame {
 		return null;
 		
 	}
+	
 
 	// Custom table model to make the cells selectable but not editable
 	public class PixelModel extends DefaultTableModel {
@@ -393,14 +464,4 @@ public class PixelArtistGUI extends JFrame {
 		}
 
 	}
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
 }
