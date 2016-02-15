@@ -14,7 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -23,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EventObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
@@ -41,6 +45,11 @@ import javax.swing.table.TableCellEditor;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import java.awt.Insets;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PixelArtistGUI extends JFrame {
 
@@ -60,30 +69,44 @@ public class PixelArtistGUI extends JFrame {
 			}
 		});
 	}
-
-	String colors[] = { "Red", "Orange", "Yellow", "Green", "Blue", "Magenta", "Pink", "Brown", "Black", "White" };
-	JComboBox colorList = new JComboBox(colors);
+	
+	public Color leftColor;
+	public Color rightColor;
+	
+	public static int DEFAULT_X = 16;
+	public static int DEFAULT_Y = 16;
+	
+	public PADataModel paModel;
+	
+	private String palette[][] = {{"black", "red", "orange", "yellow", "green"},
+						  {"white", "brown", "blue", "pink", "magenta"}
+						 };
+	
+	public JTable selectedColor;
+	public JTable colorOptions;
 
 	public PixelArtistGUI() {
 		setTitle("PixelArtist");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		this.setPreferredSize(new Dimension(400, 450));
+		this.setPreferredSize(new Dimension(400, 500));
 
+		//DataModel
+		paModel = new PADataModel(DEFAULT_X, DEFAULT_Y);
+		
+		//default colors
+		leftColor = parseColor("black");
+		rightColor = parseColor("white");
+		
 		// Content Pane
 		JPanel contentPane = new JPanel();
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 392 };
-		gbl_contentPane.rowHeights = new int[] { 370, 30 };
-		gbl_contentPane.columnWeights = new double[] { 0.0 };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0 };
+		gbl_contentPane.rowHeights = new int[] { 370, 30, 0 };
+		gbl_contentPane.columnWeights = new double[] { 1.0 };
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 1.0 };
 		contentPane.setLayout(gbl_contentPane);
-
-		String[] colHeadings = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
-		int numRows = 16;
-		PixelModel model = new PixelModel(numRows, colHeadings.length);
-		model.setColumnIdentifiers(colHeadings);
 
 		GridBagConstraints gbc_table_1 = new GridBagConstraints();
 		gbc_table_1.gridwidth = 3;
@@ -95,35 +118,60 @@ public class PixelArtistGUI extends JFrame {
 		topPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		topPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		GridBagConstraints gbc_topPanel = new GridBagConstraints();
+		gbc_topPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_topPanel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_topPanel.fill = GridBagConstraints.BOTH;
 		gbc_topPanel.gridx = 0;
 		gbc_topPanel.gridy = 0;
 		contentPane.add(topPanel, gbc_topPanel);
 		topPanel.setLayout(new GridLayout(0, 1, 0, 0));
+	
+		
+		
+		String[] colHeadings = { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+		int numRows = 16;
+		PixelModel model = new PixelModel(numRows, colHeadings.length);
+		model.setColumnIdentifiers(colHeadings);
+		
 		JTable table_1 = new JTable(model);
 		topPanel.add(table_1);
-		table_1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				TableCellEditor editor = table_1.getCellEditor();
-				if (editor != null) {
-					if (editor.stopCellEditing()) {
-						editor.cancelCellEditing();
-					}
-				}
-			}
-		});
+		
 		table_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		table_1.setRowSelectionAllowed(false);
 		table_1.setDefaultRenderer(Object.class, new CustomRenderer());
-		table_1.setDefaultEditor(Object.class, new CustomEditor());
+		//table_1.setDefaultEditor(Object.class, new CustomEditor());
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table_1.setCellSelectionEnabled(true);
 		table_1.setRowHeight(23);
+		table_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+		
+				boolean leftClick = SwingUtilities.isLeftMouseButton(e); 
+				boolean rightClick = SwingUtilities.isRightMouseButton(e);
+				
+				JTable table = (JTable)e.getSource();
+				int row = table.rowAtPoint( e.getPoint() );
+	            int column = table.columnAtPoint( e.getPoint() );
+	            
+	            //default s val
+	            Color c = leftColor;
+	            if(rightClick){
+	            	c = rightColor;
+	            }	         
+	            	
+            	paModel.changePixel(row, column, c.getRGB());
+            	table.setValueAt(c, row, column);
+					
+
+
+				
+			}
+		});
 
 		JPanel menuPanel = new JPanel();
 		GridBagConstraints gbc_menuPanel = new GridBagConstraints();
+		gbc_menuPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_menuPanel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_menuPanel.gridx = 0;
 		gbc_menuPanel.gridy = 1;
@@ -134,26 +182,24 @@ public class PixelArtistGUI extends JFrame {
 		gbl_menuPanel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
 		gbl_menuPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		menuPanel.setLayout(gbl_menuPanel);
-
-		JLabel colorSelect = new JLabel("Select Color:");
-		GridBagConstraints gbc_colorSelect = new GridBagConstraints();
-		gbc_colorSelect.fill = GridBagConstraints.BOTH;
-		gbc_colorSelect.gridx = 0;
-		gbc_colorSelect.gridy = 0;
-		menuPanel.add(colorSelect, gbc_colorSelect);
-		colorSelect.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		colorSelect.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_colorList = new GridBagConstraints();
-		gbc_colorList.anchor = GridBagConstraints.NORTH;
-		gbc_colorList.fill = GridBagConstraints.BOTH;
-		gbc_colorList.gridx = 1;
-		gbc_colorList.gridy = 0;
-		menuPanel.add(colorList, gbc_colorList);
+		
+		JButton btnLoadImage = new JButton("Load Image");
+		btnLoadImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paModel.loadPAImage();
+			}
+		});
+		GridBagConstraints gbc_btnLoadImage = new GridBagConstraints();
+		gbc_btnLoadImage.insets = new Insets(0, 0, 5, 5);
+		gbc_btnLoadImage.gridx = 0;
+		gbc_btnLoadImage.gridy = 0;
+		menuPanel.add(btnLoadImage, gbc_btnLoadImage);
 
 		// Screenshot button
 
 		JButton screenshotButton = new JButton("Save Screenshot");
 		GridBagConstraints gbc_screenshotButton = new GridBagConstraints();
+		gbc_screenshotButton.insets = new Insets(0, 0, 5, 0);
 		gbc_screenshotButton.fill = GridBagConstraints.BOTH;
 		gbc_screenshotButton.gridx = 2;
 		gbc_screenshotButton.gridy = 0;
@@ -168,13 +214,88 @@ public class PixelArtistGUI extends JFrame {
 		gbc_screenshotLabel.gridx = 0;
 		gbc_screenshotLabel.gridy = 1;
 		menuPanel.add(screenshotLabel, gbc_screenshotLabel);
+		
+		JPanel colorPalette = new JPanel();
+		colorPalette.setLayout(null);
+		GridBagConstraints gbc_colorPalette = new GridBagConstraints();
+		gbc_colorPalette.fill = GridBagConstraints.BOTH;
+		gbc_colorPalette.gridx = 0;
+		gbc_colorPalette.gridy = 2;
+		contentPane.add(colorPalette, gbc_colorPalette);
+		
+		
+		
+		String[] colHeadings2 = { "" };
+		int numRows2 = 2;
+		PixelModel selectedModel = new PixelModel(numRows2, colHeadings2.length);
+		selectedModel.setColumnIdentifiers(colHeadings2);
+		
+		selectedColor = new JTable();
+		selectedColor.setRowSelectionAllowed(false);
+		selectedColor.setBorder(new LineBorder(new Color(0, 0, 0)));
+		selectedColor.setBounds(28, 11, 23, 46);
+		selectedColor.setModel(selectedModel);
+		selectedColor.setDefaultRenderer(Object.class, new CustomRenderer());
+		selectedColor.setRowHeight(23);
+
+		//color the selected
+		colorPalette.add(selectedColor);
+		
+		
+		String[] colHeadings3 = new String[palette[0].length];
+		int numRows3 = palette.length;
+		PixelModel paletteModel = new PixelModel(numRows3, colHeadings3.length);
+		paletteModel.setColumnIdentifiers(colHeadings3);
+		
+		colorOptions = new JTable();
+		colorOptions.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				boolean leftClick = SwingUtilities.isLeftMouseButton(e); 
+				boolean rightClick = SwingUtilities.isRightMouseButton(e);
+				
+				JTable table = (JTable)e.getSource();
+				int row = table.rowAtPoint( e.getPoint() );
+	            int column = table.columnAtPoint( e.getPoint() );
+	            
+	            Color c = null;
+	            if(leftClick){
+	            	leftColor = parseColor(palette[row][column]);
+	            	c = leftColor;
+	            }
+	            else if(rightClick){
+	            	
+	            	rightColor = parseColor(palette[row][column]);
+	            	c = rightColor;
+	            }
+	            	          
+            	int pos = leftClick ? 0 : 1;
+            	//set the correct color for the selected color table
+	            selectedColor.setValueAt(c, pos, 0); 
+	            
+	          
+			}
+		});
+		colorOptions.setRowSelectionAllowed(false);
+		colorOptions.setBorder(new LineBorder(new Color(0, 0, 0)));
+		colorOptions.setBounds(87, 11, 115, 46);
+		colorOptions.setModel(paletteModel);
+		colorOptions.setRowHeight(23);
+		colorOptions.setDefaultRenderer(Object.class, new CustomRenderer());
+		//color the palette
+		
+		paintSelected();
+		paintPalette();
+		
+		colorPalette.add(colorOptions);
+		
 		screenshotButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
 				Date today = Calendar.getInstance().getTime();
 				String fileAppend = df.format(today);
 
-				saveComponentAsJPEG(topPanel, fileAppend);
+				saveComponentAsPNG(fileAppend);
 				screenshotLabel.setText("Screenshot saved to project directory as PixelArt" + fileAppend + ".jpeg");
 			}
 		});
@@ -183,17 +304,23 @@ public class PixelArtistGUI extends JFrame {
 	}
 
 	// Save screenshot of JPanel
-	public void saveComponentAsJPEG(JPanel panel, String fileAppend) {
-		Dimension size = panel.getSize();
-		BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = myImage.createGraphics();
-		panel.paint(g2);
+	public void saveComponentAsPNG(String fileAppend) {
+		int xSize = paModel.getWidth();
+		int ySize = paModel.getHeight();
+		BufferedImage image = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
+		for(int i = 0; i < xSize; i++){
+			for(int j = 0; j < ySize; j++){
+				image.setRGB(i, j, paModel.getPixelAt(i,j));
+			}
+		}
 
 		try {
-			OutputStream out = new FileOutputStream("PixelArt" + fileAppend + ".jpeg");
-			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-			encoder.encode(myImage);
-			out.close();
+			File f = new File("PixelArt" + fileAppend + ".png");
+			ImageIO.write(image, "PNG", f);
+			//OutputStream out = new FileOutputStream("PixelArt" + fileAppend + ".jpeg");
+			//JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+			//encoder.encode(myImage);
+			//out.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -214,45 +341,43 @@ public class PixelArtistGUI extends JFrame {
 			return this;
 		}
 	}
-
-	// Gets selected color
-	public class CustomEditor extends AbstractCellEditor implements TableCellEditor {
-
-		private JPanel panel;
-
-		public CustomEditor() {
-			this.panel = new JPanel();
-		}
-
-		@Override
-		public Color getCellEditorValue() {
-			Color c = null;
-			try {
-				String cString = colorList.getSelectedItem().toString().toLowerCase();
-				if (cString.equals("brown")){
-					c = new Color(102, 51, 0);}
-				else {
-					Field field = Class.forName("java.awt.Color").getField(cString);
-					c = (Color) field.get(null);
-				}
-			} catch (Exception e) {
-				c = null;
+	
+	public void paintPalette(){
+		for(int i = 0; i < palette.length; i++){
+			for(int j = 0; j < palette[0].length; j++){
+				colorOptions.setValueAt(parseColor(palette[i][j]), i, j);
 			}
-			return c;
 		}
+	}
+	
+	public void paintSelected(){
+		selectedColor.setValueAt(leftColor, 0, 0);
+		selectedColor.setValueAt(rightColor, 1, 0);
+	}
+	
+	public Color parseColor(String cString){
+		try {
+        	Color c;
 
-		@Override
-		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-				int column) {
-			panel.setBackground((Color) getCellEditorValue());
-			return panel;
+        	if (cString.equals("brown")){
+				c = new Color(102, 51, 0);
+			}
+			else {
+				Field field;
+				
+				field = Class.forName("java.awt.Color").getField(cString);
+				
+				c = (Color) field.get(null);
+			}
+        	
+        	return c;
 		}
-
-		@Override
-		public boolean isCellEditable(EventObject e) {
-			return true;
+		catch(Exception e){
+			
 		}
-
+		
+		return null;
+		
 	}
 
 	// Custom table model to make the cells selectable but not editable
@@ -264,8 +389,18 @@ public class PixelArtistGUI extends JFrame {
 
 		@Override
 		public boolean isCellEditable(int row, int column) {
-			return true;
+			return false;
 		}
 
 	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
 }
