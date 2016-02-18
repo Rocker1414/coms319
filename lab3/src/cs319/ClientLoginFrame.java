@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.Color;
@@ -49,6 +51,30 @@ public class ClientLoginFrame extends JFrame {
 		UsernameField.setBounds(63, 112, 150, 28);
 		contentPane.add(UsernameField);
 		UsernameField.setColumns(10);
+		
+		DocumentListener nameUpdate = new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				Client.name = UsernameField.getText();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				changedUpdate(e);
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				changedUpdate(e);
+				
+			}
+				
+				
+		};
+		UsernameField.getDocument().addDocumentListener(nameUpdate);
 
 		JButton LoginButton = new JButton("Login");
 		LoginButton.addMouseListener(new MouseAdapter() {

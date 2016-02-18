@@ -54,7 +54,7 @@ class ClientHandleThread implements Runnable {
 		
 		//when this is created, get name from client
 		
-		Server.chatLog += clientName + " connected."+ "\n";
+		
 	}
 
 	@Override
@@ -62,9 +62,18 @@ class ClientHandleThread implements Runnable {
 		//printSocketInfo(s);
 		Scanner in;
 		
-		
+
 		try {
 			in = new Scanner(s.getInputStream());
+			
+			//first we want to get name
+			//will be first thing sent
+			while(!in.hasNextLine()){}
+			clientName = in.nextLine();
+			
+
+			Thread con = new Thread(new ClientBroadcastThread(clientName + " connected."));
+			con.start();
 			// Always be listening
 			while(true){
 				
@@ -73,9 +82,9 @@ class ClientHandleThread implements Runnable {
 				while(!in.hasNextLine()){}
 				
 				String clientMessage = in.nextLine();
-				clientMessage = clientName + ": " + clientMessage; 
+				clientMessage = clientName + ":> " + clientMessage; 
 				
-				Server.chatLog += clientMessage + "\n";
+
 				
 				//start new thread to update client chat logs
 				Thread output = new Thread(new ClientBroadcastThread(clientMessage));
@@ -140,5 +149,7 @@ class ClientBroadcastThread implements Runnable {
 	}
 	
 }
+
+
 
 

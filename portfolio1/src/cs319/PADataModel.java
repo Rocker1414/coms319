@@ -69,7 +69,7 @@ public class PADataModel {
 	
 	private void loadPAImage(String filename){
 		String extension = getFileExtension(filename);
-		if(!extension.equals("pa")){
+		if(!extension.equals("pxla")){
 			return;
 		}
 		try {
@@ -166,7 +166,7 @@ public class PADataModel {
 
 			//size = 4(x size) + 4(ysize) + 4*xsize*ysize (all of the pixels)
 			int size = 4 + 4 + 4*xSize*ySize;
-			FileOutputStream fo = new FileOutputStream(filename + ".pa", false);
+			FileOutputStream fo = new FileOutputStream(filename + ".pxla", false);
 			ByteBuffer bb = ByteBuffer.allocate(size);
 			bb.order(ByteOrder.BIG_ENDIAN);
 			

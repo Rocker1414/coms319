@@ -191,7 +191,7 @@ public class PixelArtistGUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					     "PixelArtist file (*.pa)", "pa");
+					     "PixelArtist file (*.pxla)", "pxla");
 				fc.setFileFilter(filter);
 				int returnVal = fc.showSaveDialog(PixelArtistGUI.this);
 				
@@ -218,7 +218,7 @@ public class PixelArtistGUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					     "PixelArtist files (*.pa)", "pa");
+					     "PixelArtist files (*.pxla)", "pxla");
 				fc.setFileFilter(filter);
 				int returnVal = fc.showOpenDialog(PixelArtistGUI.this);
 				

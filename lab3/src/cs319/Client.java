@@ -16,6 +16,7 @@ public class Client {
 	public static Scanner serverIn;
 	public static PrintWriter serverOut;
 	public static JTextArea chatLog;
+	public static String name;
 
 	public static void main(String[] args){
 

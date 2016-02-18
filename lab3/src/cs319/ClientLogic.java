@@ -26,9 +26,15 @@ class ClientConnectionThread implements Runnable {
 			Client.serverIn = new Scanner(clientSocket.getInputStream());
 			Client.serverOut = new PrintWriter(clientSocket.getOutputStream(), true);
 			
+			//send name
+			Thread sendName = new Thread(new SendMessageThread(Client.name));
+			sendName.start();
+
+			//start listening
 			Thread listen = new Thread(new ClientListenThread(Client.chatLog));
 			listen.start();
-
+			
+			
 		}
 		catch(Exception e){
 			System.out.println("Could not find a FastChat server on port " + port + ". Exiting.");
