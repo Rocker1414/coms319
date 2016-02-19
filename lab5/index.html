@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<link href="styles.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="calculator.js"></script>
+	<script type="text/javascript">
+		var c = new Calculator();
+	</script>
+</head/>
+
+<body>
+	
+	<form name="calcform">
+		<div name="calculator" id="calculator">
+			<div id="output">
+				<textarea id="output-text" readonly>
+				
+				</textarea>
+				<br>
+				<input type = "button" class="e_wide_button" value="CLEAR OUTPUT" onclick="c.clearOutput()"/>
+			</div>
+			<div name="input" id="input">
+				<textArea id="input-text" readonly></textArea>
+			</div>
+			<div id="left">
+				<input type = "button" class="norm_button" value="<---"/>
+				<input type = "button" class="wide_button" value="CLEAR" onclick="c.clearInput();"/>
+				<input type = "button" class="norm_button" value="+ / -"/>
+				<br>
+				<input type = "button" class="norm_button" value="7" onclick="c.inputValue(7);"/>
+				<input type = "button" class="norm_button" value="8" onclick="c.inputValue(8);"/>
+				<input type = "button" class="norm_button" value="9" onclick="c.inputValue(9);"/>
+				<input type = "button" class="norm_button" value="/"/>
+				<br>
+				<input type = "button" class="norm_button" value="4" onclick="c.inputValue(4);"/>
+				<input type = "button" class="norm_button" value="5" onclick="c.inputValue(5);"/>
+				<input type = "button" class="norm_button" value="6" onclick="c.inputValue(6);"/>
+				<input type = "button" class="norm_button" value="*"/>
+				<br>
+				<input type = "button" class="norm_button" value="1" onclick="c.inputValue(1);" />
+				<input type = "button" class="norm_button" value="2" onclick="c.inputValue(2);" />
+				<input type = "button" class="norm_button" value="3" onclick="c.inputValue(3);" />
+				<input type = "button" class="norm_button" value="-"/>
+				<br>
+				<input type = "button" class="wide_button" value="0" onclick="c.inputValue(0);"/>
+				<input type = "button" class="norm_button" value="."/>
+				<input type = "button" class="norm_button" value="+"/>
+			</div>
+			<div id="right">
+				<input type = "button" class="norm_button" value="^"/>
+				<br>
+				<input type = "button" class="norm_button" value="("/>
+				<br>
+				<input type = "button" class="norm_button" value=")"/>
+				<br>
+				<input type = "button" class="tall_button" value="=" onclick="c.compute();"/>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript">
+	
+	</script>
+</body>
+
+</html>
