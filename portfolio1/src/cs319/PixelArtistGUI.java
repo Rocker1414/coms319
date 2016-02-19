@@ -406,7 +406,7 @@ public class PixelArtistGUI extends JFrame {
 	
 	public void paintTable(){
 		for(int i = 0; i < paModel.getWidth(); i++){
-			for(int j = 0; j < paModel.getWidth(); j++){
+			for(int j = 0; j < paModel.getHeight(); j++){
 				table_1.setValueAt(new Color(paModel.getPixelAt(i, j)), i, j);
 			}
 		}
