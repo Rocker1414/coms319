@@ -186,7 +186,7 @@ public class PixelArtistGUI extends JFrame {
 		gbl_menuPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		menuPanel.setLayout(gbl_menuPanel);
 		
-		JButton paSave = new JButton("Save PA file");
+		JButton paSave = new JButton("Save PXLA file");
 		paSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
@@ -208,7 +208,7 @@ public class PixelArtistGUI extends JFrame {
 		gbc_paSave.gridy = 0;
 		menuPanel.add(paSave, gbc_paSave);
 		
-		JButton paLoad = new JButton("Load PA File");
+		JButton paLoad = new JButton("Load PXLA File");
 		GridBagConstraints gbc_paLoad = new GridBagConstraints();
 		gbc_paLoad.insets = new Insets(0, 0, 5, 5);
 		gbc_paLoad.gridx = 1;
