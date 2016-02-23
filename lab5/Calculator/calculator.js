@@ -4,14 +4,13 @@
 // ComS 319 - Group 14
  
 var Calc = {
-	var mem = 0;
-	var current = 0;	
-	var op;
+
+
 //-------------------------------------------------------------------------------------Run----------------------------------------------------------------------------------
 																																													
 	run : function() { 
 		Calc.attachHandlers();
-		console.log(Calc.display());
+		//console.log(Calc.display());
 		return Calc.display();
 	},
 
@@ -35,9 +34,9 @@ var Calc = {
 		buttonMultiply : {id: "buttonMultiply", type: "button", value: "*", onclick:""},
 		
 		button0 : {id: "button0", type: "button", value: 0, onclick:""},
-		buttonPoint : {id: "buttonPoint", type: "button", value: ".", onclick:""},
+		buttonDot : {id: "buttonDot", type: "button", value: ".", onclick:""},
 		buttonEquals : {id: "buttonEquals", type: "button", value: "=", onclick:""},
-		buttonDivide : {id: "buttonDivide", type: "button", value: "/", onclick},
+		buttonDivide : {id: "buttonDivide", type: "button", value: "/", onclick:""},
 		
 		buttonC : {id: "buttonC", type: "button", value: "C", onclick:""},
 		buttonMR : {id: "buttonMR", type: "button", value: "MR", onclick:""},
@@ -66,7 +65,7 @@ var Calc = {
 		s += Calc.displayElement(Calc.View.buttonMultiply);
 		s += "<tr><td>";
 		s += Calc.displayElement(Calc.View.button0);
-		s += Calc.displayElement(Calc.View.buttonPoint);
+		s += Calc.displayElement(Calc.View.buttonDot);
 		s += Calc.displayElement(Calc.View.buttonEquals);
 		s += Calc.displayElement(Calc.View.buttonDivide);
 		s += "<tr><td>";
@@ -90,15 +89,28 @@ var Calc = {
 
 
 //--------------------------------------------------------------------------------Calculation-------------------------------------------------------------------------------
+		
+	Model : {
+		current: 0,
+		mem: 0,
+		op: 0
+	},
 	
-		digitInput : function(digit){
-			
-			if(current.indexOf(".") == -1)
-				current = digit;
-			else
-				current += digit;	
-			Calc.textRow.value = current;
-		},
+	digitInput : function(digit){	
+		var cur = Calc.Model.current.toString();
+		
+		if(cur.indexOf(".") == -1){
+			Calc.Model.current = digit;
+			console.log("no . found");
+		}
+		else
+			Calc.Model.current += digit;	
+			document.getElementById("textRow").value += Calc.Model.current;
+	},
+	
+	dotInput : function(){
+		Calc.Model.current += ".";
+	}
 	
 //------------------------------------------------------------------------------Button Handling-----------------------------------------------------------------------------
 
@@ -113,12 +125,12 @@ var Calc = {
 		Calc.View.button7.onclick = "Calc.button7Handler()"; 
 		Calc.View.button8.onclick = "Calc.button8Handler()"; 
 		Calc.View.button9.onclick = "Calc.button9Handler()"; 
-		Calc.View.buttonAdd.onclick = "Calc.buttonAddHandler()"; 
+		//Calc.View.buttonDot.onclick = "Calc.buttonDotHandler()";
+		/*Calc.View.buttonAdd.onclick = "Calc.buttonAddHandler()"; 
 		Calc.View.buttonSubtract.onclick = "Calc.buttonSubtractHandler()"; 
 		Calc.View.buttonMultiply.onclick = "Calc.buttonMultiplyHandler()"; 
 		Calc.View.buttonDivide.onclick = "Calc.buttonDivideHandler()"; 
-		Calc.View.buttonC.onclick = "Calc.buttonCHandler()"; 
-
+		Calc.View.buttonC.onclick = "Calc.buttonCHandler()"; */
 	},
 	
 	button0Handler : function() {
@@ -161,6 +173,11 @@ var Calc = {
 		Calc.digitInput(9);
 	},
 	
+	buttonDotHandler : function() {
+		Calc.dotInput();
+	}
+	
+	/*
 	buttonAddHandler : function() {
 		var text = document.getElementById("textRow").value+="+";
 	},
@@ -180,4 +197,5 @@ var Calc = {
 	buttonCHandler : function() {
 		var text = document.getElementById("textRow").value="";
 	}
+	*/
 } 
