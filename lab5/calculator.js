@@ -17,7 +17,6 @@ var Calc = {
 //------------------------------------------------------------------------------------Display-------------------------------------------------------------------------------
 
 	View : {
-		textRow : {id: "textRow", type: "text", value: "0", onclick:""},
 		button7 : {id: "button7", type: "button", value: 7, onclick:""},
 		button8 : {id: "button8", type: "button", value: 8, onclick:""},
 		button9 : {id: "button9", type: "button", value: 9, onclick:""},
@@ -48,7 +47,7 @@ var Calc = {
 	display : function() {
 		var s;
 		s = "<table id=\"myTable\" border=2>"
-		s += "<tr><td>" + Calc.displayElement(Calc.View.textRow) + "</td></tr>";
+		s += "<tr><td><input id= \"textRow\" type=\"text\" value=\"0\" onclick=\"\" readonly=\"readonly\"></td></tr>";
 		s += "<tr><td>";
 		s += Calc.displayElement(Calc.View.button7);
 		s += Calc.displayElement(Calc.View.button8);
@@ -100,63 +99,65 @@ var Calc = {
 //--------------------------------------------------------------------------------Calculation-------------------------------------------------------------------------------
 		
 	Model : {
-		firstOperand : "",
-		secondOperand : "",
 		mem: 0,
+		lastOperand: "0",
 		op: "",
 	},
 	
 	digitInput : function(digit){	
 		var currentField = Calc.getField();
 		
-		if(Calc.Model.firstOperand == ""){
-			Calc.Model.firstOperand = digit;
+		if(currentField == "0"){
+			currentField = digit;
 		}
 		else{
-			Calc.Model.secondOperand = digit;
+			currentField += digit;
 		}
-		
-		if(currentField == "0"){ // Only 0 is displayed. Replace with the desired number.
-			currentField = digit;
-		}
-		else if(Calc.Model.op == ""){ // A number has already been inputted. Append.
-				currentField += digit;
-		}
-		else{ 
-			currentField = digit;
-		}
+		Calc.Model.lastOperand += digit;
 		Calc.updateField(currentField);
 	},
 	
 	dotInput : function(){
 		var currentField = Calc.getField();
 
-		if(currentField == "0"){
-			Calc.Model.current = "0.";
-			currentField = "0.";
+		if(Calc.Model.lastOperand == ""){
+			currentField += "0.";
 		}
-		else{
-			if(currentField.indexOf(".") == -1){
-				Calc.Model.current += ".";
-				currentField += ".";
-			};
-		};		
+		else if(Calc.Model.lastOperand.indexOf(".") == -1){
+			currentField += ".";
+		}
+		
 		Calc.updateField(currentField);
 	},
 	
-	operation : function(operator){
-			Calc.Model.firstOperand = Calc.getField();
-			Calc.Model.op = operator;
-			
-			if(Calc.Model.firstOperand != "" && Calc.Model.secondOperand != ""){
-				Calc.solve(false);
-			}
+	operation : function(op){
+		var currentField = Calc.getField();
+		
+		// Verify the last inputted digit is a number
+		var lastDigit = currentField.substr(currentField.length - 1);
+		switch(lastDigit){
+			case "+":
+				break;
+			case "-":
+				break;
+			case "*":
+				break;
+			case "/":
+				break;
+			default:
+				Calc.Model.op = op;
+				currentField += " " + op + " ";
+				Calc.Model.lastOperand = "";
+				Calc.updateField(currentField);
+				break;
+		}
 	},
 	
 	clear : function(){
+		Calc.Model.lastOperand = "0";
+		Calc.Model.clearNext = false;
+		Calc.Model.op = "";
 		Calc.updateField("0");
-		Calc.Model.firstOperand = "";
-		Calc.op = "";
 	},
 	
 	memView : function(){
@@ -168,48 +169,37 @@ var Calc = {
 	},
 	
 	memMPlus : function(){
-		var newVal = +Calc.Model.mem + +Calc.getField();
+		var newVal = Calc.Model.mem + eval(Calc.getField());
 		Calc.Model.mem = newVal.toString();
 	},
 	
 	memMMinus : function(){
-		var newVal = +Calc.Model.mem - +Calc.getField();
+		var newVal = +alc.Model.mem - eval(Calc.getField());
 		Calc.Model.mem = newVal.toString();
 	},
 	
 	solve : function(equalsPressed){
-		var ans = 0;
-		console.log("Solve called");
-		console.log("First Operand: " + Calc.Model.firstOperand);
-		console.log("Second Operand: " +Calc.Model.secondOperand);
-		switch(Calc.Model.op){
-			case "+" :
-				ans = +Calc.Model.firstOperand + +Calc.Model.secondOperand;
-				break;
-			case "-" :
-				ans = +Calc.Model.firstOperand + +Calc.Model.secondOperand;
-				break;
-			case "*" :
-				ans = +Calc.Model.firstOperand + +Calc.Model.secondOperand;
-				bre
-			case "/" :
-				ans = +Calc.Model.firstOperand + +Calc.Model.secondOperand;
-				break;
-		}
 		
-		console.log("Answer: " +Calc.Model.secondOperand);
+		var currentField = Calc.getField();
+		
+		// Operators present
+		if(currentField.indexOf("+") > -1 || currentField.indexOf("-") > -1 || currentField.indexOf("*") > -1 || currentField.indexOf("/") > -1){
 
-		Calc.Model.firstOperand = ans;
-		
-		if(equalsPressed){
-				Calc.updateField(ans.toString());
+			// Check for lone negative number : repeat last op
+			if(currentField.charAt(0) == "-"){
+				var ans = eval(currentField + Calc.Model.op + Calc.Model.lastOperand);
+			}
+			// Evaluate
+			else{
+				var ans = eval(currentField);
+			}
 		}
+		// No operators present
 		else{
-			Calc.Model.secondOperand = 0;
-			Calc.op = "";
+			// Repeat last op
+			var ans = eval(currentField + Calc.Model.op + Calc.Model.lastOperand);
 		}
-		
-		
+		Calc.updateField(ans);
 	},
 	
 //------------------------------------------------------------------------------Button Handling-----------------------------------------------------------------------------
