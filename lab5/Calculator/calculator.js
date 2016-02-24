@@ -17,7 +17,7 @@ var Calc = {
 //------------------------------------------------------------------------------------Display-------------------------------------------------------------------------------
 
 	View : {
-		textRow : {id: "textRow", type: "text", value: "", onclick:""},
+		textRow : {id: "textRow", type: "text", value: "0", onclick:""},
 		button7 : {id: "button7", type: "button", value: 7, onclick:""},
 		button8 : {id: "button8", type: "button", value: 8, onclick:""},
 		button9 : {id: "button9", type: "button", value: 9, onclick:""},
@@ -39,6 +39,7 @@ var Calc = {
 		buttonDivide : {id: "buttonDivide", type: "button", value: "/", onclick:""},
 		
 		buttonC : {id: "buttonC", type: "button", value: "C", onclick:""},
+		buttonMC : {id: "buttonMC", type: "button", value: "MC", onclick:""},
 		buttonMR : {id: "buttonMR", type: "button", value: "MR", onclick:""},
 		buttonMMinus : {id: "buttonMMinus", type: "button", value: "M-", onclick:""},
 		buttonMPlus : {id: "buttonMPlus", type: "button", value: "M+", onclick:""}
@@ -70,6 +71,7 @@ var Calc = {
 		s += Calc.displayElement(Calc.View.buttonDivide);
 		s += "<tr><td>";
 		s += Calc.displayElement(Calc.View.buttonC);
+		s += Calc.displayElement(Calc.View.buttonMC);
 		s += Calc.displayElement(Calc.View.buttonMR);
 		s += Calc.displayElement(Calc.View.buttonMMinus);
 		s += Calc.displayElement(Calc.View.buttonMPlus);
@@ -87,30 +89,111 @@ var Calc = {
 		return s;
 	},
 
-
+	updateField : function(t){
+		document.getElementById("textRow").value = "";
+		document.getElementById("textRow").value = t;
+	},
+	
+	getField : function(){
+		return document.getElementById("textRow").value;
+	},
 //--------------------------------------------------------------------------------Calculation-------------------------------------------------------------------------------
 		
 	Model : {
-		current: 0,
+		current : "",
 		mem: 0,
-		op: 0
+		op: "",
 	},
 	
 	digitInput : function(digit){	
-		var cur = Calc.Model.current.toString();
-		
-		if(cur.indexOf(".") == -1){
-			Calc.Model.current = digit;
-			console.log("no . found");
+		Calc.Model.current += digit;	
+		Calc.updateField(Calc.Model.current);
+		if(Calc.Model.op == ""){}
+		else{
+			console.log("need to calculate");
 		}
-		else
-			Calc.Model.current += digit;	
-			document.getElementById("textRow").value += Calc.Model.current;
 	},
 	
 	dotInput : function(){
-		Calc.Model.current += ".";
-	}
+		if(Calc.Model.current.length == 0)
+			Calc.Model.current = "0.";
+		else{
+			if(Calc.Model.current.indexOf(".") == -1){
+				Calc.Model.current += ".";
+			};
+		};		
+		Calc.updateField(Calc.Model.current);
+	},
+	
+	operation : function(operator){
+			Calc.Model.firstOperand = Calc.Model.current;
+			Calc.Model.current = "";
+			op = operator;
+			Calc.updateField(op);
+	},
+	
+	clear : function(){
+		Calc.Model.current = "";
+		Calc.updateField("0");
+	},
+	
+	memView : function(){
+		Calc.Model.current = "";
+		Calc.updateField(Calc.Model.mem);
+	},
+	
+	memClear: function(){
+		Calc.Model.mem = 0;
+	},
+	
+	memMPlus : function(){
+		Calc.Model.current = "";
+		var newVal = +Calc.Model.mem + +Calc.getField();
+		Calc.Model.mem = newVal.toString();
+	},
+	
+	memMMinus : function(){
+		Calc.Model.current = "";
+		var newVal = +Calc.Model.mem - +Calc.getField();
+		Calc.Model.mem = newVal.toString();
+	},
+	
+	solve : function(){
+		switch(op){
+			case "+" :
+				var ans = eval(Calc.Model.current) + eval(Calc.Model.firstOperand)
+				Calc.updateField(ans);
+				Calc.Model.current = ans;
+				Calc.Model.op = "";
+				Calc.Model.mem = 0;
+				Calc.Model.firstOperand = "";
+				break;
+			case "-" :
+				var ans = eval(Calc.Model.firstOperand) - eval(Calc.Model.current)
+				Calc.updateField(ans);
+				Calc.Model.current = ans;
+				Calc.Model.op = "";
+				Calc.Model.mem = 0;
+				Calc.Model.firstOperand = "";
+				break;
+			case "*" :
+				var ans = eval(Calc.Model.current) * eval(Calc.Model.firstOperand)
+				Calc.updateField(ans);
+				Calc.Model.current = ans;
+				Calc.Model.op = "";
+				Calc.Model.mem = 0;
+				Calc.Model.firstOperand = "";
+				break;
+			case "/" :
+				var ans = eval(Calc.Model.firstOperand) / eval(Calc.Model.current)
+				Calc.updateField(ans);
+				Calc.Model.current = ans;
+				Calc.Model.op = "";
+				Calc.Model.mem = 0;
+				Calc.Model.firstOperand = "";
+				break;
+		}
+	},
 	
 //------------------------------------------------------------------------------Button Handling-----------------------------------------------------------------------------
 
@@ -125,12 +208,17 @@ var Calc = {
 		Calc.View.button7.onclick = "Calc.button7Handler()"; 
 		Calc.View.button8.onclick = "Calc.button8Handler()"; 
 		Calc.View.button9.onclick = "Calc.button9Handler()"; 
-		//Calc.View.buttonDot.onclick = "Calc.buttonDotHandler()";
-		/*Calc.View.buttonAdd.onclick = "Calc.buttonAddHandler()"; 
+		Calc.View.buttonDot.onclick = "Calc.buttonDotHandler()";
+		Calc.View.buttonEquals.onclick = "Calc.buttonEqualsHandler()";
+		Calc.View.buttonC.onclick = "Calc.buttonCHandler()";
+		Calc.View.buttonMC.onclick = "Calc.buttonMCHandler()";
+		Calc.View.buttonMR.onclick = "Calc.buttonMRHandler()";
+		Calc.View.buttonMPlus.onclick = "Calc.buttonMPlusHandler()";
+		Calc.View.buttonMMinus.onclick = "Calc.buttonMMinusHandler()";
+		Calc.View.buttonAdd.onclick = "Calc.buttonAddHandler()"; 
 		Calc.View.buttonSubtract.onclick = "Calc.buttonSubtractHandler()"; 
 		Calc.View.buttonMultiply.onclick = "Calc.buttonMultiplyHandler()"; 
 		Calc.View.buttonDivide.onclick = "Calc.buttonDivideHandler()"; 
-		Calc.View.buttonC.onclick = "Calc.buttonCHandler()"; */
 	},
 	
 	button0Handler : function() {
@@ -175,27 +263,45 @@ var Calc = {
 	
 	buttonDotHandler : function() {
 		Calc.dotInput();
-	}
-	
-	/*
-	buttonAddHandler : function() {
-		var text = document.getElementById("textRow").value+="+";
 	},
 	
-	buttonSubtractHandler : function() {
-		var text = document.getElementById("textRow").value+="-";
-	},
-	
-	buttonMultiplyHandler : function() {
-		var text = document.getElementById("textRow").value+="*";
-	},
-	
-	buttonDivideHandler : function() {
-		var text = document.getElementById("textRow").value+="/";
+	buttonEqualsHandler : function(){
+		Calc.solve();
 	},
 	
 	buttonCHandler : function() {
-		var text = document.getElementById("textRow").value="";
+		Calc.clear();
+	},
+	
+	buttonMRHandler : function() {
+		Calc.memView();
+	},
+	
+	buttonMCHandler : function() {
+		Calc.memClear();
+	},
+	
+	buttonMPlusHandler : function() {
+		Calc.memMPlus();
+	},
+	
+	buttonMMinusHandler : function(){
+		Calc.memMMinus();
+	},
+	
+	buttonAddHandler : function() {
+		Calc.operation("+");
+	},
+	
+	buttonSubtractHandler : function() {
+		Calc.operation("-");
+	},
+	
+	buttonMultiplyHandler : function() {
+		Calc.operation("*");
+	},
+	
+	buttonDivideHandler : function() {
+		Calc.operation("/");
 	}
-	*/
 } 
