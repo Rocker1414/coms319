@@ -52,14 +52,15 @@ function validate_form(){
 //make sure dashes are in right place
 function numberValidation(number){
 	//first check if no dashes and if right size
-	if(number.indexOf('-') != -1 && number.length == 10){
+	if(number.indexOf('-') == -1 && number.length == 10){
 		//if parseable, return 1
 		var intNum = parseInt(number);
-		if(intNum != NaN){
-			return 1;
+		console.log(intNum);
+		if(isNaN(intNum)){
+			return 0;
 		}
 		else{
-			return 0;
+			return 1;
 		}
 	}
 	else{
@@ -88,13 +89,15 @@ function numberValidation(number){
 		console.log(numNoDash);
 		
 		var intNum = parseInt(numNoDash);
-		console.log(intNum);
-		if(intNum == NaN){
-			console.log("Not number");
+
+		if(isNaN(intNum)){
+		console.log("Not number");
 			return 0;
 		}
 		
 		return 1;
+		
+		
 		
 	}
 	
