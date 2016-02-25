@@ -1,0 +1,82 @@
+body {
+ 	fontfamily: "Palatino", monospace;
+ 	fontsize: 24px;
+ 	backgroundcolor:#acb4b0;)	
+ }
+ 
+input[type="text"]{
+     backgroundcolor: #a6bab0; /* Green */
+     border: 1px solid white;
+     color: white;
+     padding: 15px 32px;
+     textalign: right;
+     textdecoration: none;
+     display: inlineblock;
+     fontsize: 16px;
+ 	width: 100%;
+ }
+ 
+input[type="button"]{
+     backgroundcolor: #88d8b0; /* Green */
+     border: 1px solid white;
+     color: white;
+     padding: 15px 32px;
+     textalign: center;
+     textdecoration: none;
+     display: inlineblock;
+     fontsize: 16px;
+ 	width: 25%;
+ }
+ 
+input[type="button"]:hover{
+     backgroundcolor: #69f7b0;
+ 
+ 
+ }
+ 
+ div {
+ 	textalign: center;
+ }
+ 
+ p {
+ 	color: #77837d;
+ }
+ 
+ table{
+     marginleft:auto; 
+     marginright:auto;
+ 	border: none;
+ 	bordercollapse: collapse;
+ 	align: center;
+ }
+ 
+ tr {
+ 	border: none;
+ }
+ 
+ td {
+     height: 50px;
+     verticalalign: center;
+ 	border: none;
+ }
+ 
+ input[id="buttonC"]{
+ 	
+ 	width: 20%;
+ }
+ 
+ input[id="buttonMC"]{
+ 	width: 20%;
+ }
+ 
+ input[id="buttonMR"]{
+ 	width: 20%;
+ }
+ 
+ input[id="buttonMMinus"]{
+ 	width: 20%;
+ }
+ 
+ input[id="buttonMPlus"]{
+ 	width: 20%;
+ } 

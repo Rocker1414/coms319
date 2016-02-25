@@ -170,12 +170,12 @@ var Calc = {
 	
 	memMPlus : function(){
 		var newVal = Calc.Model.mem + eval(Calc.getField());
-		Calc.Model.mem = newVal.toString();
+		Calc.Model.mem = newVal;
 	},
 	
 	memMMinus : function(){
 		var newVal = +alc.Model.mem - eval(Calc.getField());
-		Calc.Model.mem = newVal.toString();
+		Calc.Model.mem = newVal;
 	},
 	
 	solve : function(equalsPressed){
