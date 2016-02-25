@@ -184,24 +184,26 @@ var Calc = {
 		
 		var currentField = Calc.getField();
 		
-		// Operators present
-		if(currentField.indexOf("+") > -1 || currentField.indexOf("-") > -1 || currentField.indexOf("*") > -1 || currentField.indexOf("/") > -1){
-
-			// Check for lone negative number : repeat last op
-			if(currentField.charAt(0) == "-"){
-				var ans = eval(currentField + Calc.Model.op + Calc.Model.lastOperand);
-			}
+		// Make sure something has been done
+		if(Calc.Model.op != ""){
+			// Operators present
+			if(currentField.indexOf("+") > -1 || currentField.indexOf("-") > -1 || currentField.indexOf("*") > -1 || currentField.indexOf("/") > -1){
+				// Check for lone negative number : repeat last op
+				if(currentField.charAt(0) == "-"){
+					var ans = eval(currentField + Calc.Model.op + Calc.Model.lastOperand);
+				}
 			// Evaluate
-			else{
-				var ans = eval(currentField);
+				else{
+					var ans = eval(currentField);
+				}
 			}
-		}
-		// No operators present
-		else{
+			// No operators present
+			else{
 			// Repeat last op
 			var ans = eval(currentField + Calc.Model.op + Calc.Model.lastOperand);
-		}
+			}
 		Calc.updateField(ans);
+		}
 	},
 	
 //------------------------------------------------------------------------------Button Handling-----------------------------------------------------------------------------
