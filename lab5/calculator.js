@@ -144,6 +144,8 @@ var Calc = {
 				break;
 			case "/":
 				break;
+			case " ":
+				break;
 			default:
 				Calc.Model.op = op;
 				currentField += " " + op + " ";
