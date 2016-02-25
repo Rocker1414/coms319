@@ -176,7 +176,7 @@ var Calc = {
 	},
 	
 	memMMinus : function(){
-		var newVal = +alc.Model.mem - eval(Calc.getField());
+		var newVal = +Calc.Model.mem - eval(Calc.getField());
 		Calc.Model.mem = newVal;
 	},
 	
