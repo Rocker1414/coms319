@@ -1,7 +1,0 @@
-test2:> hi
-test1:> hello
-test2:> werfwefwefwefwefefewfqwefqwefwqefwef
-bruh connected.
-suh dude connected.
-suh dude:> ayyy
-bruh:> lmao
