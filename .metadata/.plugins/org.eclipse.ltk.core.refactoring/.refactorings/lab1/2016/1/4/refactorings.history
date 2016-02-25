@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move 3 elements to &apos;lab1/src/cs319&apos;&#x0D;&#x0A;- Original project: &apos;lab1&apos;&#x0D;&#x0A;- Destination element: &apos;lab1/src/cs319&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     HelloWorldSwing.java&#x0D;&#x0A;     HelloWorldSwing2.java&#x0D;&#x0A;     HelloWorldSwing3.java&#x0D;&#x0A;- Update references to refactored element" description="Move compilation units" destination="/src&lt;cs319" element1="/src&lt;{HelloWorldSwing.java" element2="/src&lt;{HelloWorldSwing2.java" element3="/src&lt;{HelloWorldSwing3.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1453496793035" units="3" version="1.0"/>
-</session>
