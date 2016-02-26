@@ -29,7 +29,7 @@ function moveCursor(){
 	newY += (direction == 270) ? 1 : 0; 	
 	
 	context.moveTo(newX, newY);
-	
+	context.strokeStyle="#FF0000";
 	context.lineTo(x, y);
 	context.closePath();
 	
