@@ -10,7 +10,6 @@ var Calc = {
 																																													
 	run : function() { 
 		Calc.attachHandlers();
-		//console.log(Calc.display());
 		return Calc.display();
 	},
 
@@ -119,7 +118,6 @@ var Calc = {
 	
 	dotInput : function(){
 		var currentField = Calc.getField();
-		console.log(Calc.Model.lastOperand);
 		
 		if(Calc.Model.lastOperand == ""){
 			Calc.Model.lastOperand += "0.";
