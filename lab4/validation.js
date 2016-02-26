@@ -33,11 +33,14 @@ function validate_form(){
 	//do phone parsing
 	var phone = document.getElementById("form").elements["phone"].value;
 	
-	var num_valid = numberValidation(phone);
-	
-	if(num_valid == 0){
+	if(phone.length != 0){
+		var num_valid = numberValidation(phone);
+		
+		if(num_valid == 0){
 		errs.push("Entered phone number not valid.");
+		}
 	}
+	
 
 	
 	if(errs.length == 0){
