@@ -119,11 +119,14 @@ var Calc = {
 	
 	dotInput : function(){
 		var currentField = Calc.getField();
-
+		console.log(Calc.Model.lastOperand);
+		
 		if(Calc.Model.lastOperand == ""){
+			Calc.Model.lastOperand += "0.";
 			currentField += "0.";
 		}
 		else if(Calc.Model.lastOperand.indexOf(".") == -1){
+			Calc.Model.lastOperand += ".";
 			currentField += ".";
 		}
 		
