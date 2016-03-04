@@ -4,33 +4,6 @@
 		<title> Books Library </title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="booksLibrary.js" type = "text/javascript"></script>
-		<script>
-			var library = new Library();
-			
-			var shelf1 = new Shelf("Shelf1");
-			library.addShelf(shelf1);
-			var shelf2 = new Shelf("Shelf2");
-			library.addShelf(shelf2);
-			
-			var book1 = new Book("Book1");
-			var book2 = new Book("Book2");
-			var book3 = new Book("Book3");
-			var book4 = new Book("Book4");
-			var book5 = new Book("Book5");
-			
-			shelf1.addBook(book1);
-			shelf1.addBook(book2);
-			shelf1.addBook(book3);
-			
-			shelf2.addBook(book4);
-			shelf2.addBook(book5);
-			
-			var shelf3 = new Shelf("Shelf3");
-			var book6 = new Book("Book1");
-			shelf3.addBook(book6);
-			library.addShelf(shelf3);
-			
-		</script>
 	</head>
 	
 	<body>
@@ -38,8 +11,10 @@
 		<button onclick="library.findBook()">Search for Book</button>
 		<br>
 		<br>
-		<button onclick="library.display()">Show Library</button>
+		<button onclick="library.listShelves()">List Shelves</button>
+		<button onclick="library.displayAll()">Show Library</button>
 		<button onclick="library.clearView()">Clear Results</button>
+
 		<div id="content">
 		
 		</div>
