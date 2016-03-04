@@ -23,12 +23,21 @@
 			shelf2.addBook(book4);
 			shelf2.addBook(book5);
 			
+			var shelf3 = new Shelf("Shelf3");
+			var book6 = new Book("Book1");
+			shelf3.addBook(book6);
+			library.addShelf(shelf3);
 			
 		</script>
 	</head>
 	
 	<body>
-		<button onclick="shelf1.display()">Show Library</button>
+		<input type="text" id="title"></input>
+		<button onclick="library.findBook()">Search for Book</button>
+		<br>
+		<br>
+		<button onclick="library.display()">Show Library</button>
+		<button onclick="library.clearView()">Clear Results</button>
 		<div id="content">
 		
 		</div>
