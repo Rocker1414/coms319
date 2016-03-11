@@ -28,7 +28,7 @@
 				 $("#buttonLogin").click(function () {
 					$.post("http://localhost/lab7/checkLogin.php", {name : document.getElementById("buttonUser").value, pass: document.getElementById("buttonPass").value}, 
 					function(data,status) {
-						if(JSON.parse(data) == "Successful Login"){
+						if(data == "\"Successful Login\""){
 							window.location.href = "viewPosts.php";
 						}
 						else{
