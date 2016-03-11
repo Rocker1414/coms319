@@ -5,16 +5,20 @@ include "header.php";
 error_reporting(E_ALL);
 ?>
 
+<button id="logout">Logout</button>
 <button id="makePost">Make Post</button>
-
+</div>
 <script> 
 			
 			$(document).ready(function () {		
 				 $("#newPost").hide();
 					
-
-				 $("#makePost").click(function () {
+				$("#makePost").click(function () {
 					$("#newPost").toggle();
+				});
+
+				 $("#logout").click(function () {
+					window.location.href = "login.html";
 				});
 				
 				$("#submitPost").click(function () {
