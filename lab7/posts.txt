@@ -1,1 +1,1 @@
-[{"title":"test1","author":"fred","date":"10\/10\/10","content":"Hello world!"}]
+[{"title":"test1","author":"billy5","date":"Fri Mar 11 2016","content":"erwrwerew"},{"title":"wqdqwdqw","author":"billy5","date":"Fri Mar 11 2016","content":"qwddwqqwd"},{"title":"wefwfeffwe","author":"billy5","date":"Fri Mar 11 2016","content":"reteytetrt"},{"title":"eertetyt","author":"billy5","date":"Fri Mar 11 2016","content":"erwerrewwerrwe"}]

@@ -6,7 +6,7 @@ header('Access-Control-Allow-Origin: *');
 	$n = $_REQUEST['name'];
 	$p = $_REQUEST['pass'];
 	
-	$file = fopen("http://localhost/lab7/users.txt", "r") or die("Unable to open file!");
+	$file = fopen("http://localhost/users.txt", "r") or die("Unable to open file!");
 	while(!feof($file)){
 		$line = trim(fgets($file));
 		$combo = explode(" ", $line);
@@ -16,6 +16,8 @@ header('Access-Control-Allow-Origin: *');
 
 		if($n === $combo[0] && $p === $combo[1]){	
 			echo json_encode("Successful Login");
+			session_start();
+			$_SESSION['name'] = $n;
 			break;
 		}	
 	}	
