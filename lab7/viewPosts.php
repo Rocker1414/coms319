@@ -2,6 +2,12 @@
 include "util.php";
 include "header.php";
 
+//if not logged in, redirect
+if(empty($_SESSION['name'])) {
+   header("Location: http://localhost/login.html");
+	exit();
+}
+
 error_reporting(E_ALL);
 ?>
 
@@ -18,7 +24,16 @@ error_reporting(E_ALL);
 				});
 
 				 $("#logout").click(function () {
-					window.location.href = "login.html";
+					 $.ajax({
+						url: '/logout.php',
+						type: 'POST',
+						data: { },
+						dataType: 'html',
+						success: function(){
+							window.location.href = "login.html";
+						}
+					});
+					
 				});
 				
 				$("#submitPost").click(function () {
@@ -45,11 +60,18 @@ error_reporting(E_ALL);
 				});
 				
 			});
+			
+			function update(title, content){
+				$("#newPost").show();
+				$("#title").val(title);	
+				$("#content").val(content);				
+				
+			};
 </script>
 
 <div id="newPost">
-Title: <input id="title" type="text" name="title"><br>
-Content: <textarea id ="content" ></textarea><br>
+<span class="label"> Title: </span><input id="title" type="text" name="title"><br>
+<span class="label">Content: </span><textarea id ="content" ></textarea><br>
 <input id ="submitPost" type="submit" value="Submit" />
 </div>
 

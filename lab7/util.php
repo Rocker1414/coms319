@@ -18,6 +18,8 @@ function getAllPosts($posts){
 		//title
 		$current = $current . "<h1>" . $posts[$i]["title"] . "</h1>";
 
+		//update link
+		$current = $current . "<a onclick='update(\"" . $posts[$i]["title"] . "\", \"" . $posts[$i]["content"] ."\")' href='#'>Update</a>";
 		//author
 		$current = $current . "<h3>Author: " . $posts[$i]["author"] . "</h3>";
 		//date
@@ -61,7 +63,8 @@ function outputPosts($posts){
 		$current = "<div class='post'>"	;
 		//title
 		$current = $current . "<h1>" . $posts[$i]["title"] . "</h1>";
-
+		//update link
+		$current = $current . "<a onclick='update(\"" . $posts[$i]["title"] . "\", \"" . $posts[$i]["content"] ."\")' href='#'>Update</a>";
 		//author
 		$current = $current . "<h3>Author: " . $posts[$i]["author"] . "</h3>";
 		//date
