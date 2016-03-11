@@ -6,7 +6,7 @@ header('Access-Control-Allow-Origin: *');
 	$n = $_REQUEST['name'];
 	$p = $_REQUEST['pass'];
 	
-	$file = fopen("http://localhost/lab08/users.txt", "r") or die("Unable to open file!");
+	$file = fopen("http://localhost/lab7/users.txt", "r") or die("Unable to open file!");
 	while(!feof($file)){
 		$line = trim(fgets($file));
 		$combo = explode(" ", $line);
