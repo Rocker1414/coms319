@@ -1,11 +1,42 @@
+<!--
+– use ajax call to /checkLogin.php file to check user/password 
+– on success go to viewPosts.php 
+– on failure, ask the user to correct the username and password 
+-->
 <!DOCTYPE HTML>
 <html>
 	<head>
 		<title>Post Application</title>
+		<script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="style.css">
 	</head>
 	
 	<body>
+		
+		<h1>Login</h1>
 
+		<div class = "center">
+		<input id = "buttonUser" type="text" name="Username" placeholder="Username"/> <br>
+		<input id = "buttonPass" type="password" name="Username" placeholder="Password"/> <br>
+		<input id = "buttonLogin" type="submit" id="Submit" />
+		<p id = "error"> <br> </p>
+		<img src="images/bonfire.png" height="420" width="300">
+
+		</div>
+		<script> 
+			$(document).ready(function () {		
+				 $("#buttonLogin").click(function () {
+					$.post("http://localhost/lab08/checkLogin.php", {name : document.getElementById("buttonUser").value, pass: document.getElementById("buttonPass").value}, 
+					function(data,status) {
+						if(JSON.parse(data) == "Successful Login"){
+							window.location.href = "viewPosts.php";
+						}
+						else{
+							$("#error").html("Invalid username and/or password.");
+						}	
+					});
+				});
+			});
+		</script>
 	</body>
-
 </html>
