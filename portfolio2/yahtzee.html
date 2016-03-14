@@ -14,11 +14,12 @@
 		<!-- whatever current instructions are -->
 
 		<!-- display dice -->
-		<canvas id="dice1" height="100" width="100" style="border:1px solid #000000;"></canvas>
-		<canvas id="dice2" height="100" width="100" style="border:1px solid #000000;"></canvas>
-		<canvas id="dice3" height="100" width="100" style="border:1px solid #000000;"></canvas>
-		<canvas id="dice4" height="100" width="100" style="border:1px solid #000000;"></canvas>
-		<canvas id="dice5" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}]" ></canvas>
+		<canvas id="dice2" ng-click="toggle(1)" height="100" width="100" ng-class="[{selected: die[1].locked}, {unselected: !die[1].locked}]"></canvas>
+		<canvas id="dice3" ng-click="toggle(2)" height="100" width="100" ng-class="[{selected: die[2].locked}, {unselected: !die[2].locked}]"></canvas>
+		<canvas id="dice4" ng-click="toggle(3)" height="100" width="100" ng-class="[{selected: die[3].locked}, {unselected: !die[3].locked}]"></canvas>
+		<canvas id="dice5" ng-click="toggle(4)" height="100" width="100" ng-class="[{selected: die[4].locked}, {unselected: !die[4].locked}]"></canvas>
+
 		<button ng-click="roll()">Roll</button>
 		<!-- scorecard -->
 		<br>

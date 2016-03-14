@@ -4,7 +4,25 @@ function Dice(id){
 	this.width = document.getElementById(id).width;
 	this.height = document.getElementById(id).height;
 	this.val = 0;
+	this.locked = false;
 	
+}
+
+Dice.prototype.toggle = function(){
+	if(this.locked){
+		this.locked = false;
+	}
+	else{
+		this.locked = true;
+	}
+}
+
+Dice.prototype.unlock = function(){
+	this.locked = false;
+}
+
+Dice.prototype.lock = function(){
+	this.locked = true;
 }
 
 Dice.prototype.gridify = function(){
