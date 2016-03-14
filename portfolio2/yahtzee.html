@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="yahtzee">
+	<head>
+		<title>Yahtzee!</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+		<script src="dice.js"></script>
+		<script src="util.js"></script>
+		<script src="yahtzee.js"></script>
+		
+	</head>
+
+	<body ng-controller="GameController">
+		<!-- whatever current instructions are -->
+
+		<!-- display dice -->
+		<canvas id="dice1" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<canvas id="dice2" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<canvas id="dice3" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<canvas id="dice4" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<canvas id="dice5" height="100" width="100" style="border:1px solid #000000;"></canvas>
+		<button ng-click="roll()">Roll</button>
+		<!-- scorecard -->
+		<br>
+		D1: {{die[0].val}}
+		<br>
+		D2: {{die[1].val}}
+		<br>
+		D3: {{die[2].val}}
+		<br>
+		D4: {{die[3].val}}
+		<br>
+		D5: {{die[4].val}}
+
+
+	<script type="text/javascript">
+
+	</script>
+	</body>
+</html>
