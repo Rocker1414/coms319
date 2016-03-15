@@ -23,15 +23,32 @@
 		<button ng-click="roll()">Roll</button>
 		<!-- scorecard -->
 		<br>
-		D1: {{die[0].val}}
+		One's: {{matchNumberScore(1)}}
 		<br>
-		D2: {{die[1].val}}
+		Two's: {{matchNumberScore(2)}}
 		<br>
-		D3: {{die[2].val}}
+		Three's: {{matchNumberScore(3)}}
 		<br>
-		D4: {{die[3].val}}
+		Four's: {{matchNumberScore(4)}}
 		<br>
-		D5: {{die[4].val}}
+		Five's: {{matchNumberScore(5)}}
+		<br>
+		Six's: {{matchNumberScore(6)}}
+		<br>
+		<br>
+		Three of a kind: {{ofAKind(3)}}
+		<br>
+		Four of a kind: {{ofAKind(4)}}
+		<br>
+		Full House: {{fullHouse()}}
+		<br>
+		Small Straight: {{smallStraight()}}
+		<br>
+		Large Straight: {{largeStraight()}}
+		<br>
+		Yahtzee: {{yahtzee()}}
+		<br>
+		Chance: {{chance()}}
 
 
 	<script type="text/javascript">

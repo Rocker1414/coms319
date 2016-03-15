@@ -1,5 +1,160 @@
 //these are utility functions
 
+function calculateNumCount(nums, target){
+	var total = 0;
+	for(var i = 0; i < nums.length; i++){
+		if(nums[i] == target){
+			total += target;
+		}
+	}
+
+	return total;
+}
+
+function diceTotal(nums){
+	var total = 0;
+	for(var i = 0; i < nums.length; i++){
+		total += nums[i];
+	}
+
+	return total;
+
+}
+
+
+function ofAKind(nums, target){
+	var sNums = nums.sort();
+	var count = 1;
+	var current = sNums[0];
+	for(var i = 1; i < sNums.length; i++){
+		if(sNums[i] == current){
+			count++;
+		}
+		else{
+			current = sNums[i];
+			count = 1;
+		}
+
+		if(count >= target){
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
+function fullHouse(nums){
+	var sNums = nums.sort();
+	//if [0] and [4] are equal then they are all same, return false
+	if(sNums[0] == sNums[4]){
+		return false;
+	}
+
+	var first = sNums[0];
+	var second;
+	//have to at least have next match
+	if(sNums[1] == first){
+
+		//case 2, 3
+		second = sNums[2];
+
+		if(sNums[3] == second && sNums[4] == second){
+
+			return true;
+		}
+
+
+		//case 3, 2
+		if(sNums[2] == first){
+			second = sNums[3];
+
+			if(sNums[4] == second){
+				return true;
+			}
+		}
+	}
+
+	return false;
+
+	
+}
+
+function smallStraight(nums){
+	var sNums = nums.sort();
+	var first = sNums[0];
+
+	if(sNums[1] != first+1){
+
+		var current;
+		for(var i = 1; i < sNums.length-1; i++){
+			current = sNums[i];
+
+			if(sNums[i+1] != current+1){
+				return false;
+			}
+			
+		}
+
+		return true;
+	}
+	else{
+
+		if(sNums[2] == sNums[1]+1 && sNums[3] == sNums[2]+1){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+	}
+	
+	
+
+
+}
+
+function largeStraight(nums){
+	var sNums = nums.sort();
+	//all must sequence
+	var current;
+	for(var i = 0; i < sNums.length-1; i++){
+		current = sNums[i];
+
+		if(sNums[i+1] != current+1){
+			return false;
+		}
+		
+	}
+
+	return true;
+
+}
+
+function yahtzee(nums){
+	//if all same
+	var target = nums[0];
+	if(target < 1 || target > 6){
+		return false;
+	}
+
+	var count = 1;
+	for(var i = 1; i < nums.length; i++){
+		if(nums[i] == target){
+			count++;
+		}
+	}
+
+	if(count == 5){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+	
+}
+
 function drawTopLeft(dice){
 	var x = (dice.width/3)/2;
 	var y = (dice.height/3)/2;
