@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html ng-app="yahtzee">
+	<head>
+		<title>Yahtzee!</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+		<script src="dice.js"></script>
+		<script src="util.js"></script>
+		<script src="yahtzee.js"></script>
+		
+	</head>
+
+	<body ng-controller="GameController">
+		<!-- whatever current instructions are -->
+
+		<!-- display dice -->
+		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}]" ></canvas>
+		<canvas id="dice2" ng-click="toggle(1)" height="100" width="100" ng-class="[{selected: die[1].locked}, {unselected: !die[1].locked}]"></canvas>
+		<canvas id="dice3" ng-click="toggle(2)" height="100" width="100" ng-class="[{selected: die[2].locked}, {unselected: !die[2].locked}]"></canvas>
+		<canvas id="dice4" ng-click="toggle(3)" height="100" width="100" ng-class="[{selected: die[3].locked}, {unselected: !die[3].locked}]"></canvas>
+		<canvas id="dice5" ng-click="toggle(4)" height="100" width="100" ng-class="[{selected: die[4].locked}, {unselected: !die[4].locked}]"></canvas>
+
+		<div id = "turnNumber"> Rolls Left This Turn: {{showRollsLeft()}} </div>
+		<button id = "rollButton" count = 30 ng-click="roll(count)" >Roll</button>		
+
+		<!-- scorecard -->
+		<form>
+			<table>
+				<tr>
+					<td> Yahtzee </td>
+				</tr>
+				<tr>
+					<td> Upper Section </td>
+					<td> How to Score</td>
+					<td> Select </td>
+					<td> Score This Roll </td>
+					<td> Score </td>
+				</tr>
+				<tr>
+					<td> Aces </td>
+					<td> Count and Add Only Aces </td>
+					<td> <button ng-click = score("aceScore")> Score Aces </td>
+					<td id = "aceScoreRoll">{{matchNumberScore(1)}}</td>
+					<td id = "aceScoreField" scored = false> 0</td>
+				</tr>
+				<tr>
+					<td> Twos </td>
+					<td> Count and Add Only Twos </td>
+					<td> <button ng-click = score("twoScore")> Score Twos </td>
+					<td id = "twoScoreRoll">  {{matchNumberScore(2)}}</td>
+					<td id = "twoScoreField" scored = false> 0</td>
+				</tr>
+				<tr>
+					<td> Threes </td>
+					<td> Count and Add Only Threes </td>
+					<td> <button ng-click = score("threeScore")> Score Threes </td>
+					<td id = "threeScoreRoll"> {{matchNumberScore(3)}}</td>
+					<td id = "threeScoreField" scored = false> 0</td>
+				</tr>
+				<tr>
+					<td> Fours </td>
+					<td> Count and Add Only Fours</td>
+					<td> <button ng-click = score("fourScore")> Score Fours </td>
+					<td id = "fourScoreRoll">  {{matchNumberScore(4)}}</td>
+					<td id = "fourScoreField" scored = false> 0</td>
+				</tr>
+				<tr>
+					<td> Fives </td>
+					<td> Count and Add Only Fives </td>
+					<td> <button ng-click = score("fiveScore")> Score Fives </td>
+					<td id = "fiveScoreRoll">  {{matchNumberScore(5)}}</td>
+					<td id = "fiveScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Sixes </td>
+					<td> Count and Add Only Sixes </td>
+					<td> <button ng-click = score("sixScore")> Score Sixes </td>
+					<td id = "sixScoreRoll"> {{matchNumberScore(6)}}</td>
+					<td id = "sixScoreField" scored = false> 0</td>
+				</tr>
+				<tr>
+					<td> Total Score </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td id = "upperSectionTotal"> {{upperSectionTotal()}} </td>
+				</tr>
+				<tr>
+					<td> Bonus</td>
+					<td> If total score is 63 or over, add 35</td>
+					<td> </td>
+					<td> </td>
+					<td id = "bonusField">{{bonus()}}</td>
+				</tr>
+				<tr>
+					<td> Upper Section Total </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td id = "upperSectionGrandTotal"> {{upperSectionGrandTotal()}}</td>
+				</tr>
+				<tr>
+					<td> Lower Section </td>
+				</tr>
+				<tr>
+					<td> 3 of a kind </td>
+					<td> Add Total Of All Dice </td>
+					<td> <button ng-click = score("threeOfAKindScore")> Score 3 of a Kind </td>
+					<td id = "threeOfAKindScoreRoll">  {{ofAKind(3)}}</td>
+					<td id = "threeOfAKindScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> 4 of a kind </td>
+					<td> Add Total Of All Dice </td>
+					<td> <button ng-click = score("fourOfAKindScore")> Score 4 of a Kind </td>
+					<td id = "fourOfAKindScoreRoll">  {{ofAKind(4)}}</td>
+					<td id = "fourOfAKindScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Full House</td>
+					<td> Score 25 </td>
+					<td> <button ng-click = score("fullHouseScore")> Score Full House </td>
+					<td id = "fullHouseScoreRoll">  {{fullHouse()}}</td>
+					<td id = "fullHouseScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Sm. Straight (Sequence of 4)</td>
+					<td> Score 30 </td>
+					<td> <button ng-click = score("smallStraightScore")> Score Sm. Straight </td>
+					<td id = "smallStraightScoreRoll">  {{smallStraight()}} </td>
+					<td id = "smallStraightScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Lg. Straight (Sequence of 5)</td>
+					<td> Score 40 </td>
+					<td> <button ng-click = score("largeStraightScore")> Score Lg. Straight </td>
+					<td id = "largeStraightScoreRoll">  {{largeStraight()}} </td>
+					<td id = "largeStraightScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> YAHTZEE (5 of a kind)</td>
+					<td> Score 50 </td>
+					<td> <button ng-click= yahtzeeScore()> Score Yahtzee </td>
+					<td id = "yahtzeeScoreRoll">  {{yahtzee()}} </td>
+					<td id = "yahtzeeScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Chance </td>
+					<td> Score Total of All 5 Dice </td>
+					<td> <button ng-click= score("chanceScore")> Score Chance </td>
+					<td id = "chanceScoreRoll">  {{chance()}} </td>
+					<td id = "chanceScoreField" scored = false> 0 </td>
+				</tr>
+				<tr>
+					<td> Total of Lower Section </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td id = "lowerSectionTotal"> {{lowerSectionTotal()}} </td>
+				</tr>
+				<tr>
+					<td> Total of Upper Section </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td id = "lowerSectionTotal"> {{upperSectionGrandTotal()}} </td>
+				</tr>
+				<tr>
+					<td> Grand Total </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<td id = "grandTotal"> {{grandTotal()}} </td>
+				</tr>
+			</table>
+		</form> 
+		
+		<div id = "error"> </div>
+	</body>
+</html>

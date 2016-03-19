@@ -1,82 +1,18 @@
-body {
-	font-family: "Palatino", monospace;
-	font-size: 24px;
-	background-color:#acb4b0;)	
+.unselected{
+	border: 1px solid #000000;
 }
 
-input[type="text"]{
-    background-color: #a6bab0; /* Green */
-    border: 1px solid white;
-    color: white;
-    padding: 15px 32px;
-    text-align: right;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	width: 100%;
-}
-
-input[type="button"]{
-    background-color: #88d8b0; /* Green */
-    border: 1px solid white;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-	width: 25%;
-}
-
-input[type="button"]:hover{
-    background-color: #69f7b0;
-
-
-}
-
-div {
-	text-align: center;
-}
-
-p {
-	color: #77837d;
+.selected{
+	border:3px solid #000000;
 }
 
 table{
-    margin-left:auto; 
-    margin-right:auto;
-	border: none;
-	border-collapse: collapse;
-	align: center;
+    border-collapse: collapse;
+    width: 100%;
+
 }
 
-tr {
-	border: none;
-}
+table, th, td {
+    border: 1px solid black;
 
-td {
-    height: 50px;
-    vertical-align: center;
-	border: none;
-}
-
-input[id="buttonC"]{
-	
-	width: 20%;
-}
-
-input[id="buttonMC"]{
-	width: 20%;
-}
-
-input[id="buttonMR"]{
-	width: 20%;
-}
-
-input[id="buttonMMinus"]{
-	width: 20%;
-}
-
-input[id="buttonMPlus"]{
-	width: 20%;
 }
