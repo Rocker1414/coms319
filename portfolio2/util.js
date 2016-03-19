@@ -81,36 +81,26 @@ function fullHouse(nums){
 
 function smallStraight(nums){
 	var sNums = nums.sort();
-	var first = sNums[0];
-
-	if(sNums[1] != first+1){
-
-		var current;
-		for(var i = 1; i < sNums.length-1; i++){
-			current = sNums[i];
-
-			if(sNums[i+1] != current+1){
-				return false;
-			}
-			
-		}
-
-		return true;
-	}
-	else{
-
-		if(sNums[2] == sNums[1]+1 && sNums[3] == sNums[2]+1){
-			return true;
-		}
-		else{
-			return false;
-		}
-
-	}
+	var counter = 0;
+	var found
 	
-	
-
-
+    for (var i = 0; i < sNums.length - 1; i++){
+	    if (sNums[i + 1] == sNums[i] + 1){
+		    counter++;
+		}
+	    else if (sNums[i + 1] == sNums[i])
+	   {
+		   continue;
+	   }
+	   else{
+			counter = 0;
+	   }
+	    if (counter == 3){
+		   found = true;
+		   break;
+	    }
+    }
+  return found;
 }
 
 function largeStraight(nums){
@@ -125,9 +115,7 @@ function largeStraight(nums){
 		}
 		
 	}
-
 	return true;
-
 }
 
 function yahtzee(nums){
@@ -227,9 +215,8 @@ function setScore(s){
 	if(field.getAttribute("scored") == "false"){
 		field.innerHTML = score;
 		field.setAttribute("scored", true);
-		field.setAttribute("bgcolor", "#8CDD81");
+		field.setAttribute("bgcolor", "#93cf96");
 		this.resetRollsLeft();
-		this.reset
 		error("");
 		return true;
 	}
@@ -248,7 +235,7 @@ function setYahtzeeScore(){
 	if(field.getAttribute("scored") == "false"){
 		field.innerHTML = score;
 		field.setAttribute("scored", true);
-		field.setAttribute("bgcolor", "#8CDD81");
+		field.setAttribute("bgcolor", "#93cf96");
 		this.resetRollsLeft();
 		error("");
 		return true;
