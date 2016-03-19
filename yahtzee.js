@@ -62,12 +62,9 @@ app.controller('GameController', ['$scope', function($scope) {
 	$scope.yahtzee = function(){
 		var nums = $scope.getNums();
 		var qual = yahtzee(nums);
-		
+
 		if(qual){
-			if (document.getElementById("yahtzeeScoreField").getAttribute("scored") == "false")
-				return 50;
-			else
-				return 100;
+			return 50;
 		}
 		else{
 			return 0;
