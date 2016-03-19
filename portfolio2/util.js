@@ -254,11 +254,11 @@ function setYahtzeeScore(){
 		return true;
 	}
 	else if(parseInt(score) > 0){
-			field.innerHTML = parseInt(field.innerHTML) + 100;
-			msg = "Yahtzee bonus applied (+100 points)";
-			error(msg);
-			this.resetRollsLeft();
-			return true;
+		field.innerHTML = parseInt(field.innerHTML) + 100;
+		msg = "Yahtzee bonus applied (+100 points)";
+		error(msg);
+		this.resetRollsLeft();
+		return true;
 	}	
 	else{
 		msg = "Warning: Yahtzee field already set. Please make a different selection.";
@@ -293,7 +293,7 @@ function updateRollsLeft(){
 
 function resetRollsLeft(){
 	var rollButton = document.getElementById("rollButton");
-	rollButton.setAttribute("count", 30);
+	rollButton.setAttribute("count", 3);
 }
 
 function sumUpperSection(){
