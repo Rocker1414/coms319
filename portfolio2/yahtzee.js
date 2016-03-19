@@ -13,7 +13,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		}
 
 		return nums;
-	};
+	}
 
 	$scope.ofAKind = function(target){
 		var nums = $scope.getNums();
@@ -62,8 +62,12 @@ app.controller('GameController', ['$scope', function($scope) {
 	$scope.yahtzee = function(){
 		var nums = $scope.getNums();
 		var qual = yahtzee(nums);
+		
 		if(qual){
-			return 50;
+			if (document.getElementById("yahtzeeScoreField").getAttribute("scored") == "false")
+				return 50;
+			else
+				return 100;
 		}
 		else{
 			return 0;
@@ -80,12 +84,13 @@ app.controller('GameController', ['$scope', function($scope) {
 		var nums = $scope.getNums();
 		var score = calculateNumCount(nums, target);
 		return score;
-	};
+	}
 
 	$scope.toggle = function(i){
 		$scope.die[i].toggle();
-	};
+	}
 
+	// Reset non-locked dice after a roll
 	$scope.clearAll = function(){
 		for(var i = 0; i < $scope.die.length; i++){
 			var dice = $scope.die[i];
@@ -94,22 +99,82 @@ app.controller('GameController', ['$scope', function($scope) {
 				dice.clear();
 			}
 		}
-	};
-
-	$scope.roll = function(){
-		//first clear
-		$scope.clearAll();
+	}
+	
+	// Reset all dice after a successful score
+	$scope.resetAll = function(){
 		for(var i = 0; i < $scope.die.length; i++){
 			var dice = $scope.die[i];
-			if(!dice.locked){
-				dice.roll();
+			
+			if(dice.locked){
+				dice.toggle();
 			}
 			
+			dice.clear();
+			resetRollScores();
+		}
+	}
 
-		}	
+	$scope.roll = function(){
+		if(isTurn()){
+			//first clear
+			$scope.clearAll();
+			for(var i = 0; i < $scope.die.length; i++){
+				var dice = $scope.die[i];
+				if(!dice.locked){
+					dice.roll();
+				}
+			}
+			updateRollsLeft();
+			error("");
+		}
+		else{
+			msg = "Warning: Your turn is up. Please make a scoring selection.";
+			error(msg);
+		}
+	}
+
+	$scope.score = function(id){
+		if(setScore(id)){
+			$scope.resetAll();
+		};
+	}
+	
+	$scope.yahtzeeScore = function(){
+		if(setYahtzeeScore()){
+			$scope.resetAll();
+		};
+	}
+	
+	$scope.upperSectionTotal = function(){
+		return sumUpperSection();
+	}
+	
+	$scope.lowerSectionTotal = function(){
+		return sumLowerSection();
+	}
+	
+	$scope.bonus = function(){
+		var upper = this.upperSectionTotal();
 		
-	};
-
+		if(upper >= 63)
+			return 35;
+		else
+			return 0;
+	}
+	
+	$scope.upperSectionGrandTotal = function(){
+		return this.upperSectionTotal() + this.bonus();
+	}
+	
+	$scope.grandTotal = function(){
+		return this.upperSectionGrandTotal() + this.lowerSectionTotal();
+	}
+	
+	$scope.showRollsLeft = function(){
+		return getRollsLeft();
+	}	
+	
 }]);
 
 

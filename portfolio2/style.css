@@ -5,3 +5,14 @@
 .selected{
 	border:3px solid #000000;
 }
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+
+}
+
+table, th, td {
+    border: 1px solid black;
+
+}

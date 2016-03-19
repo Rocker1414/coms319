@@ -92,6 +92,8 @@ Dice.prototype.drawSix = function(){
 
 Dice.prototype.roll = function(){
 	var val = Math.floor((Math.random() * 6) + 1);
+	// Rigged Roll:
+	//var val = 3;
 	switch(val){
 		case 1:
 			this.drawOne();
