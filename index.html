@@ -14,27 +14,31 @@
 		<!-- whatever current instructions are -->
 
 		<!-- display dice -->
+		<div id = "dice" class = "center">
 		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}]" ></canvas>
 		<canvas id="dice2" ng-click="toggle(1)" height="100" width="100" ng-class="[{selected: die[1].locked}, {unselected: !die[1].locked}]"></canvas>
 		<canvas id="dice3" ng-click="toggle(2)" height="100" width="100" ng-class="[{selected: die[2].locked}, {unselected: !die[2].locked}]"></canvas>
 		<canvas id="dice4" ng-click="toggle(3)" height="100" width="100" ng-class="[{selected: die[3].locked}, {unselected: !die[3].locked}]"></canvas>
 		<canvas id="dice5" ng-click="toggle(4)" height="100" width="100" ng-class="[{selected: die[4].locked}, {unselected: !die[4].locked}]"></canvas>
-
-		<div id = "turnNumber"> Rolls Left This Turn: {{showRollsLeft()}} </div>
+		</div>
+		
+		<div id = "menu" class = "center"> 
 		<button id = "rollButton" count = 3 ng-click="roll(count)" >Roll</button>		
-
+		<p> Rolls Left This Turn: {{showRollsLeft()}} </p>
+		</div>
+		
 		<!-- scorecard -->
-		<form>
+		<div id = "scorecard" class = "center">
 			<table>
 				<tr>
-					<td> Yahtzee </td>
+					<th colspan = "5"> Yahtzee </th>
 				</tr>
-				<tr>
-					<td> Upper Section </td>
-					<td> How to Score</td>
-					<td> Select </td>
-					<td> Score This Roll </td>
-					<td> Score </td>
+				<tr id = "infoBar">
+					<td class = "infoBar"> Upper Section </td>
+					<td class = "infoBar"> How to Score</td>
+					<td class = "infoBar"> Select </td>
+					<td class = "infoBar"> Score This Roll </td>
+					<td class = "infoBar"> Score </td>
 				</tr>
 				<tr>
 					<td> Aces </td>
@@ -79,28 +83,28 @@
 					<td id = "sixScoreField" scored = false> 0</td>
 				</tr>
 				<tr>
-					<td> Total Score </td>
+					<td class = "total"> Total Score </td>
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<td id = "upperSectionTotal"> {{upperSectionTotal()}} </td>
+					<td class = "total" id = "upperSectionTotal"> {{upperSectionTotal()}} </td>
 				</tr>
 				<tr>
 					<td> Bonus</td>
-					<td> If total score is 63 or over, add 35</td>
+					<td> If Total Score is 63 or Over, Score 35</td>
 					<td> </td>
 					<td> </td>
 					<td id = "bonusField">{{bonus()}}</td>
 				</tr>
 				<tr>
-					<td> Upper Section Total </td>
+					<td class = "total"> Upper Section Total </td>
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<td id = "upperSectionGrandTotal"> {{upperSectionGrandTotal()}}</td>
+					<td class = "total" id = "upperSectionGrandTotal"> {{upperSectionGrandTotal()}}</td>
 				</tr>
 				<tr>
-					<td> Lower Section </td>
+					<td colspan = "5" class = "infoBar"> Lower Section </td>
 				</tr>
 				<tr>
 					<td> 3 of a kind </td>
@@ -152,29 +156,38 @@
 					<td id = "chanceScoreField" scored = false> 0 </td>
 				</tr>
 				<tr>
-					<td> Total of Lower Section </td>
+					<td class = "total"> Total of Lower Section </td>
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<td id = "lowerSectionTotal"> {{lowerSectionTotal()}} </td>
+					<td class = "total" id = "lowerSectionTotal"> {{lowerSectionTotal()}} </td>
 				</tr>
 				<tr>
-					<td> Total of Upper Section </td>
+					<td class = "total"> Total of Upper Section </td>
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<td id = "lowerSectionTotal"> {{upperSectionGrandTotal()}} </td>
+					<td class = "total" id = "upperSectionTotal"> {{upperSectionGrandTotal()}} </td>
 				</tr>
 				<tr>
-					<td> Grand Total </td>
+					<td class = "total"> Total of Upper Section </td>
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<td id = "grandTotal"> {{grandTotal()}} </td>
+					<td class = "total" id = "lowerSectionTotal"> {{upperSectionGrandTotal()}} </td>
+				</tr>
+				<tr>
+					<td class = "grandTotal"> Grand Total </td>
+					<td> </td>
+					<td> </td>
+					<td> </td>
+					<th class = "grandTotal"> {{grandTotal()}} </th>
+				</tr>
+				<tr hidden>
 				</tr>
 			</table>
-		</form> 
+			<p id = "error"> </div>
+		</div> 
 		
-		<div id = "error"> </div>
 	</body>
 </html>
