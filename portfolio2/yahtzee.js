@@ -5,6 +5,10 @@ app.controller('GameController', ['$scope', function($scope) {
 
 	$scope.die = [new Dice("dice1"), new Dice("dice2"), 
 	new Dice("dice3"), new Dice("dice4"), new Dice("dice5")];
+	
+	$scope.card = new Scorecard();
+
+	$scope.rollsLeft = 3;
 
 	$scope.getNums = function(){
 		var nums = [];
@@ -102,18 +106,17 @@ app.controller('GameController', ['$scope', function($scope) {
 	$scope.resetAll = function(){
 		for(var i = 0; i < $scope.die.length; i++){
 			var dice = $scope.die[i];
-			
-			if(dice.locked){
-				dice.toggle();
-			}
+			dice.val = 0;
+			dice.unlock();
 			
 			dice.clear();
-			resetRollScores();
 		}
+		
+		$scope.rollsLeft = 3;
 	}
 
 	$scope.roll = function(){
-		if(isTurn()){
+		if($scope.rollsLeft > 0){
 			//first clear
 			$scope.clearAll();
 			for(var i = 0; i < $scope.die.length; i++){
@@ -122,7 +125,7 @@ app.controller('GameController', ['$scope', function($scope) {
 					dice.roll();
 				}
 			}
-			updateRollsLeft();
+			$scope.rollsLeft--;
 			error("");
 		}
 		else{
@@ -130,47 +133,12 @@ app.controller('GameController', ['$scope', function($scope) {
 			error(msg);
 		}
 	}
-
-	$scope.score = function(id){
-		if(setScore(id)){
-			$scope.resetAll();
-		};
+	
+	$scope.keep = function(id, val){
+		$scope.card.keep(id, val);
+		$scope.resetAll();
 	}
 	
-	$scope.yahtzeeScore = function(){
-		if(setYahtzeeScore()){
-			$scope.resetAll();
-		};
-	}
-	
-	$scope.upperSectionTotal = function(){
-		return sumUpperSection();
-	}
-	
-	$scope.lowerSectionTotal = function(){
-		return sumLowerSection();
-	}
-	
-	$scope.bonus = function(){
-		var upper = this.upperSectionTotal();
-		
-		if(upper >= 63)
-			return 35;
-		else
-			return 0;
-	}
-	
-	$scope.upperSectionGrandTotal = function(){
-		return this.upperSectionTotal() + this.bonus();
-	}
-	
-	$scope.grandTotal = function(){
-		return this.upperSectionGrandTotal() + this.lowerSectionTotal();
-	}
-	
-	$scope.showRollsLeft = function(){
-		return getRollsLeft();
-	}	
 	
 }]);
 
