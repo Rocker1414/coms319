@@ -12,8 +12,9 @@
 	</head>
 
 	<body ng-controller="GameController">
+		<p><a href="index.html">Restart Game</a></p>
+		<p><a href="highscores.php">See High Scores</a></p>
 		<!-- whatever current instructions are -->
-
 		<!-- display dice -->
 		<div id = "dice" class = "center">
 		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}]" ></canvas>
