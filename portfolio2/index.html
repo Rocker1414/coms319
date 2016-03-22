@@ -14,18 +14,19 @@
 	<body ng-controller="GameController">
 		<p><a href="index.html">Restart Game</a></p>
 		<p><a href="highscores.php">See High Scores</a></p>
+		<center><h1 ng-class="{hidden: !gameOver}">Game Over! Final Score: {{card.grandTotal()}}</h1></center>
 		<!-- whatever current instructions are -->
 		<!-- display dice -->
 		<div id = "dice" class = "center">
-		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}]" ></canvas>
-		<canvas id="dice2" ng-click="toggle(1)" height="100" width="100" ng-class="[{selected: die[1].locked}, {unselected: !die[1].locked}]"></canvas>
-		<canvas id="dice3" ng-click="toggle(2)" height="100" width="100" ng-class="[{selected: die[2].locked}, {unselected: !die[2].locked}]"></canvas>
-		<canvas id="dice4" ng-click="toggle(3)" height="100" width="100" ng-class="[{selected: die[3].locked}, {unselected: !die[3].locked}]"></canvas>
-		<canvas id="dice5" ng-click="toggle(4)" height="100" width="100" ng-class="[{selected: die[4].locked}, {unselected: !die[4].locked}]"></canvas>
+		<canvas id="dice1" ng-click="toggle(0)" height="100" width="100" ng-class="[{selected: die[0].locked}, {unselected: !die[0].locked}, {hidden: gameOver}]" ></canvas>
+		<canvas id="dice2" ng-click="toggle(1)" height="100" width="100" ng-class="[{selected: die[1].locked}, {unselected: !die[1].locked}, {hidden: gameOver}]"></canvas>
+		<canvas id="dice3" ng-click="toggle(2)" height="100" width="100" ng-class="[{selected: die[2].locked}, {unselected: !die[2].locked}, {hidden: gameOver}]"></canvas>
+		<canvas id="dice4" ng-click="toggle(3)" height="100" width="100" ng-class="[{selected: die[3].locked}, {unselected: !die[3].locked}, {hidden: gameOver}]"></canvas>
+		<canvas id="dice5" ng-click="toggle(4)" height="100" width="100" ng-class="[{selected: die[4].locked}, {unselected: !die[4].locked}, {hidden: gameOver}]"></canvas>
 		</div>
 		
-		<div id = "menu" class = "center"> 
-		<button id = "rollButton" ng-click="roll()" >Roll</button>		
+		<div id = "menu" ng-class="{hidden: gameOver}" class = "center"> 
+		<div ng-class="{hidden: rollsLeft == 0}"><button id = "rollButton" ng-click="roll()" >Roll</button></div>	
 		<p> Rolls Left This Turn: {{rollsLeft}} </p>
 		</div>
 		

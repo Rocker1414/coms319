@@ -107,3 +107,14 @@ Scorecard.prototype.lowerSection = function(){
 Scorecard.prototype.grandTotal = function(){
 	return this.upperSection() + this.lowerSection();
 }
+
+Scorecard.prototype.isFilled = function(){
+	for(var i = 0; i < this.scored.length; i++){
+		if(!this.scored[i].val){
+			return false;
+		}
+		
+	}
+
+	return true;
+}

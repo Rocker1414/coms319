@@ -1,14 +1,53 @@
 //this is the angular js code
 var app = angular.module('yahtzee', []);
 
-app.controller('GameController', ['$scope', function($scope) {
+app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 
 	$scope.die = [new Dice("dice1"), new Dice("dice2"), 
 	new Dice("dice3"), new Dice("dice4"), new Dice("dice5")];
 	
 	$scope.card = new Scorecard();
 
+	$scope.gameOver = false;
+
 	$scope.rollsLeft = 3;
+
+	$scope.$watch('gameOver', function(){
+
+		if($scope.gameOver){
+			$scope.checkScore();
+		}
+
+	});
+
+	$scope.checkScore = function(){
+		var data =  {
+                         "id": "check",
+                         "name": "Player",
+                         "score": $scope.card.grandTotal()
+                     };
+		$http.post('/server.php', data).success(
+			function (data, status, headers, config) {
+				if(data == 1){
+               	 	$scope.writeScore();
+          		}
+            });
+	};
+
+	$scope.writeScore = function(){
+		var name = prompt("You got a High Score! Please enter your name:", "Player")
+		var data =  {
+                         "id": "save",
+                         "name": name,
+                         "score": $scope.card.grandTotal()
+
+                     };
+
+		$http.post('/server.php', data).success(
+			function (data, status, headers, config) {
+               
+            });
+	}
 
 	$scope.getNums = function(){
 		var nums = [];
@@ -17,7 +56,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		}
 
 		return nums;
-	}
+	};
 
 	$scope.ofAKind = function(target){
 		var nums = $scope.getNums();
@@ -28,7 +67,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		else{
 			return 0;
 		}
-	}
+	};
 
 	$scope.fullHouse = function(){
 		var nums = $scope.getNums();
@@ -39,7 +78,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		else{
 			return 0;
 		}
-	}
+	};
 
 	$scope.smallStraight = function(){
 		var nums = $scope.getNums();
@@ -50,7 +89,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		else{
 			return 0;
 		}
-	}
+	};
 
 	$scope.largeStraight = function(){
 		var nums = $scope.getNums();
@@ -61,7 +100,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		else{
 			return 0;
 		}
-	}
+	};
 
 	$scope.yahtzee = function(){
 		var nums = $scope.getNums();
@@ -73,23 +112,23 @@ app.controller('GameController', ['$scope', function($scope) {
 		else{
 			return 0;
 		}
-	}
+	};
 
 	$scope.chance = function(){
 		var nums = $scope.getNums();
 		var score = diceTotal(nums);
 		return score;
-	}
+	};
 
 	$scope.matchNumberScore = function(target){
 		var nums = $scope.getNums();
 		var score = calculateNumCount(nums, target);
 		return score;
-	}
+	};
 
 	$scope.toggle = function(i){
 		$scope.die[i].toggle();
-	}
+	};
 
 	// Reset non-locked dice after a roll
 	$scope.clearAll = function(){
@@ -100,7 +139,7 @@ app.controller('GameController', ['$scope', function($scope) {
 				dice.clear();
 			}
 		}
-	}
+	};
 	
 	// Reset all dice after a successful score
 	$scope.resetAll = function(){
@@ -113,7 +152,7 @@ app.controller('GameController', ['$scope', function($scope) {
 		}
 		
 		$scope.rollsLeft = 3;
-	}
+	};
 
 	$scope.roll = function(){
 		if($scope.rollsLeft > 0){
@@ -132,12 +171,17 @@ app.controller('GameController', ['$scope', function($scope) {
 			msg = "Warning: Your turn is up. Please make a scoring selection.";
 			error(msg);
 		}
-	}
+	};
 	
 	$scope.keep = function(id, val){
 		$scope.card.keep(id, val);
 		$scope.resetAll();
-	}
+
+		//check if game is over
+		if($scope.card.isFilled()){
+			$scope.gameOver = true;
+		}
+	};
 	
 	
 }]);
