@@ -116,3 +116,29 @@ Dice.prototype.roll = function(){
 
 	this.val = val;
 }
+
+//force dice to take value for testing purposes
+Dice.prototype.force = function(val){
+	switch(val){
+		case 1:
+			this.drawOne();
+			break;
+		case 2:
+			this.drawTwo();
+			break;
+		case 3:
+			this.drawThree();
+			break;
+		case 4:
+			this.drawFour();
+			break;
+		case 5:
+			this.drawFive();
+			break;
+		case 6:
+			this.drawSix();
+			break;
+	}
+
+	this.val = val;
+}

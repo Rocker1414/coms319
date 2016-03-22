@@ -33,6 +33,9 @@ function Scorecard(){
 	{key: "yahtzee", val: false},
 	{key: "chance", val: false},
 	];
+
+	this.yahtzeeIndex = 11;
+	this.yahtzeeBonus = 0;
 	
 }
 
@@ -101,6 +104,8 @@ Scorecard.prototype.lowerSection = function(){
 		
 	}
 	
+	total += this.yahtzeeBonus;
+
 	return total;
 }
 
@@ -117,4 +122,13 @@ Scorecard.prototype.isFilled = function(){
 	}
 
 	return true;
+}
+
+Scorecard.prototype.yahtzeeScored = function(){
+	//must have been scored and not as 0
+	return this.scored[this.yahtzeeIndex].val && this.kept[this.yahtzeeIndex].val != 0;
+}
+
+Scorecard.prototype.isUpperScored = function(val){
+	return this.scored[val-1].val;
 }

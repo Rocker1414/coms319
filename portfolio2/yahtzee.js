@@ -45,7 +45,7 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 
 		$http.post('/server.php', data).success(
 			function (data, status, headers, config) {
-               
+               //nothing needed
             });
 	}
 
@@ -70,6 +70,14 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.fullHouse = function(){
+
+		//joker
+		if($scope.yahtzee() == 50 && $scope.card.yahtzeeScored() && $scope.card.isUpperScored($scope.die[0].val)){
+			
+			return 25;
+
+		}
+
 		var nums = $scope.getNums();
 		var qual = fullHouse(nums);
 		if(qual){
@@ -81,6 +89,14 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.smallStraight = function(){
+
+		//joker
+		if($scope.yahtzee() == 50 && $scope.card.yahtzeeScored() && $scope.card.isUpperScored($scope.die[0].val)){
+			
+			return 30;
+
+		}
+
 		var nums = $scope.getNums();
 		var qual = smallStraight(nums);
 		if(qual){
@@ -92,6 +108,14 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.largeStraight = function(){
+
+		//joker
+		if($scope.yahtzee() == 50 && $scope.card.yahtzeeScored() && $scope.card.isUpperScored($scope.die[0].val)){
+			
+			return 40;
+
+		}
+
 		var nums = $scope.getNums();
 		var qual = largeStraight(nums);
 		if(qual){
@@ -103,6 +127,7 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.yahtzee = function(){
+
 		var nums = $scope.getNums();
 		var qual = yahtzee(nums);
 
@@ -110,6 +135,7 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 			return 50;
 		}
 		else{
+
 			return 0;
 		}
 	};
@@ -172,8 +198,24 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 			error(msg);
 		}
 	};
+
+	//force a yahtzee for testing purposes
+	$scope.forceYahtzee = function(){
+		$scope.resetAll();
+		$scope.die[0].roll();
+		var val = $scope.die[0].val;
+		$scope.die[1].force(val);
+		$scope.die[2].force(val);
+		$scope.die[3].force(val);
+		$scope.die[4].force(val);
+	}
 	
 	$scope.keep = function(id, val){
+		//when keeping, check 
+		if($scope.yahtzee() == 50 && $scope.card.yahtzeeScored()){
+			$scope.card.yahtzeeBonus += 100;
+		}
+
 		$scope.card.keep(id, val);
 		$scope.resetAll();
 

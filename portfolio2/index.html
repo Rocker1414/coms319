@@ -26,7 +26,8 @@
 		</div>
 		
 		<div id = "menu" ng-class="{hidden: gameOver}" class = "center"> 
-		<div ng-class="{hidden: rollsLeft == 0}"><button id = "rollButton" ng-click="roll()" >Roll</button></div>	
+		<div ng-class="{hidden: rollsLeft == 0}"><button id = "rollButton" ng-click="roll()" >Roll</button></div>
+		<button id = "rollButton" ng-click="forceYahtzee()" >Force Yahtzee</button>	
 		<p> Rolls Left This Turn: {{rollsLeft}} </p>
 		</div>
 		
@@ -159,6 +160,13 @@
 					<td id = "chanceScoreField" ng-class="{scored: card.isKept('chance')}"> {{card.getScore("chance")}}</td>
 				</tr>
 				<tr>
+					<td> Yahtzee Bonus </td>
+					<td> +100 for each bonus Yahtzee </td>
+					<td></td>
+					<td></td>
+					<td> {{card.yahtzeeBonus}}</td>
+				</tr>
+				<tr>
 					<td class = "total"> Total of Lower Section </td>
 					<td> </td>
 					<td> </td>
@@ -170,7 +178,7 @@
 					<td> </td>
 					<td> </td>
 					<td> </td>
-					<th class = "grandTotal"> {{card.grandTotal()}} </th>
+					<th ng-class="{scored: gameOver}" class = "grandTotal"> {{card.grandTotal()}} </th>
 				</tr>
 				<tr hidden>
 				</tr>
