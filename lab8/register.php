@@ -2,20 +2,94 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = strip_tags(trim($_POST["user"]));
 		$user = str_replace(array("\r","\n"),array(" "," "),$user);
+
+	    $pass = strip_tags(trim($_POST["pass"]));
+		$pass = str_replace(array("\r","\n"),array(" "," "),$pass);	
 		
-		if(ctype_alnum($user) == false){
-			echo nl2br("$user is not a valid username. ");
-		} else {
-			echo nl2br("$user is a valid username. ");
+	    $pass2 = strip_tags(trim($_POST["passConfirm"]));
+	    $pass2 = strip_tags(trim($_POST["passConfirm"]));
+		
+		$email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+		
+		$phone = strip_tags(trim($_POST["phone"]));
+		$phone = str_replace(array("\r","\n"),array(" "," "),$phone);
+		
+		$librarian = isset($_POST["librarian"]);
+		
+		$fname = strip_tags(trim($_POST["fname"]));
+		$fname = str_replace(array("\r","\n"),array(" "," "),$fname);
+		
+		$lname = strip_tags(trim($_POST["lname"]));
+		$lname = str_replace(array("\r","\n"),array(" "," "),$lname);
+		
+		$invalidFields = array(
+			'header' => "The following issues must be corrected for registration:"
+		);  	
+		
+		if(ctype_alnum($user) == false || empty($user)){
+		    http_response_code(403);
+			array_push($invalidFields, "Invalid username: $user (Must be non-empty and alphanumeric)");
 		}
-		
-        $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+		/*if(usernameInDatabase($user) == true){
+		    http_response_code(403);
+			array_push($invalidFields, "Username $user has already been registered");
+		}*/
+		if(empty($pass) || strcmp($pass,$pass2) != 0){
+			http_response_code(403);
+			array_push($invalidFields, "Passwords must match and must not be empty");
+		}
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
-			echo("$email is not a valid email address. ");
-		} else {
-			echo("$email is a valid email address. ");
+		    http_response_code(403);
+			array_push($invalidFields, "Invalid Email: $email (Must be of form aaa@bbb.ccc)");
+		} 
+		$regex = '/^\d{3}-?\d{3}-?\d{4}$/';
+		if (!preg_match($regex,$phone)){
+			http_response_code(403);
+			array_push($invalidFields, "Invalid Phone: $phone (Must be of form xxxxxxxxxx or xxx-xxx-xxxx)");
+		}
+		if(ctype_alpha($fname) == false || empty($fname)){
+		    http_response_code(403);
+			array_push($invalidFields, "Invalid First Name: $fname (Must be alphabetical)");
+		}
+		if(ctype_alpha($lname) == false || empty($lname)){
+		    http_response_code(403);
+			array_push($invalidFields, "Invalid Last Name: $lname (Must be alphabetical)");
+		}
+		if(count($invalidFields) > 1){
+			$json = json_encode($invalidFields);
+			echo($json);
+		}
+		else{
+			//echo("Success!");
 		}
 	}
+	
+	function usernameInDatabase($u){
+		$username = "root";
+		$password = "";
+		$dbServer = "localhost"; 
+		$dbName   = "lab09";
+        $conn = new mysqli($dbServer, $username, $password, $dbName);
+		
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		} 
+				
+		$sql = "SELECT * FROM group14_users WHERE username = $u";
+		
+		$result = $conn->query($sql);
+		
+		if ($result->num_rows > 0) {
+			$conn->close();
+			return true;
+		}
+		else{
+			$conn->close();
+			return false;
+		}		
+	}
+	
 	/* Useful PHP stuff for later
 		<?php
 			$username = "root";

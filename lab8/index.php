@@ -12,12 +12,13 @@
 		<form id="registerAccount">
 			Username: <input id = "user" type="text" name="user"><br>
 			Password: <input id = "pass" type="password" name="pass"><br>
+			Confirm Password: <input id = "pass" type="password" name="passConfirm"><br>
 			Email: <input id = "email" type="text" name="email"><br>
 			Phone: <input id = "phone" type="text" name="phone"><br>
 			Librarian?: <input id = "librarian" type="checkbox" name="librarian"><br>
 			First Name: <input id = "fname" type="text" name="fname"><br>
 			Last Name: <input id = "lname" type="text" name="lname"><br>
-			<input id = "registerButton" type="submit" value="Submit">
+			<input id = "registerButton" type="submit" value="Register Account">
 		</form>
 
 		<h1>Response from server:</h1>
@@ -40,23 +41,19 @@
 					})
 					
 					.done(function(response) {
-						$(message).removeClass('error');
-						$(message).addClass('success');
-
 						$(message).text(response);
 					})
 					
 					.fail(function(data) {
-						// Make sure that the formMessages div has the 'error' class.
-						$(message).removeClass('success');
-						$(message).addClass('error');
-
-						// Set the message text.
-							if (data.responseText !== '') {
-								$(message).text(data.responseText);
-							} else {
-								$(message).text('Oops, an error has occured.');
+						var invalidFields = JSON.parse(data.responseText);
+						console.log(invalidFields);
+						message.html(invalidFields.header + "<br>");
+						for (var key in invalidFields) {
+							if (invalidFields.hasOwnProperty(key)) {
+								if(key != "header")
+									message.append(invalidFields[key] + "<br>");
 							}
+						}
 					});
 				});
 			});
