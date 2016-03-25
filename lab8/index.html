@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Library Login</title>
+		<script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script type="text/javascript" src="register.js"></script>
+		<script type="text/javascript" src="login.js"></script>
+		<!--<link rel="stylesheet" href="style.css">-->
+	</head>
+	
+	<body>
+		<form id="registerAccount">
+			Username: <input id = "userInput" type="text" name="user"> <div id="user"></div>
+			Password: <input id = "passInput" type="password" name="pass"> <div id="pass"></div>
+			Confirm Password: <input id ="passConfirmInput" type="password" name="passConfirm"><br>
+			Email: <input id = "emailInput" type="text" name="email"><div id="email"></div>
+			Phone: <input id = "phoneInput" type="text" name="phone"><div id="phone"></div>
+			Librarian?: <input id = "checkboxInput" type="checkbox" name="librarian"> <br>
+			First Name: <input id = "fnameInput" type="text" name="fname"><div id="fname"></div>
+			Last Name: <input id = "lnameInput" type="text" name="lname"><div id="lname"></div>
+			<input id = "registerButton" type="submit" value="Register Account">
+		</form>
+
+		<div id="sqlMessage"></div>
+		
+		<br><br><br>
+		
+		<form id="loginAccount">
+			Username: <input id = "userLoginInput" type="text" name="userLogin"> <div id="userLogin"></div>
+			Password: <input id = "passLoginInput" type="password" name="passLogin"> <div id="passLogin"></div>
+			<input id = "loginButton" type="submit" value="Login">
+		</form>
+		
+		<div id="sqlLoginMessage"></div>
+	</body>
+</html>
