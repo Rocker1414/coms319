@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<?php include "init.php"; ?>
 		<title>Library</title>
 		<script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 		<script type="text/javascript" src="logout.js"></script>
@@ -24,10 +25,75 @@
 	</head>
 	
 	<body>
+		<script>
+				$(document).ready(function() {
+					$('#titleSearch').click(function(event) {
+						
+						var json = { 
+							"type": "title",
+							"title": $('#title').val(),
+							"author": $('#author').val()
+						};
+						
+						$.ajax({
+							type: 'POST',
+							url: "http://localhost/search.php",
+							data: json
+						})
+						
+						.done(function(data) {
+							$('#content').html(data);
+						});
+						
+					});
+
+					$('#authorSearch').click(function(event) {
+						
+						var json = { 
+							"type": "title",
+							"title": $('#title').val(),
+							"author": $('#author').val()
+						};
+						
+						$.ajax({
+							type: 'POST',
+							url: "http://localhost/search.php",
+							data: json
+						})
+						
+						.done(function(data) {
+							$('#content').html(data);
+						});
+						
+					});
+
+					$('#all').click(function(event) {
+						
+						var json = { 
+							"type": "all",
+							"title": $('#title').val(),
+							"author": $('#author').val()
+						};
+						
+						$.ajax({
+							type: 'POST',
+							url: "http://localhost/search.php",
+							data: json
+						})
+						
+						.done(function(data) {
+							$('#content').html(data);
+						});
+						
+					});
+
+
+				});
+		</script>
+
 		<h1> Library Page </h1>
 		<h2> 
 		<?php 
-			session_start();
 			echo "Logged in as: " . $_SESSION["username"] . ".";
 		?> 
 		</h2>
@@ -39,53 +105,10 @@
 		Search by title: <input type="text" id="title"/><button id="titleSearch">Search</button><br>
 		Search by author: <input type="text" id="author"/><button id="authorSearch">Search</button><br>
 		<br>
-		<button>Return All</button>
+		<button id="all">Return All</button>
 		
 		<div id="content">
 		</div>
 
-		<script>
-			$(document).ready(function() {
-				$('#titleSearch').submit(function(event) {
-					message = $('#sqlMessage');
-					event.preventDefault();
-					
-					var formData = $(registerForm).serialize();
-				
-					$.ajax({
-						type: 'POST',
-						url: "http://localhost/search.php",
-						data: formData
-					})
-				
-					.done(function(data) {
-					})
-				
-					.fail(function(data) {
-					});
-			});
-
-			$('#authorSearch').submit(function(event) {
-				message = $('#sqlMessage');
-				event.preventDefault();
-				
-				var formData = $(registerForm).serialize();
-				
-				$.ajax({
-					type: 'POST',
-					url: "http://localhost/search.php",
-					data: formData
-				})
-				
-				.done(function(data) {
-					
-				})
-				
-				.fail(function(data) {
-					
-				});
-			});
-		});
-			</script>
 		</body>
 </html>
