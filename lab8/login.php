@@ -3,7 +3,7 @@
 		$username = "root";
 		$password = "";
 		$dbServer = "localhost"; 
-		$dbName   = "lab09";
+		$dbName   = "lab08";
 		$conn = new mysqli($dbServer, $username, $password, $dbName);
         
 		$userLogin = strip_tags(trim($_POST["userLogin"]));
