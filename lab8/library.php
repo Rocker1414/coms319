@@ -73,23 +73,14 @@
 						});
 						
 					});
-
-
 				});
 		</script>
 
 		<h1> Library Page </h1>
 		<h2> 
-<<<<<<< HEAD
 			<?php 
-				session_start();
 				echo "Logged in as: " . $_SESSION["username"] . ".";
 			?> 
-=======
-		<?php 
-			echo "Logged in as: " . $_SESSION["username"] . ".";
-		?> 
->>>>>>> 187b0bfc222a6c1cf14574ba11361d7574f69c13
 		</h2>
 		
 		<button id = "logoutButton" type="onClick=logout()">Logout</button>

@@ -31,6 +31,28 @@
 	}
 
 	function parseLibrary(){
-		//todo create library object and add all books
+		$username = "root";
+		$password = "";
+		$dbServer = "localhost"; 
+		$dbName   = "lab08";
+		$conn = new mysqli($dbServer, $username, $password, $dbName);
+        
+		if ($conn->connect_error) {
+				die("Connection failed: " . $conn->connect_error);
+			} else {
+				$sql = "SELECT shelfID FROM group14_shelves";
+				$result = $conn->query($sql) or die("MySQL Error");
+
+				if ($result->num_rows > 0) {
+							
+					$shelves = array(
+					);
+					
+					while($row = $result->fetch_assoc()) {
+						array_push($shelves, $row["shelfID"]);
+				   }
+				   $shelfObj = new Library($shelves);
+				}
+			}
 	}
 ?>
