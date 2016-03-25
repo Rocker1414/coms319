@@ -1,4 +1,5 @@
 <?php
+
 	function searchByTitle($title){
 		$lib = $_SESSION['library'];
 		$shelves = $lib->shelves;
@@ -27,5 +28,9 @@
 		}
 
 		return null;
+	}
+
+	function parseLibrary(){
+		//todo create library object and add all books
 	}
 ?>

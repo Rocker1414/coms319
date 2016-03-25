@@ -1,8 +1,11 @@
 <?php
 	session_start();
+	include 'libraryClass.php'
+	include 'studentClass.php';
+	include 'shelfClass.php';
+	include 'bookClass.php';
 	include 'util.php';
-	include 'student.php';
-	include 'shelf.php';
-	include 'book.php';
+
+	$_SESSION['library'] = parseLibrary();
 
 ?>	
