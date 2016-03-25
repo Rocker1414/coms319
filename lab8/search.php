@@ -11,9 +11,11 @@
 
 	if($type == "title"){
 		$book = searchByTitle($title);
+		$book = $book->toHTML();
 	}
 	else if($type == "author"){
 		$book = searchByAuthor($author);
+		$book = $book->toHTML();
 	}
 	else if($type == "all"){
 		$book = $_SESSION['library']->allBooks();
@@ -23,7 +25,7 @@
 		echo "<p>Book not found.</p>";
 	}
 	else{
-		echo $book->toHTML();
+		echo $book;
 	}
 
 ?>
