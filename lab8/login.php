@@ -32,6 +32,8 @@
 					http_response_code(403);
 					$sqlFeedback["sqlLoginMessage"] = "Invalid password";
 				} else{
+					session_start();
+					$_SESSION["username"] = $userLogin;
 					$sqlFeedback["sqlLoginMessage"] = "Successful login";
 				  }
 			   }

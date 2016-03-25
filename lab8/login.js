@@ -15,18 +15,16 @@ $(document).ready(function() {
 		})
 		
 		.done(function(data) {
-			console.log(data);
 			var sqlMsg = JSON.parse(data);
 			
 			if(sqlMsg = "Succcessful Login"){
-				window.location.href='library.html';
+				window.location.href='library.php';
 			} else{
 				$(message).html(sqlMsg["sqlLoginMessage"]);
 			}
 		})
 		
 		.fail(function(data) {
-			console.log(data);
 			var sqlMsg = JSON.parse(data.responseText);
 		    $(message).html(sqlMsg["sqlLoginMessage"]);
 		});
