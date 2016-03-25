@@ -14,7 +14,7 @@
 		$passEnc = md5($pass);
 		
 	    $pass2 = strip_tags(trim($_POST["passConfirm"]));
-	    $pass2 = strip_tags(trim($_POST["passConfirm"]));
+		$pass2 = str_replace(array("\r","\n"),array(" "," "),$pass2);
 	
 		$email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
 		
