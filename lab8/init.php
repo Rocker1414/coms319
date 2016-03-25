@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include 'libraryClass.php'
+	include 'libraryClass.php';
 	include 'studentClass.php';
 	include 'shelfClass.php';
 	include 'bookClass.php';
