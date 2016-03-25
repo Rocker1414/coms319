@@ -26,10 +26,10 @@
 	<body>
 		<h1> Library Page </h1>
 		<h2> 
-		<?php 
-			session_start();
-			echo "Logged in as: " . $_SESSION["username"] . ".";
-		?> 
+			<?php 
+				session_start();
+				echo "Logged in as: " . $_SESSION["username"] . ".";
+			?> 
 		</h2>
 		
 		<button id = "logoutButton" type="onClick=logout()">Logout</button>
