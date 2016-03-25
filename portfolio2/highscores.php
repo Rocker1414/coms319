@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- This doesn't seem to do anything :( -->
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php 
 		include 'util.php';
 		session_start();
