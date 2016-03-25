@@ -6,7 +6,6 @@ $(function () {
 		})
 		
 		.done(function(data) {
-			console.log(data);
 			var msg = JSON.parse(data);
 			
 			if(msg = "Success"){
