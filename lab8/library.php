@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -20,3 +21,21 @@
 
 	</body>
 </html>
+=======
+<?php
+	class Library{
+
+		function __construct(){
+			$this->shelves = array();
+		}
+
+		function addShelf($shelf){
+			array_push($this->shelves, $shelf);
+		}
+
+		function getShelf($i){
+			return $this->shelves[$i];
+		}
+	}
+?>
+>>>>>>> c772062b4ff56259af5276fb071bddb5a782549b
