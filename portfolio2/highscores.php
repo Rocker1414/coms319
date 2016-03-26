@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- This doesn't seem to do anything :( -->
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php 
 		include 'util.php';
@@ -10,11 +9,16 @@
 	?>
 	<title>High Scores</title>
 </head>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+		</ul>
 
 <body>
-	<?php 
-		echo outputScoreTable(); 
-	?>
+	<div id = "scorecard" class = "center">
+		<?php 
+			echo outputScoreTable(); 
+		?>
+	</div>
 </body>
 
 </html>

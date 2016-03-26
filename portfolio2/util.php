@@ -46,8 +46,13 @@ function outputScoreTable(){
 
 	for($i = 0; $i < sizeof($_SESSION['scores']); $i++){
 
-		$table = $table . "<tr>";
-
+		$table = $table . "<tr";
+		
+		if($i % 2 == 0){
+			$table = $table . " class='lightRow'";
+		}
+		$table = $table . ">";
+		
 		$table = $table . "<td>" . ($i+1) . "</td>";
 		$table = $table . "<td>" . $_SESSION['scores'][$i]["name"] . "</td>";
 		$table = $table . "<td>" . $_SESSION['scores'][$i]["score"] . "</td>";
