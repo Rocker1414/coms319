@@ -14,11 +14,15 @@
 		</ul>
 
 <body>
+	<center><h2>Total Games Played: <?php echo getTotalGames(); ?></h2></center>
 	<div id = "scorecard" class = "center">
 		<?php 
-			echo outputScoreTable(); 
+			echo outputScoreTable();
 		?>
 	</div>
+	
+	<br>
+	<h3>Developed by Ian Baer and Chris Rogers. Version 1.0</h3>
 </body>
 
 </html>

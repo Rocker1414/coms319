@@ -45,7 +45,8 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 
 		$http.post('/server.php', data).success(
 			function (data, status, headers, config) {
-               //nothing needed
+               //redirect to high score table
+               window.location.href = "highscores.php";
             });
 	}
 
@@ -153,7 +154,11 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	};
 
 	$scope.toggle = function(i){
-		$scope.die[i].toggle();
+
+		if($scope.die[i].val != 0){
+			$scope.die[i].toggle();
+		}
+		
 	};
 
 	// Reset non-locked dice after a roll
@@ -211,6 +216,12 @@ app.controller('GameController', ['$scope', '$http', function($scope, $http) {
 	}
 	
 	$scope.keep = function(id, val){
+
+		//if havent rolled, return
+		if($scope.rollsLeft == 3){
+			return;
+		}
+
 		//when keeping, check 
 		if($scope.yahtzee() == 50 && $scope.card.yahtzeeScored()){
 			$scope.card.yahtzeeBonus += 100;

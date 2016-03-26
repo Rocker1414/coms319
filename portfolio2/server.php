@@ -9,6 +9,7 @@
 	$score = $data['score'];
 
 	if($id == "check"){
+		addGame();
 		echo isHighScore($score);
 	}
 	elseif($id == "save"){

@@ -14,6 +14,7 @@
 		<ul>
 			<li><a href="index.html">Restart Game</a></li>
 			<li><a href="highscores.php">See High Scores</a></li>
+			<li><a href="rules.html">View Rules</a></li>
 		</ul>
 
 		<center><h1 ng-class="{hidden: !gameOver}">Game Over! Final Score: {{card.grandTotal()}}</h1></center>
@@ -30,7 +31,6 @@
 
 		<div id = "menu" ng-class="{hidden: gameOver}" class = "center"> 
 		<div ng-class="{hidden: rollsLeft == 0}"><button id = "rollButton" ng-click="roll()" >Roll</button></div>
-		<button id = "rollButton" ng-click="forceYahtzee()" >Force Yahtzee</button>	
 		<p> Rolls Left This Turn: {{rollsLeft}} </p>
 		</div>
 		
@@ -186,6 +186,7 @@
 			</table>
 			<p id = "error"> </div>
 		</div> 
-		
+
+		<h3>Developed by Ian Baer and Chris Rogers. Version 1.0</h3>
 	</body>
 </html>
