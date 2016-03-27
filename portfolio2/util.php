@@ -1,11 +1,8 @@
-<?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php
 
 function readScores(){
 	$_SESSION['scores'] = json_decode(file_get_contents('high_scores.txt'), true);
-}
+}	
 
 function getTotalGames(){
 	$total = json_decode(file_get_contents('total_games.txt'), true);
@@ -16,7 +13,7 @@ function addGame(){
 	$total = json_decode(file_get_contents('total_games.txt'), true);
 	$n = $total[0]['total'];
 	$total[0]['total'] = $n + 1;
-	file_put_contents('total_games.txt.', json_encode($total));
+	file_put_contents('total_games.txt', json_encode($total));
 }
 
 function trySave($name, $score){
@@ -49,7 +46,7 @@ function trySave($name, $score){
 
 function writeScores(){
 
-	file_put_contents('high_scores.txt.', json_encode($_SESSION['scores']));
+	file_put_contents('high_scores.txt', json_encode($_SESSION['scores']));
 
 }
 

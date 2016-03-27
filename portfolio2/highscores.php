@@ -1,12 +1,12 @@
+<?php 
+	include 'init.php';
+	readScores();
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<?php 
-		include 'util.php';
-		session_start();
-		readScores();
-	?>
+	
 	<title>High Scores</title>
 </head>
 		<ul>
@@ -21,7 +21,6 @@
 		?>
 	</div>
 	
-	<br>
 	<h3>Developed by Ian Baer and Chris Rogers. Version 1.0</h3>
 </body>
 

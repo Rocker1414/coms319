@@ -1,6 +1,5 @@
 <?php
-	include 'util.php';
-	session_start();
+	include 'init.php';
 	readScores();
 
 	$data = json_decode(file_get_contents('php://input'), true);
