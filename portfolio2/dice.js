@@ -1,4 +1,5 @@
 //this is the Dice class
+
 function Dice(id){
 	this.canvasRef = document.getElementById(id);
 	this.width = document.getElementById(id).width;
