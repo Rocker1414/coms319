@@ -35,7 +35,7 @@ ROMAN: ( ROMAN_BASE ) {
 
 WS:  [ \t]+ ; 
 
-NEWLINE: '\n' {
+NEWLINE: '\r\n' {
       System.out.println("\n" + total);
       total = 0;
     };

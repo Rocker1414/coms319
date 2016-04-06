@@ -1,1 +1,1 @@
-java -jar ../antlr-4.4-complete.jar %*
+java -jar ../antlr-4.5.2-complete.jar %*
