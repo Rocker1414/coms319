@@ -7,7 +7,7 @@ fragment NAME: OKCHAR+ ;
 fragment START:  ('/' NAME) | NAME  ; 
 
 PATH: START ('/' NAME)*
-             { System.out.println("File name: " + getText()); }
+             {System.out.println("File name: " + getText()); }
         ;
 
 WS: [ \r\n\t]+         {skip();} ;   
