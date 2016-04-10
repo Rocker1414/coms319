@@ -114,3 +114,37 @@ Library.prototype.displayShelf = function(pos){
 Library.prototype.displayBook = function(shelf, book){
 	this.shelves[shelf].books[book].display();
 };
+
+Library.prototype.premade = function(){
+	this.addShelf(new Shelf("Shelf1"));
+
+	this.addShelf(new Shelf("Shelf2"));
+
+	this.addShelf(new Shelf("Shelf3"));
+
+	this.shelves[0].addBook(new Book("Book1", "me", 100));
+	this.shelves[0].addBook(new Book("Book1", "me", 100));
+	this.shelves[0].addBook(new Book("Book1", "me", 100));
+	this.shelves[0].addBook(new Book("Book2", "foo", 200));
+	this.shelves[0].addBook(new Book("Book2", "foo", 200));
+	this.shelves[0].addBook(new Book("Book3", "foo", 300));
+	this.shelves[0].addBook(new Book("Book3", "foo", 300));
+	this.shelves[0].addBook(new Book("Book3", "foo", 300));
+	this.shelves[0].addBook(new Book("Book4", "me", 400));
+
+	this.shelves[1].addBook(new Book("Book5", "me", 500));
+	this.shelves[1].addBook(new Book("Book5", "me", 500));
+	this.shelves[1].addBook(new Book("Book5", "me", 500));
+	this.shelves[1].addBook(new Book("Book5", "me", 500));
+	this.shelves[1].addBook(new Book("Book5", "me", 500));
+	this.shelves[1].addBook(new Book("Book6", "foo", 600));
+	this.shelves[1].addBook(new Book("Book6", "foo", 600));
+	this.shelves[1].addBook(new Book("Book8", "foo", 800));
+	this.shelves[1].addBook(new Book("Book8", "foo", 800));
+
+	this.shelves[2].addBook(new Book("Book9", "me", 900));
+	this.shelves[2].addBook(new Book("Book1", "me", 100));
+	this.shelves[2].addBook(new Book("Book2", "foo", 200));
+	this.shelves[2].addBook(new Book("Book3", "foo", 300));
+	this.shelves[2].addBook(new Book("Book5", "me", 500));
+}
