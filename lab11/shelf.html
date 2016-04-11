@@ -1,1 +1,8 @@
-<a href="/"><button>Back</button></a>
+<a href="/shelves"><button>Back to Shelves</button></a>
+<a href="/"><button>Back to Home</button></a>
+<table>
+	<th>{{library.shelves[shelfId].name}}</th>
+	<tr ng-repeat="book in library.shelves[shelfId].books">
+		<td><a href="/shelves/{{shelfId}}/books/{{$index}}">{{book.title}}</a></td>
+	</tr>
+</table>

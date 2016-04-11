@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html ng-app="library">
 	<head>
+		<base href="/"/>
 		<title>Library</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>		
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
 		<script src="book.js"></script>
 		<script src="shelf.js"></script>
 		<script src="library.js"></script>
 		<script src="controller.js"></script>
 	</head>
 
-	<body>		
+	<body>
+		<h2>319 Library</h2>
 		<div ng-view></div>
 	</body>
 </html>

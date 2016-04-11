@@ -1,0 +1,7 @@
+<a href="/"><button>Back to Home</button></a>
+<table>
+	<th>Shelf</th>
+	<tr ng-repeat="shelf in library.shelves">
+		<td ngclick><a href="/shelves/{{$index}}">{{shelf.name}}</a></td>
+	</tr>
+</table>

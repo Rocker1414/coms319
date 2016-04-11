@@ -1,9 +1,11 @@
 <div>
-	<a href="/"><button>Back</button></a>
+	<a href="/"><button>Back to Home</button></a>
 	<table>
-		<!--<th ng-repeat="shelf in library.shelves">{{shelf.name}}</th>
-		<tr ng-repeat="student in studentsObj"> 
-  			<td ng-repeat="(key, value) in student"> {{value}} </td>
-		</tr> -->
+		<th ng-repeat="shelf in library.shelves">{{shelf.name}}</th>
+
+		<tr ng-repeat="i in bookIndex">
+
+  			<td ng-repeat="j in shelfIndex"><span ng-bind-html="getItem($index, $parent.$index) | html"></span></td>
+		</tr>
 	</table>
 </div>
