@@ -1,28 +1,54 @@
 function Player(){
 	this.board = new Board(8,8);
 	this.board.init();
+
+	this.ships = [];
 }
 
+
+Player.prototype.init = function(){
+
+}
+
+Player.prototype.placeShips = function(){
+	//place fragments
+	for(var i = 0; i < this.ships.length; i++){
+		var ship = this.ships[i];
+
+		for(var j = 0; j < ship.fragments.length; j++){
+
+			var frag = ship.fragments[j];
+			var x = frag.x;
+			var y = frag.y;
+			this.board.ships[y][x] = frag;
+			this.board.markers[y][x] = frag.parent.marker;
+		}
+
+	}
+}
+
+
+
 Player.prototype.predefined = function(){
-	this.board.ships[0][0] = "p";
-	this.board.ships[1][0] = "p";
 
-	this.board.ships[3][2] = "s";
-	this.board.ships[4][2] = "s";
-	this.board.ships[5][2] = "s";
+	var s = new Ship(2, [1,0], -1, "p");
+	s.init();
+	this.ships.push(s);
 
-	this.board.ships[2][6] = "d";
-	this.board.ships[3][6] = "d";
-	this.board.ships[4][6] = "d";
+	var s = new Ship(3, [3,2], -1, "s");
+	s.init();
+	this.ships.push(s);
 
-	this.board.ships[0][2] = "b";
-	this.board.ships[0][3] = "b";
-	this.board.ships[0][4] = "b";
-	this.board.ships[0][5] = "b";
+	var s = new Ship(3, [2,6], -1, "d");
+	s.init();
+	this.ships.push(s);
 
-	this.board.ships[7][3] = "c";
-	this.board.ships[7][4] = "c";
-	this.board.ships[7][5] = "c";
-	this.board.ships[7][6] = "c";
-	this.board.ships[7][7] = "c";
+	var s = new Ship(4, [0,2], 1, "b");
+	s.init();
+	this.ships.push(s);
+
+	var s = new Ship(5, [7,3], 1, "c");
+	s.init();
+	this.ships.push(s);
+
 }

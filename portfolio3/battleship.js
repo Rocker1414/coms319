@@ -4,6 +4,7 @@ app.controller('GameController', ['$scope', function($scope) {
 
 	$scope.player = new Player();
 	$scope.player.predefined();
+	$scope.player.placeShips();
 	$scope.ai = new AI();
 
 	$scope.aiTurn = function(){

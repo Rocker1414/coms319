@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="battleship">
 	<head>
-		<title> Battleship Test </title>
+		<title>Battleship!</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-		<script src="player.js"></script>
-		<script src="ai.js"></script>
 		<script src="ship.js"></script> 
+		<script src="player.js"></script>
+		<script src="ai.js"></script>		
 		<script src="board.js"></script>
 		<script src="util.js"></script>
 		<script src="battleship.js"></script>
@@ -29,36 +29,36 @@
 			</tr>
 		  <tr>
 			<td>1</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[0][i] == -1}, {hit: player.board.grid[0][i] == 1}]">{{player.board.getShip([0, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[0][i] == -1}, {hit: player.board.grid[0][i] == 1}]">{{player.board.getMarker([0, i])}}</td>
 
 		  </tr>
 		  <tr>
 			<td>2</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[1][i] == -1}, {hit: player.board.grid[1][i] == 1}]">{{player.board.getShip([1, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[1][i] == -1}, {hit: player.board.grid[1][i] == 1}]">{{player.board.getMarker([1, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>3</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[2][i] == -1}, {hit: player.board.grid[2][i] == 1}]">{{player.board.getShip([2, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[2][i] == -1}, {hit: player.board.grid[2][i] == 1}]">{{player.board.getMarker([2, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>4</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[3][i] == -1}, {hit: player.board.grid[3][i] == 1}]">{{player.board.getShip([3, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[3][i] == -1}, {hit: player.board.grid[3][i] == 1}]">{{player.board.getMarker([3, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>5</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[4][i] == -1}, {hit: player.board.grid[4][i] == 1}]">{{player.board.getShip([4, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[4][i] == -1}, {hit: player.board.grid[4][i] == 1}]">{{player.board.getMarker([4, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>6</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[5][i] == -1}, {hit: player.board.grid[5][i] == 1}]">{{player.board.getShip([5, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[5][i] == -1}, {hit: player.board.grid[5][i] == 1}]">{{player.board.getMarker([5, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>7</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[6][i] == -1}, {hit: player.board.grid[6][i] == 1}]">{{player.board.getShip([6, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[6][i] == -1}, {hit: player.board.grid[6][i] == 1}]">{{player.board.getMarker([6, i])}}</td>
 		  </tr>
 		  <tr>
 			<td>8</td>
-			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[7][i] == -1}, {hit: player.board.grid[7][i] == 1}]">{{player.board.getShip([7, i])}}</td>
+			<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[7][i] == -1}, {hit: player.board.grid[7][i] == 1}]">{{player.board.getMarker([7, i])}}</td>
 		  </tr>
 		  
 		  <tr>
