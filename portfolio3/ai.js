@@ -46,6 +46,10 @@ AI.prototype.doTurn = function(board){
 						didFire = true;
 
 					}
+					//already fired there, change direction
+					else if(board.grid[yTrial][xTrial] == -1){
+						current.direction = -current.direction;
+					}
 
 				}
 				else{
