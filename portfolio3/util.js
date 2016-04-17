@@ -43,3 +43,13 @@ function parseCoords(coords){
 
 	return [x,y];
 }
+
+function markerToImage(marker, index, rotate){
+	
+	if(rotate){
+		return "<img class='rotate' src='resources/fragments/" + marker + index + ".png'>";
+	}else{
+		return "<img src='resources/fragments/" + marker + index + ".png'>";
+	}
+	
+}

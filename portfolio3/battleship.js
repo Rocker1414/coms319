@@ -1,4 +1,10 @@
-var app = angular.module('battleship', []);
+var app = angular.module('battleship', ['ngSanitize']);
+
+app.filter('html', ['$sce', function ($sce) { 
+    return function (code) {
+        return $sce.trustAsHtml(code);
+    };    
+}]);
 
 app.controller('GameController', ['$scope', function($scope) {
 	$scope.message = "Test";

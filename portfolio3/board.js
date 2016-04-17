@@ -29,18 +29,31 @@ Board.prototype.init = function(){
 	}
 }
 
-Board.prototype.getMarker = function(coords){
+Board.prototype.getImage = function(coords){
 
 	x = coords[1];
 	y = coords[0];
 
 	if(this.ships[y][x] != 0){
-		return this.markers[y][x];
+		return markerToImage(this.markers[y][x], this.ships[y][x].index, (this.ships[y][x].parent.orientation == 1));
 	}
 	else{
 		return "";
 	}
 
+	
+}
+
+Board.prototype.showHitImage = function(coords){
+	x = coords[1];
+	y = coords[0];
+	
+	if((this.ships[y][x] != 0)  && (this.grid[y][x] == 1) && (this.ships[y][x].parent.isDestroyed())){
+		return markerToImage(this.markers[y][x], this.ships[y][x].index, (this.ships[y][x].parent.orientation == 1));
+	}
+	else{
+		return "";
+	}
 	
 }
 

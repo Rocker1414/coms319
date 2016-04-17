@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
 		<script src="ship.js"></script> 
 		<script src="player.js"></script>
 		<script src="ai.js"></script>		
@@ -56,36 +57,52 @@
 						</tr>
 					  <tr>
 						<td>1</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[0][i] == -1}, {hit: player.board.grid[0][i] == 1}]">{{player.board.getMarker([0, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[0][i] == -1}, {hit: player.board.grid[0][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([0, i]) | html"></span>
+						</td>
 
 					  </tr>
 					  <tr>
 						<td>2</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[1][i] == -1}, {hit: player.board.grid[1][i] == 1}]">{{player.board.getMarker([1, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[1][i] == -1}, {hit: player.board.grid[1][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([1, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>3</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[2][i] == -1}, {hit: player.board.grid[2][i] == 1}]">{{player.board.getMarker([2, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[2][i] == -1}, {hit: player.board.grid[2][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([2, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>4</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[3][i] == -1}, {hit: player.board.grid[3][i] == 1}]">{{player.board.getMarker([3, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[3][i] == -1}, {hit: player.board.grid[3][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([3, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>5</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[4][i] == -1}, {hit: player.board.grid[4][i] == 1}]">{{player.board.getMarker([4, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[4][i] == -1}, {hit: player.board.grid[4][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([4, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>6</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[5][i] == -1}, {hit: player.board.grid[5][i] == 1}]">{{player.board.getMarker([5, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[5][i] == -1}, {hit: player.board.grid[5][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([5, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>7</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[6][i] == -1}, {hit: player.board.grid[6][i] == 1}]">{{player.board.getMarker([6, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[6][i] == -1}, {hit: player.board.grid[6][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([6, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>8</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[7][i] == -1}, {hit: player.board.grid[7][i] == 1}]">{{player.board.getMarker([7, i])}}</td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: player.board.grid[7][i] == -1}, {hit: player.board.grid[7][i] == 1}]">
+						<span ng-bind-html="player.board.getImage([7, i]) | html"></span>
+						</td>
 					  </tr>
 					  
 		
@@ -110,36 +127,52 @@
 						</tr>
 					  <tr>
 						<td>1</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[0][i] == -1}, {hit: opponent.board.grid[0][i] == 1}]" ng-click="playerAction(0, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[0][i] == -1}, {hit: opponent.board.grid[0][i] == 1}]" ng-click="playerAction(0, i)">
+						<span ng-bind-html="opponent.board.showHitImage([0, i]) | html"></span>
+						</td>
 
 					  </tr>
 					  <tr>
 						<td>2</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[1][i] == -1}, {hit: opponent.board.grid[1][i] == 1}]" ng-click="playerAction(1, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[1][i] == -1}, {hit: opponent.board.grid[1][i] == 1}]" ng-click="playerAction(1, i)">
+						<span ng-bind-html="opponent.board.showHitImage([1, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>3</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[2][i] == -1}, {hit: opponent.board.grid[2][i] == 1}]" ng-click="playerAction(2, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[2][i] == -1}, {hit: opponent.board.grid[2][i] == 1}]" ng-click="playerAction(2, i)">
+						<span ng-bind-html="opponent.board.showHitImage([2, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>4</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[3][i] == -1}, {hit: opponent.board.grid[3][i] == 1}]" ng-click="playerAction(3, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[3][i] == -1}, {hit: opponent.board.grid[3][i] == 1}]" ng-click="playerAction(3, i)">
+						<span ng-bind-html="opponent.board.showHitImage([3, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>5</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[4][i] == -1}, {hit: opponent.board.grid[4][i] == 1}]" ng-click="playerAction(4, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[4][i] == -1}, {hit: opponent.board.grid[4][i] == 1}]" ng-click="playerAction(4, i)">
+						<span ng-bind-html="opponent.board.showHitImage([4, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>6</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[5][i] == -1}, {hit: opponent.board.grid[5][i] == 1}]" ng-click="playerAction(5, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[5][i] == -1}, {hit: opponent.board.grid[5][i] == 1}]" ng-click="playerAction(5, i)">
+						<span ng-bind-html="opponent.board.showHitImage([5, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>7</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[6][i] == -1}, {hit: opponent.board.grid[6][i] == 1}]" ng-click="playerAction(6, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[6][i] == -1}, {hit: opponent.board.grid[6][i] == 1}]" ng-click="playerAction(6, i)">
+						<span ng-bind-html="opponent.board.showHitImage([6, i]) | html"></span>
+						</td>
 					  </tr>
 					  <tr>
 						<td>8</td>
-						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[7][i] == -1}, {hit: opponent.board.grid[7][i] == 1}]" ng-click="playerAction(7, i)"></td>
+						<td ng-repeat="i in range(0,7)" ng-class="[{missed: opponent.board.grid[7][i] == -1}, {hit: opponent.board.grid[7][i] == 1}]" ng-click="playerAction(7, i)">
+						<span ng-bind-html="opponent.board.showHitImage([7, i]) | html"></span>
+						</td>
 					  </tr>
 					  
 					  

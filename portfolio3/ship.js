@@ -35,7 +35,7 @@ Ship.prototype.init = function(){
 	var x = this.start[1];
 	var y = this.start[0];
 	for(var i = 0; i < this.size; i++){
-		var frag = new Fragment(this, y, x);
+		var frag = new Fragment(this, y, x, i);
 
 		this.fragments.push(frag);
 
@@ -52,9 +52,10 @@ Ship.prototype.init = function(){
 
 }
 
-function Fragment(parent, y, x){
+function Fragment(parent, y, x, index){
 	this.x = x;
 	this.y = y;
+	this.index = index;
 	this.parent = parent;
 
 	this.destroyed = false;
