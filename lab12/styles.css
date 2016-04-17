@@ -1,0 +1,21 @@
+#app{
+	position:relative;
+}
+
+#left{
+	float: left;
+	width: 75%;
+	display:inline-block;
+}
+
+#right{
+
+	width: 25%;
+	display:inline-block;
+}
+
+#messages{
+	width: 23vw;
+	height: 250px;
+	resize: none;
+}

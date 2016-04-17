@@ -4,24 +4,51 @@
   <!-- This is the websocket SERVER -->
   <script src ="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-
+  <link rel="stylesheet" href="styles.css">
   </head>
 
-  <body>
-  <div id="msg"></div> 
   <script>
     // connect to WEBSOCKET server
     var socket = io.connect('http://localhost:5000');
 
-    // Fire an event (that the server will handle
-    socket.emit('myEvent', 'Hello Message from the client');
-
     // Attach event handler for event fired by server
-    socket.on('server', function(data) {
-       var elem = document.getElementById('msg'); 
-       console.log(data);
-       elem.innerHTML += "<br>" + data; // append data that we got back
+    socket.on('broadcast', function(data) {
+      var cur = $('#messages').val();
+       $('#messages').val(data + "\n" + cur);
+    });
+
+    socket.on('success', function(){
+      $("#login").html("");
+
+    });
+
+    socket.on('posts', function(postHtml){
+       $('#left').html("<h3>Posts</h3>" + postHtml);
+    });
+
+  </script>
+
+  <script>
+    $(document).ready(function () {
+        $("#login").load("login.html");
     });
   </script>
+
+  <body>
+  <div id="content">
+      <h1>CS319 Post App</h1>
+      <div id="login"></div>
+      <div id="app">
+
+        <div id="left"><h3>Posts</h3></div>
+
+        <div id="right"><h3>Messages</h3>
+          <textarea id="messages" readonly="readonly"></textarea>
+        </div>
+
+      </div>
+
+  </div> 
+
   </body>
 </html>

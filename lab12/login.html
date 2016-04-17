@@ -1,0 +1,14 @@
+<script>
+	$(document).ready(function () {
+        $("#submit").click(function(){
+        	socket.emit("login", $("#username").val(), $("#password").val());
+        });
+    });
+</script>
+
+<form>
+	Username:<input id="username" type="text"><br>
+	Password:<input id="password" type="password">
+</form>
+
+<button id="submit">Log In</button>
