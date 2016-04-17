@@ -7,8 +7,8 @@ function AI(){
 }
 
 AI.prototype.doTurn = function(board){
-
 	//if have a hit to parse, 
+	console.log(this.hitQueue);
 	if(this.hitQueue.length > 0){
 		//head of queue
 		var current = this.hitQueue[0];
@@ -36,7 +36,13 @@ AI.prototype.doTurn = function(board){
 						var result = board.fire([yTrial, xTrial]);
 						//if hit ship, keep direction
 						if(result != -1){
+							//if not hit, add to queue. We know also to go other direction
+							if(!this.alreadyHit(result.parent)){
+								var hit = new Hit(result.parent, yTrial, xTrial);
+								this.hitQueue.push(hit);
 
+								current.direction = -current.direction;
+							}
 						}
 						//didnt hit ship, change direction
 						else{
@@ -49,6 +55,16 @@ AI.prototype.doTurn = function(board){
 					//already fired there, change direction
 					else if(board.grid[yTrial][xTrial] == -1){
 						current.direction = -current.direction;
+					}
+					//already hit ship there
+					else if(board.grid[yTrial][xTrial] == 1){
+						//see if it is from another hit
+						var ship = board.ships[yTrial][xTrial].parent;
+						//if that ship is not the current, change direction
+						if(current.shipRef != ship){
+							current.direction = -current.direction;
+						}
+						
 					}
 
 				}
@@ -99,18 +115,24 @@ AI.prototype.doTurn = function(board){
 						//if open, fire
 						var result = board.fire([yTrial, xTrial]);
 						if(result != -1){
-							
-							//if hit same ship, know orientation
-							if(dX != 0){
-								current.orientation = 1;
-
-							}
-							else if(dY != 0){
-								current.orientation = -1;
-
-							}
-
 							//if new ship, add to hit queue
+							if(!this.alreadyHit(result.parent)){
+								var hit = new Hit(result.parent, yTrial, xTrial);
+								this.hitQueue.push(hit);
+							}
+							else{								
+								//if hit same ship, know orientation
+								if(dX != 0){
+									current.orientation = 1;
+
+								}
+								else if(dY != 0){
+									current.orientation = -1;
+
+								}
+
+							}
+
 						}
 
 						didFire = true;
@@ -119,10 +141,6 @@ AI.prototype.doTurn = function(board){
 				
 
 			}//while
-
-			//if hit same ship, know orientation
-
-			//if new ship, add to hit queue
 
 		}//dont know ori
 
@@ -136,8 +154,11 @@ AI.prototype.doTurn = function(board){
 		if(result != -1){
 			//hit a ship
 			//if ship was not already hit, create new hit
-			var hit = new Hit(result.parent, selection[0], selection[1]);
-			this.hitQueue.push(hit);
+			if(!this.alreadyHit(result.parent)){
+				//console.log(result.parent);
+				var hit = new Hit(result.parent, selection[0], selection[1]);
+				this.hitQueue.push(hit);
+			}
 		}
 	}
 
@@ -149,6 +170,7 @@ AI.prototype.checkHits = function(){
 	//go thorugh all hits, if a ship was destroyed, remove it from queue
 	var remove = [];
 	for(var i = 0; i < this.hitQueue.length; i++){
+		//console.log(this.hitQueue[i].shipRef);
 		if(this.hitQueue[i].shipRef.isDestroyed()){
 			remove.push(i);
 		}
@@ -157,6 +179,19 @@ AI.prototype.checkHits = function(){
 	for(var i = 0; i < remove.length; i++){
 		this.hitQueue.splice(remove[i], 1);
 	}
+}
+
+AI.prototype.alreadyHit = function(ship){
+	//console.log(ship);
+	for(var i = 0; i < this.hitQueue.length; i++){
+		if(this.hitQueue[i].shipRef == ship){
+
+			return true;
+		}
+	}
+
+	return false;
+
 }
 
 
@@ -181,7 +216,7 @@ function Hit(shipRef, y, x){
 	}
 
 
-	this.shipRef = shipRef
+	this.shipRef = shipRef;
 	this.x = x;
 	this.y = y;
 

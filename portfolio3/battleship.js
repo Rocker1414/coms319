@@ -3,8 +3,7 @@ var app = angular.module('battleship', []);
 app.controller('GameController', ['$scope', function($scope) {
 
 	$scope.player = new Player();
-	$scope.player.predefined();
-	$scope.player.placeShips();
+	$scope.player.randomShips();
 	$scope.ai = new AI();
 
 	$scope.aiTurn = function(){

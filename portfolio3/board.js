@@ -88,3 +88,33 @@ Board.prototype.returnUntouched = function(){
 	return arr;
 
 }
+
+Board.prototype.isClear = function(coords, orientation, length){
+	var y = coords[0];
+	var x = coords[1];
+
+	//make sure all squares are clear
+	for(var i = 0; i < length; i++){
+		//always make sure within bounds
+		if(x >= 0 && x < this.width && y >= 0 && y < this.height){
+
+			//make sure space clear, if not, return false
+			if(this.ships[y][x] != 0){
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+
+		if(orientation == 1){
+			x++;
+		}
+		else if(orientation == -1){
+			y++;
+		}
+	}
+
+	return true;
+
+}
