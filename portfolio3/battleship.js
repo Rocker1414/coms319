@@ -1,13 +1,14 @@
 var app = angular.module('battleship', []);
 
 app.controller('GameController', ['$scope', function($scope) {
-
+	$scope.message = "Test";
 	$scope.player = new Player();
 	$scope.player.randomShips();
-	$scope.ai = new AI();
+	$scope.opponent = new AI();
+	$scope.opponent.randomShips();
 
 	$scope.aiTurn = function(){
-		$scope.ai.doTurn($scope.player.board);
+		$scope.opponent.doTurn($scope.player.board);
 	};
 
 	$scope.range = function(min, max, step) {
@@ -17,6 +18,15 @@ app.controller('GameController', ['$scope', function($scope) {
 	        input.push(i);
 	    }
 	    return input;
+	};
+
+	$scope.playerAction = function(y, x){
+		$scope.opponent.board.fire([y,x]);
+		console.log($scope.opponent.board.grid[y][x]);
+	};
+
+	$scope.test = function(){
+		console.log("test");
 	};
 
 

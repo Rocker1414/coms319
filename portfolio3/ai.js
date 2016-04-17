@@ -2,13 +2,13 @@ function AI(){
 	
 	this.board = new Board(8,8);
 	this.board.init();
+	this.ships = [];
 	
 	this.hitQueue = [];
 }
 
 AI.prototype.doTurn = function(board){
 	//if have a hit to parse, 
-	console.log(this.hitQueue);
 	if(this.hitQueue.length > 0){
 		//head of queue
 		var current = this.hitQueue[0];
@@ -193,6 +193,68 @@ AI.prototype.alreadyHit = function(ship){
 	return false;
 
 }
+
+AI.prototype.randomShips = function(){
+	//pick random x, y, orientation
+	
+	var lengths = [2, 3, 3, 4, 5];
+	var markers = ["p", "s", "d", "b", "c"];
+
+	for(var i = 0; i < 5; i++){
+		var placed = false;
+		var length = lengths[i];
+		var marker = markers[i];
+		while(!placed){
+			var x = Math.floor((Math.random() * this.board.width));
+			var y = Math.floor((Math.random() * this.board.height));
+
+			var ori = Math.pow(-1, Math.floor((Math.random() * 2) + 1));
+
+			if(this.board.isClear([y, x], ori, length)){
+				var s = new Ship(length, [y,x], ori, marker);
+				s.init();
+				this.ships.push(s);
+
+				this.placeShipIndex(i);
+
+				placed = true;
+			}
+		}
+	}
+
+
+}
+
+AI.prototype.placeShips = function(){
+	//place fragments
+	for(var i = 0; i < this.ships.length; i++){
+		var ship = this.ships[i];
+
+		for(var j = 0; j < ship.fragments.length; j++){
+
+			var frag = ship.fragments[j];
+			var x = frag.x;
+			var y = frag.y;
+			this.board.ships[y][x] = frag;
+			this.board.markers[y][x] = frag.parent.marker;
+		}
+
+	}
+}
+
+AI.prototype.placeShipIndex = function(i){
+	var ship = this.ships[i];
+
+		for(var j = 0; j < ship.fragments.length; j++){
+
+			var frag = ship.fragments[j];
+			var x = frag.x;
+			var y = frag.y;
+			this.board.ships[y][x] = frag;
+			this.board.markers[y][x] = frag.parent.marker;
+		}
+}
+
 
 
 function Hit(shipRef, y, x){

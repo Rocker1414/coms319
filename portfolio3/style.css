@@ -40,3 +40,8 @@ td{
 .sprites{
 	display: inline-block;
 }
+
+.carousel-inner .item{
+    width: 90%;
+    height: 90%;
+}
