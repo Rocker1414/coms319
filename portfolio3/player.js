@@ -1,6 +1,7 @@
 function Player(){
 	this.board = new Board(8,8);
 	this.board.init();
+	this.turn = false;
 
 	this.ships = [];
 }
@@ -8,6 +9,14 @@ function Player(){
 
 Player.prototype.init = function(){
 
+}
+
+Player.prototype.giveTurn = function(){
+	this.turn = true;
+}
+
+Player.prototype.consumeTurn = function(){
+	this.turn = false;
 }
 
 Player.prototype.placeShips = function(){
@@ -122,4 +131,17 @@ Player.prototype.randomShips = function(){
 	}
 
 
+}
+
+Player.prototype.isDefeated = function(){
+
+	//if any ship is not destroyed, still alive
+	for(var i = 0; i < this.ships.length; i++){
+		if(!this.ships[i].isDestroyed()){
+			return false;
+		}
+
+	}
+
+	return true;
 }

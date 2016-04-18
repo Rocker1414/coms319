@@ -3,8 +3,17 @@ function AI(){
 	this.board = new Board(8,8);
 	this.board.init();
 	this.ships = [];
+	this.turn = false;
 	
 	this.hitQueue = [];
+}
+
+AI.prototype.giveTurn = function(){
+	this.turn = true;
+}
+
+AI.prototype.consumeTurn = function(){
+	this.turn = false;
 }
 
 AI.prototype.doTurn = function(board){
@@ -253,6 +262,19 @@ AI.prototype.placeShipIndex = function(i){
 			this.board.ships[y][x] = frag;
 			this.board.markers[y][x] = frag.parent.marker;
 		}
+}
+
+AI.prototype.isDefeated = function(){
+
+	//if any ship is not destroyed, still alive
+	for(var i = 0; i < this.ships.length; i++){
+		if(!this.ships[i].isDestroyed()){
+			return false;
+		}
+
+	}
+
+	return true;
 }
 
 

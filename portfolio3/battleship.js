@@ -6,15 +6,24 @@ app.filter('html', ['$sce', function ($sce) {
     };    
 }]);
 
-app.controller('GameController', ['$scope', function($scope) {
-	$scope.message = "Test";
-	$scope.player = new Player();
-	$scope.player.randomShips();
-	$scope.opponent = new AI();
-	$scope.opponent.randomShips();
+app.controller('GameController', ['$scope', '$timeout', function($scope, $timeout) {
+	
+	$scope.game = new Game();
+	$scope.game.init();
+	
+
+	$scope.game.player.giveTurn();
 
 	$scope.aiTurn = function(){
-		$scope.opponent.doTurn($scope.player.board);
+		if($scope.game.state != 0){return;}
+
+		if(!$scope.game.opponent.turn){return;}
+
+		$scope.game.opponent.doTurn($scope.game.player.board);
+
+		$scope.gameOver = $scope.game.isOver();
+
+		$scope.game.opponent.consumeTurn();
 	};
 
 	$scope.range = function(min, max, step) {
@@ -27,14 +36,55 @@ app.controller('GameController', ['$scope', function($scope) {
 	};
 
 	$scope.playerAction = function(y, x){
-		$scope.opponent.board.fire([y,x]);
-		console.log($scope.opponent.board.grid[y][x]);
+
+		if($scope.game.state != 0){return;}
+		if(!$scope.game.player.turn){return;}
+
+		$scope.game.opponent.board.fire([y,x]);
+		
+		$scope.gameOver = $scope.game.isOver();
+
+		$scope.game.player.consumeTurn();
 	};
 
-	$scope.test = function(){
-		console.log("test");
-	};
+	$scope.$watch('game.player.turn', function(){
 
+		
+		if($scope.game.player.turn){
+			$scope.game.message = "Your turn";
+			//player needs to move
+		}
+		//now opponents turn
+		else{
+			$timeout($scope.changeCarousel, 2000, true, 0);
+			$scope.game.opponent.giveTurn();
+		}
+
+	});
+
+	$scope.$watch('game.opponent.turn', function(){
+
+		if($scope.game.opponent.turn){
+			$scope.game.message = "Opponent's turn";
+			$timeout($scope.aiTurn, 4000);
+		
+		}
+		//now players turn
+		else{
+			$timeout($scope.changeCarousel, 2000, true, 1);
+			$scope.game.player.giveTurn();
+		}
+
+	});
+
+	$scope.changeCarousel = function(ind){
+		$('#carousel').carousel(ind);
+	}
+
+	$scope.$watch('game.state', function(){
+		//game is over do something
+
+	});
 
 
 }]);
