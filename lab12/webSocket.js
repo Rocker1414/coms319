@@ -15,8 +15,17 @@ var server = new Server();
 io.sockets.on('connection', function(socket) {
 
   socket.on('login', function(name, password){
-
-    var valid = true;
+	
+	var logins = JSON.parse(fs.readFileSync('users.txt', 'utf8'));
+	var valid = false;
+	
+	for(var i = 0; i < logins.length; i++){
+		if(logins[i]["user"] == name && logins[i]["pass"] == password){
+			valid = true;
+			break;
+		}
+	}
+	
     if (valid){
        var u = new User(name, this);
        server.users.push(u);
@@ -25,10 +34,15 @@ io.sockets.on('connection', function(socket) {
 
        server.broadcastMessage(name + " logged in.");
     }
-
+	else{
+		console.log("Invalid login");
+	}
   });
 
-});
+  socket.on('close', function() {
+       server.broadcastMessage(name + " logged out.");
+   });
+ });
 
 function Server(){
   this.users = [];

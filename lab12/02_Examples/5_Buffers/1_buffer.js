@@ -28,7 +28,7 @@ console.log(buf);
 
 //- Example 4
 buf = new Buffer("Kölniऄ"); // utf-8 is a multi-byte encoding
-console.log(buf);
+console.log(buf[1]);
 //<Buffer 4b | c3 b6 | 6c | 6e | 69 | e0 a4 84 |>
 // converts utf-8 to binary. Note that utf-8 is a multi-byte encoding
 

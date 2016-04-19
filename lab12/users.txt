@@ -1,3 +1,1 @@
-bilboswaggins football
-billy5 icecream
-ninjaboy katana
+[{"user":"bilboswaggins","pass":"football"},{"user":"billy5","pass":"icecream"},{"user":"ninjaboy","pass":"katana"}]
