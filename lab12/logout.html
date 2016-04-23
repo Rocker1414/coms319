@@ -1,0 +1,9 @@
+<script>
+$(document).ready(function () {	
+	$("#logoutButton").click(function(){
+		socket.emit("logout");
+	});
+});
+</script>
+
+<button id = "logoutButton">Logout</button>

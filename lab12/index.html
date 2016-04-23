@@ -16,39 +16,53 @@
       var cur = $('#messages').val();
        $('#messages').val(data + "\n" + cur);
     });
-
+	
     socket.on('success', function(){
       $("#login").html("");
+	  $("#fail").html("");
+	  $("#app").show();	
+	  $("#logout").show();
 
     });
-
+	
     socket.on('posts', function(postHtml){
        $('#left').html("<h3>Posts</h3>" + postHtml);
     });
+	
+	socket.on('fail', function(){
+		$("#fail").html("Invalid Login.");
+
+	});
+	
+	socket.on('reset', function(){
+		$("#login").load("login.html");
+		$("#app").hide();
+		$("#logout").hide();
+	});
 
   </script>
 
   <script>
     $(document).ready(function () {
         $("#login").load("login.html");
+		$("#logout").load("logout.html");
+		$("#app").hide();
+		$("#logout").hide();
     });
   </script>
 
   <body>
-  <div id="content">
-      <h1>CS319 Post App</h1>
-      <div id="login"></div>
-      <div id="app">
-
-        <div id="left"><h3>Posts</h3></div>
-
-        <div id="right"><h3>Messages</h3>
-          <textarea id="messages" readonly="readonly"></textarea>
-        </div>
-
-      </div>
-
-  </div> 
-
+		<div id = "content">
+		   <h1>CS319 Post App</h1>
+		   <div id="login"></div> 
+		   <div id = "logout"></div>
+		   <div id ="fail"></div>
+		   <div id = "app">
+				<div id="left"><h3>Posts</h3></div>
+				<div id = "right">
+					<h3>Messages</h3>
+					<textarea id="messages" readonly="readonly"></textarea>
+				</div>
+		   </div>
   </body>
 </html>

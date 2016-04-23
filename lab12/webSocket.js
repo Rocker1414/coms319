@@ -13,12 +13,12 @@ var server = new Server();
 
 
 io.sockets.on('connection', function(socket) {
-
-  socket.on('login', function(name, password){
+	var gName;
 	
+  socket.on('login', function(name, password){
 	var logins = JSON.parse(fs.readFileSync('users.txt', 'utf8'));
 	var valid = false;
-	
+	gName = name;
 	for(var i = 0; i < logins.length; i++){
 		if(logins[i]["user"] == name && logins[i]["pass"] == password){
 			valid = true;
@@ -35,14 +35,15 @@ io.sockets.on('connection', function(socket) {
        server.broadcastMessage(name + " logged in.");
     }
 	else{
-		console.log("Invalid login");
+		this.emit('fail');
 	}
+	
+	socket.on('logout', function(){
+		server.broadcastMessage(gName + " has logged out.");
+		this.emit('reset');
+	});	
   });
-
-  socket.on('close', function() {
-       server.broadcastMessage(name + " logged out.");
-   });
- });
+});
 
 function Server(){
   this.users = [];
