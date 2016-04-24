@@ -1,34 +1,6 @@
-<!DOCTYPE html>
-<html ng-app="battleship">
-	<!-- if carousel breaks replace id carousels with "#carousel-example-generic" -->
-	<head>
-		<meta charset="utf-8">
-    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-		<title>Battleship!</title>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" href="style.css">
-
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
-		<script src="ship.js"></script> 
-		<script src="player.js"></script>
-		<script src="ai.js"></script>		
-		<script src="board.js"></script>
-		<script src="util.js"></script>
-		<script src="game.js"></script>
-		<script src="battleship.js"></script>
-
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-				<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-
-	</head>
-	<body background="Resources/background.jpg" ng-controller="GameController">
-
-		<div class = "container">
-
+<div class="background">
+<div class="container">
+<center><button ng-click="menu()">Back</button></center>
 		<center><h2>{{game.message}}</h2></center>
 
 
@@ -185,19 +157,13 @@
 		  </div>
 		 
 		  <!-- Controls -->
-		  <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+		  <a class="left carousel-control" ng-click="changeSlide()" role="button" data-slide="prev">
 		    <span class="glyphicon glyphicon-chevron-left"></span>
-		  </a>
-		  <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+		  
+		  <a class="right carousel-control" ng-click="changeSlide()" role="button" data-slide="next">
 		    <span class="glyphicon glyphicon-chevron-right"></span>
 		  </a>
 		</div> <!-- Carousel -->
 
-<script>
-	$('.carousel').carousel({
-		interval: false
-	})
-</script>
-
-	</body>
-</html>
+</div>
+</div>

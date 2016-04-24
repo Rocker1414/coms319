@@ -1,0 +1,23 @@
+
+<a href="game"><button>Play vs Computer</button></a>
+<h2>Host Game</h2>
+<form>
+	Game Name:<input id="gname" type="text"><br>
+	Host Name:<input id="hname" type="text"><br>
+	Password(Optional):<input id="pw" type="text"><br>
+	<button ng-click="hostGame()">Submit</button>
+</form>
+<table>
+	<tr>
+		<td>Game Name</td>
+		<td>Host Name</td>
+		<td>Password?</td>
+		<td></td>
+	</tr>
+	<tr ng-repeat="game in games">
+		<td>{{game.name}}</td>
+		<td>{{game.host}}</td>
+		<td>{{game.hasPassword()}}</td>
+		<td><button ng-click="joinGame(game)">Join</button>
+	</tr>
+</table>

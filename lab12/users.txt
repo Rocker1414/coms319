@@ -1,1 +1,1 @@
-[{"user":"bilboswaggins","pass":"football"},{"user":"billy5","pass":"icecream"},{"user":"ninjaboy","pass":"katana"}]
+[{"user":"bilboswaggins","pass":"football"},{"user":"billy5","pass":"icecream"},{"user":"ninjaboy","pass":"katana"}, {"user":"test","pass":"password"}]

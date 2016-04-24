@@ -1,4 +1,4 @@
-var app = angular.module('battleship', ['ngSanitize']);
+var app = angular.module('battleship', ['ngRoute','ngSanitize']);
 
 app.filter('html', ['$sce', function ($sce) { 
     return function (code) {
@@ -6,31 +6,136 @@ app.filter('html', ['$sce', function ($sce) {
     };    
 }]);
 
-app.controller('MenuController', ['$scope', function($scope) {
+app.factory('socket', function ($rootScope) {
+  var socket = io.connect('http://localhost');
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {  
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          if (callback) {
+            callback.apply(socket, args);
+          }
+        });
+      })
+    }
+
+  };
+});
+
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        $routeProvider
+
+            .when('/', {
+                templateUrl : 'lobby.html',
+                controller  : 'MenuController'
+            })
+
+            .when('/game', {
+                templateUrl : 'game.html',
+                controller  : 'GameController'
+            })
+
+            .when('/game/:gameId', {
+                templateUrl : 'game.html',
+                controller  : 'GameController'
+            })
+
+
+            $locationProvider.html5Mode({
+			  enabled: true,
+			  requireBase: false
+			});
+}]);
+
+app.controller('MenuController', ['$scope', '$location', 'socket', function($scope, $location, socket) {
+
 	$scope.games = [];
 
-	$scope.games.push(new GameRef("test", "p1", "password"));
-	$scope.games.push(new GameRef("test2", "p2"));
+	socket.on("addGame", function(data){
+		var gr = new GameRef(data[0], data[1], data[2], data[3]);
+		$scope.games.push(gr);
+	});
+
+	
 
 	$scope.hostGame = function(){
 		var gname = $("#gname").val();
 		var hname = $("#hname").val();
-		var pw = null;
+		var pw = $("#pw").val();
 
-		if($("#pw").val() != ""){
-			$("#pw").val() 
-		}	
+		socket.emit("host", [gname, hname, pw]);
 
-		$scope.games.push(new GameRef(gname, hname, pw));
+	};
+
+	$scope.joinGame = function(game){
+		
+		var success = -1;
+		if(game.password != "")
+		{
+			var msg = "Please enter the game password.";
+			
+			while(success == -1){
+
+				var pw = window.prompt(msg,"");		
+
+				if(pw == game.password){
+					success = 1;
+				}
+				else if(pw == null){
+					success = 0;
+				}
+				else{
+					msg = "Wrong password, try again.";
+				}
+
+			}
+
+		}
+		else{
+			success = 1;
+		}
+
+		if(success == 1){
+			//join
+			$location.path("/game/" + game.id);
+		}
+		
 	}
+
 }]);
 
-app.controller('GameController', ['$scope', '$timeout', function($scope, $timeout) {
-	
+app.controller('GameController', ['$scope', '$timeout', '$routeParams', '$location', 'socket', 
+	function($scope, $timeout, $routeParams, $location, socket) {
+	$('.carousel').carousel({
+	interval: false
+	});
+
+	$scope.gameId = $routeParams.gameId;  
+
 	$scope.game = new Game();
 	$scope.game.init();
 
+	$scope.currentSlide = 0;
+
 	$scope.game.player.giveTurn();
+
+	$scope.menu = function(){
+		window.locationn.href = "/";
+	}
+
+	$scope.ping = function(){
+		socket.emit("test");
+	}
 
 	$scope.aiTurn = function(){
 		if($scope.game.state != 0){return;}
@@ -75,6 +180,7 @@ app.controller('GameController', ['$scope', '$timeout', function($scope, $timeou
 		//now opponents turn
 		else{
 			$timeout($scope.changeCarousel, 2000, true, 0);
+			
 			$scope.game.opponent.giveTurn();
 		}
 
@@ -90,6 +196,7 @@ app.controller('GameController', ['$scope', '$timeout', function($scope, $timeou
 		//now players turn
 		else{
 			$timeout($scope.changeCarousel, 2000, true, 1);
+			console.log(1);
 			$scope.game.player.giveTurn();
 		}
 
@@ -97,6 +204,17 @@ app.controller('GameController', ['$scope', '$timeout', function($scope, $timeou
 
 	$scope.changeCarousel = function(ind){
 		$('#carousel').carousel(ind);
+		$scope.currentSlide = ind;
+
+	}
+
+	$scope.changeSlide = function(){
+		if($scope.currentSlide == 0){
+			$scope.changeCarousel(1);
+		}
+		else{
+			$scope.changeCarousel(0);
+		}
 	}
 
 	$scope.$watch('game.state', function(){
