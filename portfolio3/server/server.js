@@ -51,7 +51,7 @@ io.on('connection', function(socket) {
 
   socket.on("host", function(data){
     var gr = new GameRecord(data[0], data[1], data[2]);
-    gr.player1 = this;
+    gr.players[0] = this;
 
     server.createGame(gr);
 
@@ -69,7 +69,14 @@ io.on('connection', function(socket) {
       }
 
       if(gr.player2 == null){
-        gr.player2 = this;
+        gr.players[1] = this;
+
+        gr.players[0].emit("hostSuccess", id);
+        gr.players[1].emit("joinSuccess", id);
+
+        //remove from other players list
+        server.sendRemove(id);
+
       }
       else{
         //tell player its full
@@ -81,6 +88,51 @@ io.on('connection', function(socket) {
       console.log("DC");
      server.disconnect(socket);
   });
+
+
+  //game code
+  //on a new game, opponents need to pass each other their boards
+  socket.on("fire", function(data){
+    var id = data[0];
+    var y = data[1];
+    var x = data[2];
+    //pass move to opponent
+    var gr = server.findById(id);
+    var n = 1;
+
+    if(this == gr.players[1]){n = 0;}
+
+    gr.players[n].emit("opponentFire", [y,x]);
+    gr.players[n].emit("giveTurn");
+  });
+
+  socket.on("gameConnect", function(id){
+    //kick anyone who shouldnt be here
+    var gr = server.findById(id);
+
+    if(this != gr.players[0] && this != gr.players[1]){
+      this.emit("kick");
+    }
+
+  });
+
+  socket.on("gameReady", function(id){
+
+
+    var gr = server.findById(id);
+    for(var i = 0; i < gr.players.length; i++){
+      if(this == gr.players[i]){
+        gr.ready[i] = 1;
+      }
+    }
+
+    if(gr.ready[0] == 1 && gr.ready[1] == 1){
+      gr.players[gr.goFirst].emit("giveTurn");
+    }
+
+
+  });
+
 
 });
 
@@ -104,7 +156,9 @@ Server.prototype.findById = function(id){
 Server.prototype.createGame = function(gr){
   //need to handle already used ids
   var id = Math.floor((Math.random() * 10000000) + 1);
+  var goFirst = Math.floor((Math.random() * 2));
   gr.id = id;
+  gr.goFirst = goFirst;
   this.games.push(gr);
 
   for(var i = 0; i < this.clients.length; i++){
@@ -116,7 +170,16 @@ Server.prototype.createGame = function(gr){
 Server.prototype.allGames = function(socket){
   for(var i = 0; i < this.games.length; i++){
       var gr = this.games[i];
-      socket.emit("addGame", [gr.id, gr.name, gr.host, gr.password]);
+      if(gr.players[1] == null){
+        socket.emit("addGame", [gr.id, gr.name, gr.host, gr.password]);
+      }
+
+  }
+}
+
+Server.prototype.sendRemove = function(id){
+  for(var i = 0; i < this.clients.length; i++){
+    this.clients[i].emit("removeGame", id);
   }
 }
 
@@ -132,7 +195,8 @@ function GameRecord(name, host, password){
   this.name = name;
   this.host = host;
   this.password = password;
-  this.player1 = null;
-  this.player2 = null;
+  this.players = [null, null];
   this.id = null;
+  this.goFirst = -1;
+  this.ready = [0, 0];
 }

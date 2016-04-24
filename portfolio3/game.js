@@ -28,3 +28,11 @@ Game.prototype.isOver = function(){
 		return 0;
 	}
 }
+
+Game.prototype.multiInit = function(){
+	this.player = new Player();
+	this.player.randomShips();
+
+	this.opponent = new Player();
+	this.opponent.randomShips();
+}

@@ -34,21 +34,25 @@ app.factory('socket', function ($rootScope) {
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider
-
             .when('/', {
                 templateUrl : 'lobby.html',
                 controller  : 'MenuController'
             })
 
+            .when('/host', {
+                templateUrl : 'host.html',
+                controller  : 'MenuController'
+            })
+
             .when('/game', {
                 templateUrl : 'game.html',
-                controller  : 'GameController'
+                controller  : 'SinglePlayerController'
             })
 
             .when('/game/:gameId', {
                 templateUrl : 'game.html',
-                controller  : 'GameController'
-            })
+                controller  : 'MultiPlayerController'
+            });
 
 
             $locationProvider.html5Mode({
@@ -66,6 +70,29 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 		$scope.games.push(gr);
 	});
 
+	socket.on("removeGame", function(id){
+		for(var i = 0; i < $scope.games.length; i++){
+			if($scope.games[i].id == id){
+				$scope.games.splice(i, 1);
+
+				return;
+			}
+
+		}
+	});
+
+	socket.on("joinSuccess", function(id){
+
+		$location.path("/game/" + id);
+
+	});
+
+	socket.on("hostSuccess", function(id){
+		
+		$location.path("/game/" + id);
+
+	});
+
 	
 
 	$scope.hostGame = function(){
@@ -74,6 +101,8 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 		var pw = $("#pw").val();
 
 		socket.emit("host", [gname, hname, pw]);
+
+		$location.path("/host");
 
 	};
 
@@ -107,20 +136,19 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 
 		if(success == 1){
 			//join
-			$location.path("/game/" + game.id);
+			socket.emit("join", game.id);
+			
 		}
 		
 	}
 
 }]);
 
-app.controller('GameController', ['$scope', '$timeout', '$routeParams', '$location', 'socket', 
+app.controller('SinglePlayerController', ['$scope', '$timeout', '$routeParams', '$location', 'socket', 
 	function($scope, $timeout, $routeParams, $location, socket) {
 	$('.carousel').carousel({
 	interval: false
 	});
-
-	$scope.gameId = $routeParams.gameId;  
 
 	$scope.game = new Game();
 	$scope.game.init();
@@ -130,7 +158,7 @@ app.controller('GameController', ['$scope', '$timeout', '$routeParams', '$locati
 	$scope.game.player.giveTurn();
 
 	$scope.menu = function(){
-		window.locationn.href = "/";
+		window.location.href = "/";
 	}
 
 	$scope.ping = function(){
@@ -196,7 +224,7 @@ app.controller('GameController', ['$scope', '$timeout', '$routeParams', '$locati
 		//now players turn
 		else{
 			$timeout($scope.changeCarousel, 2000, true, 1);
-			console.log(1);
+
 			$scope.game.player.giveTurn();
 		}
 
@@ -221,6 +249,105 @@ app.controller('GameController', ['$scope', '$timeout', '$routeParams', '$locati
 		//game is over do something
 
 	});
+
+
+}]);
+
+app.controller('MultiPlayerController', ['$scope', '$timeout', '$routeParams', '$location', 'socket', 
+	function($scope, $timeout, $routeParams, $location, socket) {
+	$('.carousel').carousel({
+	interval: false
+	});
+
+	$scope.gameId = $routeParams.gameId;  
+
+	$scope.game = new Game();
+	$scope.game.multiInit();
+
+	$scope.currentSlide = 0;
+
+	socket.emit("gameConnect", $scope.gameId);
+
+	$scope.menu = function(){
+		window.location.href = "/";
+	}
+
+	$scope.ping = function(){
+		socket.emit("test");
+	}
+
+	socket.on("kick", function(){
+		window.location.href = "/";
+	})
+
+	socket.on("opponentFire", function(data){
+		$scope.game.player.board.fire([data[0], data[1]]);
+	});
+
+	socket.on("giveTurn", function(){
+		$scope.game.player.giveTurn();
+	});
+
+
+	$scope.range = function(min, max, step) {
+	    step = step || 1;
+	    var input = [];
+	    for (var i = min; i <= max; i += step) {
+	        input.push(i);
+	    }
+	    return input;
+	};
+
+	$scope.playerAction = function(y, x){
+
+		if($scope.game.state != 0){return;}
+		if(!$scope.game.player.turn){return;}
+
+		$scope.game.opponent.board.fire([y,x]);
+		socket.emit("fire", [$scope.gameId, y,x]);
+		
+		$scope.gameOver = $scope.game.isOver();
+
+		$scope.game.player.consumeTurn();
+	};
+
+	$scope.$watch('game.player.turn', function(){
+
+		
+		if($scope.game.player.turn){
+			$timeout($scope.changeCarousel, 2000, true, 1);
+			$scope.game.message = "Your turn";
+			//player needs to move
+		}
+		//now opponents turn
+		else{
+			$scope.game.message = "Opponent's turn";
+			$timeout($scope.changeCarousel, 2000, true, 0);
+		}
+
+	});
+
+	$scope.changeCarousel = function(ind){
+		$('#carousel').carousel(ind);
+		$scope.currentSlide = ind;
+
+	}
+
+	$scope.changeSlide = function(){
+		if($scope.currentSlide == 0){
+			$scope.changeCarousel(1);
+		}
+		else{
+			$scope.changeCarousel(0);
+		}
+	}
+
+	$scope.$watch('game.state', function(){
+		//game is over do something
+
+	});
+
+	socket.emit("gameReady", $scope.gameId);
 
 
 }]);

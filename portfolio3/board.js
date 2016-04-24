@@ -70,7 +70,7 @@ Board.prototype.getShip = function(coords){
 }
 
 Board.prototype.fire = function(coords){
-
+	console.log(coords);
 	x = coords[1];
 	y = coords[0];
 

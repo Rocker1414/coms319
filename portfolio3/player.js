@@ -1,8 +1,11 @@
 function Player(){
+	//need to send for multi
 	this.board = new Board(8,8);
+
 	this.board.init();
 	this.turn = false;
 
+	//need to send for multi
 	this.ships = [];
 }
 
