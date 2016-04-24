@@ -6,11 +6,29 @@ app.filter('html', ['$sce', function ($sce) {
     };    
 }]);
 
+app.controller('MenuController', ['$scope', function($scope) {
+	$scope.games = [];
+
+	$scope.games.push(new GameRef("test", "p1", "password"));
+	$scope.games.push(new GameRef("test2", "p2"));
+
+	$scope.hostGame = function(){
+		var gname = $("#gname").val();
+		var hname = $("#hname").val();
+		var pw = null;
+
+		if($("#pw").val() != ""){
+			$("#pw").val() 
+		}	
+
+		$scope.games.push(new GameRef(gname, hname, pw));
+	}
+}]);
+
 app.controller('GameController', ['$scope', '$timeout', function($scope, $timeout) {
 	
 	$scope.game = new Game();
 	$scope.game.init();
-	
 
 	$scope.game.player.giveTurn();
 
