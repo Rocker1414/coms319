@@ -133,6 +133,21 @@ io.on('connection', function(socket) {
 
   });
 
+  socket.on("sendShip", function(data){
+    var id = data[0];
+     var gr = server.findById(id);
+     var size = data[1];
+     var y = data[2];
+     var x = data[3];
+     var ori = data[4];
+     var marker = data[5];
+
+     var n = 1;
+    if(this == gr.players[1]){n = 0;}
+
+    gr.players[n].emit("recieveShip", [size, y, x, ori, marker]);
+  });
+
 
 });
 

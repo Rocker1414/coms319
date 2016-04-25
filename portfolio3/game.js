@@ -34,5 +34,5 @@ Game.prototype.multiInit = function(){
 	this.player.randomShips();
 
 	this.opponent = new Player();
-	this.opponent.randomShips();
+
 }

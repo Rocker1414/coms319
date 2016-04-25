@@ -6,6 +6,10 @@
 	background-color: red;
 }
 
+.hidden{
+	display: none;
+}
+
 
 body{
 	color: black;

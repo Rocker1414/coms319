@@ -7,9 +7,28 @@ function Board(width, height){
 	//a 1 on the grid represents fired
 	this.grid = [];
 
-	//need something for ships
+	//ship fragments
 	this.ships = [];
 	this.markers = [];
+
+}
+
+Board.prototype.attachGrid = function(grid){
+	for(var i = 0; i < grid.length; i++){
+		var row = grid[i];
+		for(var j = 0; j < row.length; j++){
+			this.grid[i][j] = row[j];
+		}
+	}
+}
+
+Board.prototype.attachGrid = function(grid){
+	for(var i = 0; i < grid.length; i++){
+		var row = grid[i];
+		for(var j = 0; j < row.length; j++){
+			this.grid[i][j] = row[j];
+		}
+	}
 }
 
 Board.prototype.init = function(){

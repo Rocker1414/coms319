@@ -172,7 +172,7 @@ app.controller('SinglePlayerController', ['$scope', '$timeout', '$routeParams', 
 
 		$scope.game.opponent.doTurn($scope.game.player.board);
 
-		$scope.gameOver = $scope.game.isOver();
+		$scope.game.gameState = $scope.game.isOver();
 
 		$scope.game.opponent.consumeTurn();
 	};
@@ -190,10 +190,11 @@ app.controller('SinglePlayerController', ['$scope', '$timeout', '$routeParams', 
 
 		if($scope.game.state != 0){return;}
 		if(!$scope.game.player.turn){return;}
+		if($scope.game.opponent.board.grid[y][x] != 0){return;}
 
 		$scope.game.opponent.board.fire([y,x]);
 		
-		$scope.gameOver = $scope.game.isOver();
+		$scope.game.gameState = $scope.game.isOver();
 
 		$scope.game.player.consumeTurn();
 	};
@@ -264,6 +265,8 @@ app.controller('MultiPlayerController', ['$scope', '$timeout', '$routeParams', '
 	$scope.game = new Game();
 	$scope.game.multiInit();
 
+	$scope.gameStart = false;
+
 	$scope.currentSlide = 0;
 
 	socket.emit("gameConnect", $scope.gameId);
@@ -275,6 +278,22 @@ app.controller('MultiPlayerController', ['$scope', '$timeout', '$routeParams', '
 	$scope.ping = function(){
 		socket.emit("test");
 	}
+
+	socket.on("recieveShip", function(data){
+
+		var size = data[0];
+		var y = data[1];
+		var x = data[2];
+		var ori = data[3];
+		var marker = data[4];
+
+		var ship = new Ship(size, [y,x], ori, marker);
+
+		ship.init();
+
+		$scope.game.opponent.ships.push(ship);
+		$scope.game.opponent.placeShipIndex($scope.game.opponent.ships.length-1);
+	});
 
 	socket.on("kick", function(){
 		window.location.href = "/";
@@ -302,11 +321,12 @@ app.controller('MultiPlayerController', ['$scope', '$timeout', '$routeParams', '
 
 		if($scope.game.state != 0){return;}
 		if(!$scope.game.player.turn){return;}
+		if($scope.game.opponent.board.grid[y][x] != 0){return;}
 
 		$scope.game.opponent.board.fire([y,x]);
 		socket.emit("fire", [$scope.gameId, y,x]);
 		
-		$scope.gameOver = $scope.game.isOver();
+		$scope.game.gameState = $scope.game.isOver();
 
 		$scope.game.player.consumeTurn();
 	};
@@ -347,7 +367,19 @@ app.controller('MultiPlayerController', ['$scope', '$timeout', '$routeParams', '
 
 	});
 
-	socket.emit("gameReady", $scope.gameId);
+	$scope.start = function(){
+		for(var i = 0; i < $scope.game.player.ships.length; i++){
+			var ship = $scope.game.player.ships[i];
+
+			socket.emit("sendShip", [$scope.gameId, ship.size, ship.start[0], ship.start[1], ship.orientation, ship.marker]);
+
+		}
+		socket.emit("gameReady", $scope.gameId);
+
+		$scope.gameStart = true;
+	}
+
+
 
 
 }]);
