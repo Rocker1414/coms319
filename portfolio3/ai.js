@@ -173,6 +173,8 @@ AI.prototype.doTurn = function(board){
 
 	//go through hits, if a ship is destroyed, remove
 	this.checkHits();
+
+	return result;
 }
 
 AI.prototype.checkHits = function(){

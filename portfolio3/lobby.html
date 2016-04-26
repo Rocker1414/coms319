@@ -1,13 +1,40 @@
+<style>
+	body { 
+	        background: url('resources/menu_background.jpg') no-repeat 50% 50% fixed; 
+	        -webkit-background-size: cover;
+	        -moz-background-size: cover;
+	        -o-background-size: cover;
+	        background-size: cover;
+	}
 
-<a href="game"><button>Play vs Computer</button></a>
-<h2>Host Game</h2>
+	table{
+		background: white;
+
+		border:3px solid black;
+	}
+
+	td{
+		border:1px solid black;
+		min-width: 11.1%;
+		height: 100%;
+		text-align: center;
+
+
+	}
+
+</style>
+
+<center><h1>Battleship!</h1></center>
+<center><a href="game"><button type="button" class="btn btn-warning">Play vs Computer</button></a><br></center>
+<center><button type="button" class="btn btn-success">Host Game</button></center>
+<center><div id="host"
 <form>
 	Game Name:<input id="gname" type="text"><br>
 	Host Name:<input id="hname" type="text"><br>
 	Password(Optional):<input id="pw" type="text"><br>
 	<button ng-click="hostGame()">Submit</button>
 </form>
-<table>
+<center><table>
 	<tr>
 		<td>Game Name</td>
 		<td>Host Name</td>
@@ -20,4 +47,4 @@
 		<td>{{game.hasPassword()}}</td>
 		<td><button ng-click="joinGame(game)">Join</button>
 	</tr>
-</table>
+</table></center>

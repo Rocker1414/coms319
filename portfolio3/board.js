@@ -57,7 +57,7 @@ Board.prototype.getImage = function(coords){
 		return markerToImage(this.markers[y][x], this.ships[y][x].index, (this.ships[y][x].parent.orientation == 1));
 	}
 	else{
-		return "";
+		return "<img class='blank ship-img img-responsive' src='resources/blank.png'>";
 	}
 
 	
@@ -71,7 +71,7 @@ Board.prototype.showHitImage = function(coords){
 		return markerToImage(this.markers[y][x], this.ships[y][x].index, (this.ships[y][x].parent.orientation == 1));
 	}
 	else{
-		return "";
+		return "<img class='blank ship-img img-responsive' src='resources/blank.png'>";
 	}
 	
 }
@@ -89,7 +89,6 @@ Board.prototype.getShip = function(coords){
 }
 
 Board.prototype.fire = function(coords){
-	console.log(coords);
 	x = coords[1];
 	y = coords[0];
 

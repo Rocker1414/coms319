@@ -127,7 +127,11 @@ io.on('connection', function(socket) {
     }
 
     if(gr.ready[0] == 1 && gr.ready[1] == 1){
-      gr.players[gr.goFirst].emit("giveTurn");
+      gr.players[gr.goFirst].emit("playerFirst");
+
+      if(gr.goFirst == 0){gr.players[1].emit("opponentFirst");}
+      if(gr.goFirst == 1){gr.players[0].emit("opponentFirst");}
+      
     }
 
 

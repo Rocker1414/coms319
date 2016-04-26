@@ -11,59 +11,50 @@
 }
 
 
+#game-log{
+	margin-top: 5px;
+	width: 100%;
+	resize: none;
+	height: 100px;
+	border:2px solid grey;
+}
+
+
 body{
 	color: black;
-	background-repeat:no-repeat;
-	background-size:cover;
 }
 
-table{
-	margin: 0 auto;
-	border-collapse:collapse;
-	border:3px solid grey;
-	width: 100%;
-	height: 100%;
-    table-layout: fixed;
-    background:blue;
+#back{
+	margin-top: 10px;
+	margin-left: 10px;
+
 }
 
-th{
-	text-align: center;
+
+.ship-img{
+	max-width: 100%;
+	height: auto;
+
 }
 
-td{
-	border:1px solid black;
-	min-width: 11.1%;
-	height: 100px;
-	text-align: center;
+.blank{
+	opacity: 0;
+}
 
+
+
+.filler{
+	max-width: 100%;
+	height: auto;
 }
 
 .marker{
 	
-	background-image: url("Resources/sand.jpg");
+	background-image: url("resources/sand.jpg");
 	border:1px solid grey;
+
 }
 
-.background{
-	height:100%;
-	width:100%;
-	background-image: url("Resources/background.jpg");
-}
-
-.container{
-	margin: auto;
-	height: 900px;
-	width: 900px;
-}
-.sprites{
-	display: inline-block;
-}
-
-.carousel-inner .item{
-    width: 90%;
-    height: 90%;
-}
 
 .rotate{
 	-webkit-transform: rotate(270deg);
@@ -73,33 +64,3 @@ td{
     transform: rotate(270deg);
 }
 
-.carousel-inner > .next {
-left:0;
--o-transition: opacity ease-in-out 0s;
--webkit-transition: opacity ease-in-out 0s;
-transition: opacity ease-in-out 0s;
-opacity: 1;
-z-index:0;
-}
-.carousel-inner > .prev {
-left: 0;
--o-transition: opacity ease-in-out 0s;
--webkit-transition: opacity ease-in-out 0s;
-transition: opacity ease-in-out 0s;
-opacity: 1;
-z-index: 0;
-}
-.carousel-inner > .active.left {
-left: 0;
--o-transition: opacity ease-in-out 0s;
--webkit-transition: opacity ease-in-out 0s;
-transition: opacity ease-in-out 0s;
-opacity: 0;
-}
-.carousel-inner > .active.right {
-left: 0;
--o-transition: opacity ease-in-out 0s;
--webkit-transition: opacity ease-in-out 0s;
-transition: opacity ease-in-out 0s;
-opacity: 0;
-}

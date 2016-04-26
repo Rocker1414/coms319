@@ -6,6 +6,8 @@ function Game(){
 
 	this.state = 0;
 
+	this.log = "";
+
 }
 
 Game.prototype.init = function(){
