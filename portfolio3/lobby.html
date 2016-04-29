@@ -26,15 +26,31 @@
 
 <center><h1>Battleship!</h1></center>
 <center><a href="game"><button type="button" class="btn btn-warning">Play vs Computer</button></a><br></center>
-<center><button type="button" class="btn btn-success">Host Game</button></center>
-<center><div id="host"
-<form>
-	Game Name:<input id="gname" type="text"><br>
-	Host Name:<input id="hname" type="text"><br>
-	Password(Optional):<input id="pw" type="text"><br>
-	<button ng-click="hostGame()">Submit</button>
-</form>
-<center><table>
+<center><button type="button" class="btn btn-success" ng-click="toggleHost()">Host Game</button></center>
+<div id="host-form" class="container" ng-class="{hidden: !hostFormTog}">
+
+<div class="row">
+	<center>Game Name:<input id="gname" type="text"></center>
+</div>
+
+<div class="row">
+	<center>Host Name:<input id="hname" type="text"></center>
+	
+
+</div>
+
+<div class="row">
+	<center>Password(Optional):<input id="pw" type="text"></center>
+
+</div>
+
+<div class="row">
+	<center><button ng-click="hostGame()">Submit</button></center>
+</div>
+
+</div></center>
+
+<center>
 	<tr>
 		<td>Game Name</td>
 		<td>Host Name</td>

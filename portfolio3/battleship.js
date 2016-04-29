@@ -65,6 +65,8 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 
 	$scope.games = [];
 
+	$scope.hostFormTog = false;
+
 	socket.on("addGame", function(data){
 		var gr = new GameRef(data[0], data[1], data[2], data[3]);
 		$scope.games.push(gr);
@@ -93,6 +95,11 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 
 	});
 
+	$scope.cancel = function(){
+		socket.emit("hostCancel");
+		window.location.href = "/";
+	}
+
 	
 
 	$scope.hostGame = function(){
@@ -105,6 +112,10 @@ app.controller('MenuController', ['$scope', '$location', 'socket', function($sco
 		$location.path("/host");
 
 	};
+
+	$scope.toggleHost = function(){
+		$scope.hostFormTog = !$scope.hostFormTog;
+	}
 
 	$scope.joinGame = function(game){
 		

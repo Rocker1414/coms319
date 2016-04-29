@@ -21,6 +21,7 @@
       $("#login").html("");
 	  $("#fail").html("");
 	  $("#app").show();	
+	   $("#make").show();
 	  $("#logout").show();
 
     });
@@ -37,6 +38,7 @@
 	socket.on('reset', function(){
 		$("#login").load("login.html");
 		$("#app").hide();
+		$("#make").hide();
 		$("#logout").hide();
 	});
 
@@ -47,18 +49,57 @@
         $("#login").load("login.html");
 		$("#logout").load("logout.html");
 		$("#app").hide();
+		$("#make").hide();
 		$("#logout").hide();
+
+		$("#newPost").hide();
+		$("#makePost").click(function () {
+			$("#newPost").toggle();
+		});
+
+		$("#submitPost").click(function () {
+					var title = $("#title").val();
+					var content = $("#content").val();
+	
+					//emit event
+					socket.emit("sendPost", [title, content]);
+					
+					$("#title").val('');
+					$("#content").val('');
+					 $("#newPost").hide();
+					
+				});
+
     });
+
+
+		function update(title, content){
+				$("#newPost").show();
+				$("#title").val(title);	
+				$("#content").val(content);				
+				
+			}
   </script>
 
   <body>
-		<div id = "content">
+		<div id = "container">
 		   <h1>CS319 Post App</h1>
 		   <div id="login"></div> 
-		   <div id = "logout"></div>
+		   <div id = "logout"></div><br>
 		   <div id ="fail"></div>
+		   <div id="make">
+		   		<button id="makePost">Make Post</button>
+		   		<div id="newPost">
+					<span class="label"> Title: </span><input id="title" type="text" name="title"><br>
+					<span class="label">Content: </span><textarea id ="content"></textarea><br>
+					<button id ="submitPost">Submit</button>
+				</div>
+		   </div>
+
 		   <div id = "app">
-				<div id="left"><h3>Posts</h3></div>
+				<div id="left">
+					<h3>Posts</h3>
+				</div>
 				<div id = "right">
 					<h3>Messages</h3>
 					<textarea id="messages" readonly="readonly"></textarea>

@@ -89,6 +89,10 @@ io.on('connection', function(socket) {
      server.disconnect(socket);
   });
 
+  socket.on("hostCancel", function(){
+
+  });
+
 
   //game code
   //on a new game, opponents need to pass each other their boards
