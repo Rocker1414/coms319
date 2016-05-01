@@ -1,5 +1,4 @@
 function Board(width, height){
-
 	this.height = height;
 	this.width = width;
 

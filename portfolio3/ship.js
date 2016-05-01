@@ -1,6 +1,4 @@
 function Ship(size, start, orientation, marker){
-
-
 	this.size = size;
 
 	//1 is horizontal
